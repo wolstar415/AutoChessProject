@@ -13,6 +13,7 @@ public class Test3 : MonoBehaviour
 
     
     [SerializeField]AssetReference Ref;
+    [SerializeField]GameObject zzz;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,5 +42,15 @@ public class Test3 : MonoBehaviour
         };
 
         // 
+    }
+    public void asd2()
+    {
+        Addressables.InstantiateAsync("ccc", new Vector3(0,-3, 0), Quaternion.identity).Completed += (AsyncOperationHandle<GameObject> obj) => { };
+
+    }
+    public void asd3()
+    {
+        Instantiate(zzz, new Vector3(0, -5, 0), Quaternion.identity);
+
     }
 }
