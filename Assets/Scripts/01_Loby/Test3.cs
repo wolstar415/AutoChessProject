@@ -5,6 +5,8 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Firebase.Storage;
 using Firebase.Extensions;
+using UnityEngine.ResourceManagement.ResourceProviders;
+using RobinBird.FirebaseTools.Storage.Addressables;
 
 public class Test3 : MonoBehaviour
 {
@@ -14,20 +16,21 @@ public class Test3 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FirebaseStorage storage;
-        storage = FirebaseStorage.DefaultInstance;
-        StorageReference storageRef = storage.GetReferenceFromUrl("gs://unity-autochess.appspot.com");
-        Debug.Log(storageRef);
-    }
-    public void asd2()
-    {
-        
+        Addressables.ResourceManager.ResourceProviders.Add(new FirebaseStorageAssetBundleProvider());
+        Addressables.ResourceManager.ResourceProviders.Add(new FirebaseStorageJsonAssetProvider());
+        Addressables.ResourceManager.ResourceProviders.Add(new FirebaseStorageHashProvider());
+
+        // This requires Addressables >=1.75 and can be commented out for lower versions
+        Addressables.InternalIdTransformFunc += FirebaseAddressablesCache.IdTransformFunc;
 
     }
-public void asd()
+
+
+    public void asd()
     {
         //StorageReference gsReference =
         //    storage.GetReferenceFromUrl("gs://bucket/images/stars.jpg");
+        FirebaseAddressablesManager.IsFirebaseSetupFinished = true;
         Addressables.DownloadDependenciesAsync("GoGo").Completed += (AsyncOperationHandle handle) => {
             if (handle.IsDone)
             {
