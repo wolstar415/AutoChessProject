@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468a46d0ae32c3544b7d98094e6448a9, type: 3}
   m_Name: AddressableAssetSettings
   m_EditorClassIdentifier: 
-  m_DefaultGroup: 4f36a0fc2c82448439b42e8e1bdd8a3c
+  m_DefaultGroup: ba3a1602e3089d747915142314461ef7
   m_CachedHash:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
@@ -42,7 +42,6 @@ MonoBehaviour:
   m_overridePlayerVersion: 
   m_GroupAssets:
   - {fileID: 11400000, guid: 9d4bec967fd499c418b9350240d309f1, type: 2}
-  - {fileID: 11400000, guid: 3dc2fb168466c08438c58137e6cd3339, type: 2}
   - {fileID: 11400000, guid: b4b788e31ec87404b9d7879a922f0036, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
@@ -58,16 +57,16 @@ MonoBehaviour:
       - m_Id: 619aac0a9a0bdc2488a6a306ab4996ad
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
       - m_Id: 5db4c199f906b184baf27fe09b676464
-        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+        m_Value: ServerData/[BuildTarget]
       - m_Id: be37c9e535b558c4380224f47d158f28
-        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+        m_Value: http://[PrivateIpAddress]:[HostingServicePort]
       - m_Id: 69f72f4027acc524ead98db2a8a3d4a8
         m_Value: ServerData/[BuildTarget]
       - m_Id: 851269e02ffee6546b76b1d57d86e2b8
         m_Value: https://firebasestorage.googleapis.com/v0/b/unity-autochess.appspot.com/o/[BuildTarget]
     - m_InheritedParent: 
       m_Id: f2ab7ccb37b3d4242bbf51b8a4c929df
-      m_ProfileName: New Profile
+      m_ProfileName: asd
       m_Values:
       - m_Id: 619aac0a9a0bdc2488a6a306ab4996ad
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
@@ -78,7 +77,7 @@ MonoBehaviour:
       - m_Id: 69f72f4027acc524ead98db2a8a3d4a8
         m_Value: ServerData/[BuildTarget]
       - m_Id: 851269e02ffee6546b76b1d57d86e2b8
-        m_Value: https://firebasestorage.googleapis.com/v0/b/unity-autochess.appspot.com/o/[BuildTarget]
+        m_Value: gs://unity-autochess.appspot.com/[BuildTarget]
     m_ProfileEntryNames:
     - m_Id: 619aac0a9a0bdc2488a6a306ab4996ad
       m_Name: BuildTarget
