@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: GoodBundle
+  m_EditorClassIdentifier: 
+  m_GroupName: GoodBundle
+  m_Data:
+    m_SerializedData: []
+  m_GUID: ba3a1602e3089d747915142314461ef7
+  m_SerializeEntries:
+  - m_GUID: 59c425e1d6c6e134ea0f1fc4550b6d92
+    m_Address: logo
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GoGo
+  - m_GUID: 9adf0e359f767db4ca91f574d5d79474
+    m_Address: Assets/Prefabs/Image.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GoGo
+  - m_GUID: 3a30fa5b0262ec649b95c9160fb9c68d
+    m_Address: ccc
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GoGo
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 6b598b6f603744b4f90cc92beb6bde09, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e66c5b31c946dee46a1be297e52d6ba3, type: 2}
+    - {fileID: 11400000, guid: 85466df96e977f7429ab3d67e2f1b27d, type: 2}
