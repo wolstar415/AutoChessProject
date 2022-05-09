@@ -32,6 +32,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - GoGo
+  - m_GUID: 6d55a498425d5f1408656ac192d60bce
+    m_Address: Capsule2
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GoGo
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 6b598b6f603744b4f90cc92beb6bde09, type: 2}
   m_SchemaSet:
