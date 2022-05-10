@@ -27,6 +27,8 @@ public class PlayerMoving : MonoBehaviour
 
         }
         if (IsMoving && (Nav.velocity.sqrMagnitude >= 0.2f * 0.2f && Nav.remainingDistance <= 0.5f))
+        // remainingDistance 지정된 목적지까지 남은 거리를 반환.
+        // velocity.sqrMagnitude 거리를 구할 때 사용한다.
         {
             IsMoving = false;
             Nav.isStopped = true;
