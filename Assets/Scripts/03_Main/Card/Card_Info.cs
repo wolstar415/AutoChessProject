@@ -22,6 +22,8 @@ public class Card_Info : MonoBehaviour
     public bool IsDead = false;
     public float Hp = 0;
     [SerializeField] NavMeshAgent nav;
+    public float Range = 2f;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -55,11 +57,19 @@ public class Card_Info : MonoBehaviour
                 if (Enemy !=null)
                 {
                     fightFSM = Fight_FSM.Moving;
+                    nav.isStopped = false;
                     nav.SetDestination(Enemy.transform.position);
                 }
                 break;
             case Fight_FSM.Moving:
-                
+                Debug.Log("nav.velocity.sqrMagnitude ::::::" + nav.velocity.sqrMagnitude);
+                Debug.Log("nav.remainingDistance ::::::" + nav.remainingDistance);
+                if ( (nav.velocity.sqrMagnitude >= 0.2f * 0.2f && nav.remainingDistance <= Range-0.5f))
+                {
+                    nav.isStopped = true;
+                    
+
+                }
                 break;
             case Fight_FSM.Attacking:
                 break;

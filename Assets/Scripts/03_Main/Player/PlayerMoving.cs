@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerMoving : MonoBehaviour
 {
-    [SerializeField]NavMeshAgent Nav;
+    [SerializeField]NavMeshAgent nav;
     [SerializeField]Animator ani;
     bool IsMoving;
 
@@ -19,19 +19,21 @@ public class PlayerMoving : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                Nav.SetDestination(hit.point);
+                nav.SetDestination(hit.point);
                 ani.SetBool("Run", true);
                 IsMoving = true;
-                Nav.isStopped = false;
+                nav.isStopped = false;
             }
 
         }
-        if (IsMoving && (Nav.velocity.sqrMagnitude >= 0.2f * 0.2f && Nav.remainingDistance <= 0.5f))
+        Debug.Log("nav.velocity.sqrMagnitude ::::::" + nav.velocity.sqrMagnitude);
+        Debug.Log("nav.remainingDistance ::::::" + nav.remainingDistance);
+        if (IsMoving && (nav.velocity.sqrMagnitude >= 0.2f * 0.2f && nav.remainingDistance <= 0.5f))
         // remainingDistance 지정된 목적지까지 남은 거리를 반환.
         // velocity.sqrMagnitude 거리를 구할 때 사용한다.
         {
             IsMoving = false;
-            Nav.isStopped = true;
+            nav.isStopped = true;
             ani.SetBool("Run", false);
             
         }
