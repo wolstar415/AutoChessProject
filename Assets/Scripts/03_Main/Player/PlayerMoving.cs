@@ -26,12 +26,16 @@ public class PlayerMoving : MonoBehaviour
             }
 
         }
-        Debug.Log("nav.velocity.sqrMagnitude ::::::" + nav.velocity.sqrMagnitude);
-        Debug.Log("nav.remainingDistance ::::::" + nav.remainingDistance);
-        if (IsMoving && (nav.velocity.sqrMagnitude >= 0.2f * 0.2f && nav.remainingDistance <= 0.5f))
-        // remainingDistance 지정된 목적지까지 남은 거리를 반환.
-        // velocity.sqrMagnitude 거리를 구할 때 사용한다.
+        if (IsMoving)
         {
+
+        }
+        if (IsMoving && (nav.velocity.sqrMagnitude >= 0.2f * 0.2f && nav.remainingDistance <= 0.5f))
+           
+        // remainingDistance 지정된 목적지까지 남은 거리를 반환.
+        // velocity.sqrMagnitude 속도.
+        {
+            
             IsMoving = false;
             nav.isStopped = true;
             ani.SetBool("Run", false);
