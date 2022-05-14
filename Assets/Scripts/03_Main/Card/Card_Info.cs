@@ -58,7 +58,7 @@ public class Card_Info : MonoBehaviour
                     EnemyFind(); // 적을 찾는 함수
                 }
 
-                
+
                 if (Enemy !=null)
                 {
                     if (Enemy.TryGetComponent(out Card_Info com))
@@ -72,10 +72,10 @@ public class Card_Info : MonoBehaviour
                         {
                             fightFSM = Fight_FSM.Moving;
                             nav.isStopped = false;
-                            
+
                         }
                     }
-                    
+
                 }
                 break;
             case Fight_FSM.Moving:

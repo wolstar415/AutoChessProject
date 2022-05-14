@@ -5,16 +5,9 @@ using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
 
-public class Test3 : MonoBehaviourPunCallbacks,IOnEventCallback
+public class Test3 : MonoBehaviourPunCallbacks
 {
-    public void OnEvent(EventData photonEvent)
-    {
-        if ((photonEvent.Code==0))
-        {
 
-            Debug.Log("3¹ø"+photonEvent.CustomData);
-        }
-    }
     private void Start()
     {
         
