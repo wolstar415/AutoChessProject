@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public enum Fight_FSM { 
 None=0,
-idle,
+Idle,
 Moving,
 Attacking
 }
@@ -32,7 +32,7 @@ public class Card_Info : MonoBehaviour
     {
         fightFSM = Fight_FSM.None;
 
-        fightFSM= Fight_FSM.idle;
+        fightFSM= Fight_FSM.Idle;
         IsFighting = true;
         IsCool = true;
     }
@@ -52,10 +52,10 @@ public class Card_Info : MonoBehaviour
         switch (fightFSM)
         {
             case Fight_FSM.None: break;
-            case Fight_FSM.idle:
+            case Fight_FSM.Idle:
                 if (Enemy == null)
                 {
-                    EnemyFind(); // ÀûÀ» Ã£´Â ÇÔ¼ö
+                    EnemyFind(); // ì  ì°¾ëŠ”ê±°
                 }
 
 
@@ -98,7 +98,7 @@ public class Card_Info : MonoBehaviour
                     if (com2.IsDead == true)
                     {
                         Enemy = null;
-                        fightFSM = Fight_FSM.idle;
+                        fightFSM = Fight_FSM.Idle;
                         break;
                     }
                 }
@@ -106,14 +106,14 @@ public class Card_Info : MonoBehaviour
                 transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
                 if (Vector3.Distance(transform.position,Enemy.transform.position)> Range+0.1f)
                 {
-                    fightFSM = Fight_FSM.idle;
+                    fightFSM = Fight_FSM.Idle;
                     break;
                 }
                 if (IsCool)
                 {
                     IsCool = false;
                     StartCoroutine(CoolCheck());
-                    Debug.Log("°ø°Ý!");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½!");
                 }
                 break;
             default:
@@ -124,11 +124,11 @@ public class Card_Info : MonoBehaviour
     void EnemyFind()
     {
         Collider[] c = Physics.OverlapSphere(transform.position, 30f, GameSystem_AllInfo.inst.masks[EnemyTeamIdx]);
-        // ¿ÀºêÁ§Æ® ÁÖÀ§ ·¹ÀÌ¾î·Î °Ë»öµÈ ÁÖÀ§ ¿ÀºêÁ§Æ® »Ì¾Æ³À´Ï´Ù.
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½Ë»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ì¾Æ³ï¿½ï¿½Ï´ï¿½.
         if (c.Length >0)
         {
         Enemy= GameSystem_AllInfo.inst.FindNearestObject(transform.position,c); 
-            //°¡Àå °¡±î¿îÀû »Ì¾Æ³»´Â ÇÔ¼ö
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ³ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
 
         }
     }

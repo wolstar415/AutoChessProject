@@ -11,7 +11,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System;
 using Newtonsoft.Json;
-
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class Test2 : MonoBehaviourPunCallbacks
 {
     public Test2 test;
@@ -41,14 +41,13 @@ public class Test2 : MonoBehaviourPunCallbacks
     }
     public void show()
     {
-        byte[] fcv = SerializeMethod(asd3[0]);
-        JsonUtility.FromJsonOverwrite(s,test2);
-        //Debug.Log(gfd.asd3[0].name);
+        Debug.Log(PhotonNetwork.PlayerList[1].CustomProperties["1"]);
     }
 
     public void bt()
     {
-
+        Debug.Log("¤±¤¤¤·");
+        PhotonNetwork.PlayerList[1].SetCustomProperties(new Hashtable { { "1", "¹Ùº¸" } });
 
     }
 

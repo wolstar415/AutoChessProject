@@ -29,7 +29,7 @@ public class Test3 : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         //PhotonNetwork.NetworkingClient.EventReceived += EventReceive;
-        Debug.Log("네트워크");
+        Debug.Log("");
         
     }
 
