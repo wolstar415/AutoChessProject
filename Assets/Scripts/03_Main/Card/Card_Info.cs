@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.AI;
+
+using UnityEngine.Serialization;
 
 public enum Fight_FSM { 
 None=0,
@@ -14,129 +15,48 @@ Attacking
 
 public class Card_Info : MonoBehaviour
 {
-    [SerializeField] bool IsRangeAttack;
     public bool IsFighting = false;
-    [SerializeField] Fight_FSM fightFSM;
+    public bool IsAttacker=false;
     public int TeamIdx = 0;
     public int EnemyTeamIdx = 0;
-    public bool IsAttacker=false;
-    public GameObject Enemy=null;
-    public bool IsDead = false;
-    public float Hp = 0;
-    [SerializeField] NavMeshAgent nav;
-    public float Range = 2f;
-    public bool IsCool=false;
+    public int Idx;
     
+    public bool IsDead = false;
+    public int GoldCost;//가격
+
+    public string Name;//이름
+    [Header("스탯")] 
+    public int Level = 0;//레벨
+    public int Food;//인구수
+    public bool IsRangeAttack;//공격타입(원거리,근거리)
+    public float Hp = 0; //체력
+    public float Range = 2f;//사정거리
+    public float Atk_Cool;//공속
+    public float Atk_Damage;//데미지
+    public float Defence;//방어
+    public float Defence_Magic;//마법방어
+    public float Speed;//이동속도
+    public float Mana;//마나
+    public float ManaMax;//최대마나
+    
+
+    [Header("특성 계열")]
+    public int Character_Job1; //특성1
+    public int Character_Job2; //특성2
+    public int  Character_trait1;//계열1
+    public int  Character_trait2;//계열2
     // Start is called before the first frame update
     void Start()
     {
-        fightFSM = Fight_FSM.None;
-
-        fightFSM= Fight_FSM.Idle;
-        IsFighting = true;
-        IsCool = true;
+        
+        
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (IsFighting)
-        {
-            FightFSM();
-        }
-
-    }
-
-    void FightFSM()
-    {
-        switch (fightFSM)
-        {
-            case Fight_FSM.None: break;
-            case Fight_FSM.Idle:
-                if (Enemy == null)
-                {
-                    EnemyFind(); // 적 찾는거
-                }
 
 
-                if (Enemy !=null)
-                {
-                    if (Enemy.TryGetComponent(out Card_Info com))
-                    {
-                        if (com.IsDead == true)
-                        {
-                            Enemy = null;
-                            EnemyFind();
-                        }
-                        else
-                        {
-                            fightFSM = Fight_FSM.Moving;
-                            nav.isStopped = false;
+    
 
-                        }
-                    }
 
-                }
-                break;
-            case Fight_FSM.Moving:
-                if (Vector3.Distance(transform.position, Enemy.transform.position) <= Range)
-                {
-                    nav.isStopped = true;
-                    fightFSM = Fight_FSM.Attacking;
-                }
-                else
-                {
-
-                nav.SetDestination(Enemy.transform.position);
-                }
-
-                break;
-            case Fight_FSM.Attacking:
-
-                if (Enemy.TryGetComponent(out Card_Info com2))
-                {
-                    if (com2.IsDead == true)
-                    {
-                        Enemy = null;
-                        fightFSM = Fight_FSM.Idle;
-                        break;
-                    }
-                }
-                Vector3 dir = Enemy.transform.position - this.transform.position;
-                transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
-                if (Vector3.Distance(transform.position,Enemy.transform.position)> Range+0.1f)
-                {
-                    fightFSM = Fight_FSM.Idle;
-                    break;
-                }
-                if (IsCool)
-                {
-                    IsCool = false;
-                    StartCoroutine(CoolCheck());
-                    Debug.Log("����!");
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    void EnemyFind()
-    {
-        Collider[] c = Physics.OverlapSphere(transform.position, 30f, GameSystem_AllInfo.inst.masks[EnemyTeamIdx]);
-        // ������Ʈ ���� ���̾�� �˻��� ���� ������Ʈ �̾Ƴ��ϴ�.
-        if (c.Length >0)
-        {
-        Enemy= GameSystem_AllInfo.inst.FindNearestObject(transform.position,c); 
-            //���� ������� �̾Ƴ��� �Լ�
-
-        }
-    }
-
-    IEnumerator CoolCheck()
-    {
-        var a = new WaitForSeconds(2);
-        yield return a;
-        IsCool = true;
-    }
+    
 }

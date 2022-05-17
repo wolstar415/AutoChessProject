@@ -21,7 +21,7 @@ public class GameSystem_AllInfo : MonoBehaviour
     {
 
 
-        // LINQ ¸Þ¼Òµå¸¦ ÀÌ¿ëÇØ °¡Àå °¡±î¿î ÀûÀ» Ã£½À´Ï´Ù.
+        // LINQ ë©”ì†Œë“œë¥¼ ì´ìš©í•´ ê°€ìž¥ ê°€ê¹Œìš´ ì ì„ ì°¾ìŠµë‹ˆë‹¤.
         var neareastObject = Obs
             .OrderBy(obj =>
             {
@@ -34,7 +34,7 @@ public class GameSystem_AllInfo : MonoBehaviour
     public GameObject FindNearestObject(Vector3 pos, Collider[] Obs)
     {
 
-        // LINQ ¸Þ¼Òµå¸¦ ÀÌ¿ëÇØ °¡Àå °¡±î¿î ÀûÀ» Ã£½À´Ï´Ù.
+        // LINQ ë©”ì†Œë“œë¥¼ ì´ìš©í•´ ê°€ìž¥ ê°€ê¹Œìš´ ì ì„ ì°¾ìŠµë‹ˆë‹¤.
         var neareastObject = Obs
             .OrderBy(obj =>
             {
