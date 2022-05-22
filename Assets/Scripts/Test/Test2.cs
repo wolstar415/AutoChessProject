@@ -36,18 +36,19 @@ public class Test2 : MonoBehaviourPunCallbacks
     [PunRPC]
     void xcz(Dictionary<int, int> hhhh)
     {
-        Debug.Log(hhhh[0]);
+       // Debug.Log(hhhh[0]);
         
     }
     public void show()
     {
-        Debug.Log(PhotonNetwork.PlayerList[1].CustomProperties["1"]);
+       // Debug.Log(PhotonNetwork.PlayerList[1].CustomProperties["1"]);
     }
 
     public void bt()
     {
-        Debug.Log("¤±¤¤¤·");
-        PhotonNetwork.PlayerList[1].SetCustomProperties(new Hashtable { { "1", "¹Ùº¸" } });
+        JsonUtility.FromJsonOverwrite(s,test);
+        //Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+      //  PhotonNetwork.PlayerList[1].SetCustomProperties(new Hashtable { { "1", "ï¿½Ùºï¿½" } });
 
     }
 

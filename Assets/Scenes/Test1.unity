@@ -463,7 +463,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1899398131}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Test2, Assembly-CSharp
         m_MethodName: bt
         m_Mode: 1
@@ -1685,7 +1685,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1899398131}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Test2, Assembly-CSharp
         m_MethodName: bt
         m_Mode: 1
@@ -2008,9 +2008,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1899398131}
+      - m_Target: {fileID: 1899398132}
         m_TargetAssemblyTypeName: Test2, Assembly-CSharp
-        m_MethodName: show
+        m_MethodName: bt
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2069,8 +2069,6 @@ GameObject:
   - component: {fileID: 1899398130}
   - component: {fileID: 1899398131}
   - component: {fileID: 1899398132}
-  - component: {fileID: 1899398133}
-  - component: {fileID: 1899398134}
   m_Layer: 0
   m_Name: GameObject (1)
   m_TagString: Untagged
@@ -2100,24 +2098,23 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899398128}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 418a79d74ed42784ab9632e197121777, type: 3}
+  m_Script: {fileID: 11500000, guid: 411d0f6ff990ecc4a8bbb1d139db98ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 1899398131}
-  asd: 05000000040000000300000002000000010000000100000001000000010000000100000001000000
-  asd2: 580000005700000056000000
-  asd3:
-  - {fileID: 703310222}
-  - {fileID: 1508140634}
-  - {fileID: 420778927}
-  - {fileID: 941833201}
-  - {fileID: 2036413379}
-  - {fileID: 1648647809}
-  pv: {fileID: 1899398133}
-  s: '{"test":{"instanceID":38802},"asd":[5,4,3,2,1,1,1,1,1,1],"asd2":[88,87,86],"asd3":[{"instanceID":38704},{"instanceID":38758},{"instanceID":38698},{"instanceID":38728},{"instanceID":38808},{"instanceID":38774}],"pv":{"instanceID":38806},"s":"","test2":{"instanceID":0}}'
-  test2: {fileID: 1899398131}
+  CharactersName: []
+  row: []
+  data1: 
+  data2: 
+  data3: 
+  data4: 
+  data5: 
+  data6: 
+  data7: 
+  data8: 
+  data9: 
+  data10: 
 --- !u!114 &1899398132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2127,46 +2124,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1899398128}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0706db73a58918408145b8315e289e7, type: 3}
+  m_Script: {fileID: 11500000, guid: 418a79d74ed42784ab9632e197121777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1899398133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1899398128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 1
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 1
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &1899398134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1899398128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fba2058bdabd0040b096acf2764cca4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  msgText: {fileID: 1052426279}
-  sendBtn: {fileID: 315411097}
-  pv: {fileID: 1899398133}
+  test: {fileID: 1899398132}
+  asd: 7b000000
+  asd2: 0c0000002d000000
+  asd3:
+  - {fileID: 703310222}
+  - {fileID: 1508140634}
+  - {fileID: 941833201}
+  pv: {fileID: 0}
+  s: 
+  test2: {fileID: 0}
 --- !u!1 &2036413379
 GameObject:
   m_ObjectHideFlags: 0
