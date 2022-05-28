@@ -1551,7 +1551,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0474193c09f09ff44b40cee219e66a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharactersName: []
   row: []
   data:
   - 
@@ -1574,17 +1573,7 @@ MonoBehaviour:
   - 
   - 
   - 
-  URL:
-  - https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=0
-  - https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=138748527
-  - https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=972189345
-  - https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=157520444
-  - https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=1562761835
-  - https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=638159907
-  - https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=747828469
-  - https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=1866138935
-  - https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=306255472
-  - https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=1583924170
+  characterInfo: []
 --- !u!1 &2044615995
 GameObject:
   m_ObjectHideFlags: 0
