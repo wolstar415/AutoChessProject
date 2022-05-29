@@ -97,9 +97,7 @@ public class CsvManager : MonoBehaviour
     public List<String> Text_China;
 
     //private string URL ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/gviz/tq?tqx=out:csv&sheet={캐릭터}";
-    [SerializeField] private string[] URL =
-    {
-    };
+    [SerializeField] private string[] URL;
 
     private void Awake()
     {
@@ -277,7 +275,7 @@ public class CsvManager : MonoBehaviour
 
     void XpSeet()
     {
-        var csvdata = CSVReader.Read2(data[8]);
+        var csvdata = CSVReader.Read2(data[9]);
         for (int i = 0; i < csvdata.Count; i++)
         {
             Player_Xp.Add(int.Parse(csvdata[i]["XP"].ToString()));
@@ -286,7 +284,7 @@ public class CsvManager : MonoBehaviour
 
     void CardMaxSeet()
     {
-        var csvdata = CSVReader.Read2(data[9]);
+        var csvdata = CSVReader.Read2(data[8]);
         for (int i = 0; i < csvdata.Count; i++)
         {
             CardMax.Add(int.Parse(csvdata[i]["Max"].ToString()));
