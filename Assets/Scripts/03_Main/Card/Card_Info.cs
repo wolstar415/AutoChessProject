@@ -15,6 +15,8 @@ Attacking
 
 public class Card_Info : MonoBehaviour
 {
+    [Header("전투상태")] 
+    public bool IsFiled;
     public bool IsFighting = false;
     public bool IsAttacker=false;
     public int TeamIdx = 0;
@@ -24,7 +26,9 @@ public class Card_Info : MonoBehaviour
     public bool IsDead = false;
     public int GoldCost;//가격
 
-    public string Name;//이름
+    public CharacterInfo info;
+    public int Name;//이름
+    public int Icon;//이름
     [Header("스탯")] 
     public int Level = 0;//레벨
     public int Food;//인구수
@@ -41,15 +45,43 @@ public class Card_Info : MonoBehaviour
     
 
     [Header("특성 계열")]
-    public int Character_Job1; //특성1
-    public int Character_Job2; //특성2
-    public int  Character_trait1;//계열1
-    public int  Character_trait2;//계열2
+    public int Character_Job1; //계열1
+    public int Character_Job2; //계열2
+    public int  Character_trait1;//특성1
+    public int  Character_trait2;//특성2
     // Start is called before the first frame update
     void Start()
     {
+        startSetting();
+        Setting(Level);
         
-        
+    }
+    public void startSetting()
+    {
+        info = CsvManager.inst.characterInfo[Idx];
+        Level = 1;
+        Food = info.Food;
+        IsRangeAttack = info.IsRange;
+        Name = info.Name;
+        Icon = info.Icon;
+        Character_Job1 = info.Job1;
+        Character_Job2 = info.Job2;
+        Character_trait1 = info.Trait1;
+        Character_trait2 = info.Trait2;
+        Range = info.Range;
+        Defence = info.Defense;
+        Defence_Magic = info.Defense;
+        Speed = info.Speed;
+        Mana = Mana;
+        ManaMax = ManaMax;
+    }
+
+    public void Setting(int Lv)
+    {
+        int lv = Lv - 1;
+        Hp = info.Hp[lv];
+        Atk_Cool = info.AtSpeed[lv];
+        Atk_Damage = info.At[lv];
     }
 
     // Update is called once per frame

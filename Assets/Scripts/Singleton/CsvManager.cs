@@ -5,50 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-public enum TraitAndJob
-{
-    None = 0,
-    Trait1 = 1,
-    Trait2 = 2,
-    Trait3 = 3,
-    Trait4 = 4,
-    Trait5 = 5,
-    Trait6 = 6,
-    Trait7 = 7,
-    Trait8 = 8,
-    Trait9 = 9,
-    Trait10 = 10,
-    Trait11 = 11,
-    Trait12 = 12,
-    Trait13 = 13,
-    Trait14 = 14,
-    Trait15= 15,
-    Trait16 = 16,
-    Trait17 = 17,
-    Trait18 = 18,
-    Trait19 = 19,
-    Trait20 = 20,
-    Job1 = 21,
-    Job2 = 22,
-    Job3 = 23,
-    Job4 = 24,
-    Job5 = 25,
-    Job6 = 26,
-    Job7 = 27,
-    Job8 = 28,
-    Job9 = 29,
-    Job10 = 30,
-    Job11 = 31,
-    Job12 = 32,
-    Job13 = 33,
-    Job14 = 34,
-    Job15 = 35,
-    Job16 = 36,
-    Job17 = 37,
-    Job18 = 38,
-    Job19 = 39,
-    Job20 = 40,
-}
+
 
 [System.Serializable]
 public class SkillInfo
@@ -70,10 +27,10 @@ public class CharacterInfo
     public int Name;
     public int Icon;
     public int Food;
-    public TraitAndJob Trait1;
-    public TraitAndJob Trait2;
-    public TraitAndJob Job1;
-    public TraitAndJob Job2;
+    public int Trait1;
+    public int Trait2;
+    public int Job1;
+    public int Job2;
     public float Range;
     public bool IsRange;
     public float[] Hp = new float[3];
@@ -86,6 +43,7 @@ public class CharacterInfo
     public float Mana_Max;
     public SkillInfo skillinfo;
 }
+
 [System.Serializable]
 public class ItemInfo
 {
@@ -102,26 +60,22 @@ public class ItemInfo
     public float CriPer;
     public float CriDmg;
     public float MissPer;
-
 }
+
 public class CsvManager : MonoBehaviour
 {
+    public static CsvManager inst;
     public string[] row;
 
     public string[] data;
     [Header("캐릭터")] public List<CharacterInfo> characterInfo;
     [Header("스킬")] public List<SkillInfo> skillinfo;
 
-    [Header("특성")] 
-    public List<int> TraitandJobName;
+    [Header("특성")] public List<int> TraitandJobName;
     public List<int> TraitandJobInfo;
     public List<int> TraitandJobInfo1;
-    public List<int> TraitandJobInfo2;
-    public List<int> TraitandJobInfo3;
-    public List<int> TraitandJobInfo4;
-    public List<int> TraitandJobInfo5;
-    [Header("가격")] 
-    public List<int> Cost1;
+
+    [Header("가격")] public List<int> Cost1;
     public List<int> Cost2;
     public List<int> Cost3;
     [Header("아이템")] public List<ItemInfo> itemInfo;
@@ -131,8 +85,7 @@ public class CsvManager : MonoBehaviour
     public List<int> ReRoll4;
     public List<int> ReRoll5;
 
-    [Header("라운드")] 
-    public List<int> RoundCheck1;
+    [Header("라운드")] public List<int> RoundCheck1;
     public List<int> RoundCheck2;
     public List<int> RoundCheck3;
     [Header("데미지")] public List<int> RoundDamage;
@@ -144,21 +97,15 @@ public class CsvManager : MonoBehaviour
     public List<String> Text_China;
 
     //private string URL ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/gviz/tq?tqx=out:csv&sheet={캐릭터}";
-    [SerializeField]
-    private string[] URL =
+    [SerializeField] private string[] URL =
     {
     };
-    //private string URL2 ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=138748527";
-    //private string URL3 ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=972189345";
-    //private string URL4 ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=157520444";
-    //private string URL5 ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=1562761835";
-    //private string URL6 ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=638159907";
-    //private string URL7 ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=747828469";
-    //private string URL8 ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=1866138935";
-    //private string URL9 ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=306255472";
-    //private string URL10 ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=1583924170";
 
-    //private string URL ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv";
+    private void Awake()
+    {
+        inst = this;
+    }
+
     private void Start()
     {
         if (Application.internetReachability != NetworkReachability.NotReachable)
@@ -224,10 +171,10 @@ public class CsvManager : MonoBehaviour
             characterInfo[i].Icon = int.Parse(csvdata[i]["Icon"].ToString());
             characterInfo[i].Food = int.Parse(csvdata[i]["Food"].ToString());
             characterInfo[i].Name = int.Parse(csvdata[i]["Name"].ToString());
-            characterInfo[i].Trait1 = (TraitAndJob)int.Parse(csvdata[i]["특성1"].ToString());
-            characterInfo[i].Trait2 = (TraitAndJob)int.Parse(csvdata[i]["특성2"].ToString());
-            characterInfo[i].Job1 = (TraitAndJob)int.Parse(csvdata[i]["계열1"].ToString());
-            characterInfo[i].Job2 = (TraitAndJob)int.Parse(csvdata[i]["계열2"].ToString());
+            characterInfo[i].Trait1 = int.Parse(csvdata[i]["특성1"].ToString());
+            characterInfo[i].Trait2 = int.Parse(csvdata[i]["특성2"].ToString());
+            characterInfo[i].Job1 = int.Parse(csvdata[i]["계열1"].ToString());
+            characterInfo[i].Job2 = int.Parse(csvdata[i]["계열2"].ToString());
             characterInfo[i].Range = float.Parse(csvdata[i]["사거리"].ToString());
             characterInfo[i].IsRange = Convert.ToBoolean(int.Parse(csvdata[i]["공격타입"].ToString()));
             characterInfo[i].Hp[0] = float.Parse(csvdata[i]["체력1"].ToString());
@@ -255,12 +202,9 @@ public class CsvManager : MonoBehaviour
         {
             TraitandJobName.Add(int.Parse(csvdata[i]["Name"].ToString()));
             TraitandJobInfo1.Add(int.Parse(csvdata[i]["설명1"].ToString()));
-            TraitandJobInfo2.Add(int.Parse(csvdata[i]["설명2"].ToString()));
-            TraitandJobInfo3.Add(int.Parse(csvdata[i]["설명3"].ToString()));
-            TraitandJobInfo4.Add(int.Parse(csvdata[i]["설명4"].ToString()));
-            TraitandJobInfo5.Add(int.Parse(csvdata[i]["설명5"].ToString()));
         }
     }
+
     void CostSeet()
     {
         var csvdata = CSVReader.Read2(data[3]);
@@ -269,13 +213,11 @@ public class CsvManager : MonoBehaviour
             Cost1.Add(int.Parse(csvdata[i]["Cost1"].ToString()));
             Cost2.Add(int.Parse(csvdata[i]["Cost2"].ToString()));
             Cost3.Add(int.Parse(csvdata[i]["Cost3"].ToString()));
-            
+
             //characterInfo[i].Level = int.Parse(csvdata[i]["Level"].ToString());
         }
-        
-        
-
     }
+
     void ItemSeet()
     {
         var csvdata = CSVReader.Read2(data[4]);
@@ -299,6 +241,7 @@ public class CsvManager : MonoBehaviour
             //characterInfo[i].Level = int.Parse(csvdata[i]["Level"].ToString());
         }
     }
+
     void ReRoolSeet()
     {
         var csvdata = CSVReader.Read2(data[5]);
@@ -311,6 +254,7 @@ public class CsvManager : MonoBehaviour
             ReRoll5.Add(int.Parse(csvdata[i]["티어5"].ToString()));
         }
     }
+
     void RoundSeet()
     {
         var csvdata = CSVReader.Read2(data[6]);
@@ -321,6 +265,7 @@ public class CsvManager : MonoBehaviour
             RoundCheck3.Add(int.Parse(csvdata[i]["선택"].ToString()));
         }
     }
+
     void DamageSeet()
     {
         var csvdata = CSVReader.Read2(data[7]);
@@ -329,6 +274,7 @@ public class CsvManager : MonoBehaviour
             RoundDamage.Add(int.Parse(csvdata[i]["Damage"].ToString()));
         }
     }
+
     void XpSeet()
     {
         var csvdata = CSVReader.Read2(data[8]);
@@ -337,6 +283,7 @@ public class CsvManager : MonoBehaviour
             Player_Xp.Add(int.Parse(csvdata[i]["XP"].ToString()));
         }
     }
+
     void CardMaxSeet()
     {
         var csvdata = CSVReader.Read2(data[9]);
@@ -345,6 +292,7 @@ public class CsvManager : MonoBehaviour
             CardMax.Add(int.Parse(csvdata[i]["Max"].ToString()));
         }
     }
+
     void GameTextSeet()
     {
         var csvdata = CSVReader.Read2(data[10]);
@@ -356,6 +304,7 @@ public class CsvManager : MonoBehaviour
             Text_China.Add(csvdata[i]["China"].ToString());
         }
     }
+
     void test()
     {
         SceneManager.LoadScene("03_Main");

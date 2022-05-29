@@ -2069,6 +2069,7 @@ GameObject:
   - component: {fileID: 1899398130}
   - component: {fileID: 1899398131}
   - component: {fileID: 1899398132}
+  - component: {fileID: 1899398133}
   m_Layer: 0
   m_Name: GameObject (1)
   m_TagString: Untagged
@@ -2105,16 +2106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharactersName: []
   row: []
-  data1: 
-  data2: 
-  data3: 
-  data4: 
-  data5: 
-  data6: 
-  data7: 
-  data8: 
-  data9: 
-  data10: 
+  data: []
 --- !u!114 &1899398132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2122,7 +2114,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899398128}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 418a79d74ed42784ab9632e197121777, type: 3}
   m_Name: 
@@ -2137,6 +2129,19 @@ MonoBehaviour:
   pv: {fileID: 0}
   s: 
   test2: {fileID: 0}
+--- !u!114 &1899398133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899398128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc50480e3207c8442a155ad2b519b06b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  s: "{gold}\uC6D0 \uD68D\uB4DD"
 --- !u!1 &2036413379
 GameObject:
   m_ObjectHideFlags: 0
