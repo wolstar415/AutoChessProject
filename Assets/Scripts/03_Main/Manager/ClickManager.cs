@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using ExitGames.Client.Photon.StructWrapping;
+using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 using Unity.VisualScripting;
+using UnityEngine.AI;
 using UnityEngine.Tilemaps;
 
 
@@ -29,7 +31,7 @@ public enum PlayerClickState2
 
     
 
-public class ClickManager : MonoBehaviour
+public class ClickManager : MonoBehaviourPunCallbacks
 {
     const float CharaterHe = 1.6f;
     public static ClickManager inst;
@@ -50,7 +52,7 @@ public class ClickManager : MonoBehaviour
 
     private void Start()
     {
-        
+       
         clickstate = PlayerClickState.None;
         clickstate2 = PlayerClickState2.None;
         
@@ -98,6 +100,11 @@ public class ClickManager : MonoBehaviour
 
     void DragCardFunc()
     {
+        if (ClickCard.GetComponent<Card_Info>().pv.Owner!=PhotonNetwork.LocalPlayer)
+        {
+            return;
+        }
+        
         Vector3 scrSpace = Camera.main.WorldToScreenPoint(ClickCard.transform.position);
 
 
@@ -111,7 +118,6 @@ public class ClickManager : MonoBehaviour
             if (Vector3.Distance(ClickCard.transform.position,objPosition)>=1)
             {
                 clickstate2 = PlayerClickState2.cardDraging;
-                
                 if (ClickCard.TryGetComponent(out CapsuleCollider col))
                 {
                     col.enabled = false;
@@ -131,15 +137,16 @@ public class ClickManager : MonoBehaviour
 
     void UpCardFunc()
     {
+        
         if (ClickCard==null)
         {
             return;
         }
+        
         if (ClickCard.TryGetComponent(out CapsuleCollider col))
         {
             col.enabled = true;
         }
-
         if (clickstate==PlayerClickState.Card&&clickstate2!=PlayerClickState2.cardDraging)
         {
             // 드래그안함 아무것도안하게
@@ -221,18 +228,7 @@ public class ClickManager : MonoBehaviour
         var ClickCardcom = ob.GetComponent<Card_Info>();
         var tilecom = Tile.GetComponent<TileInfo>();
         int idx = tilecom.Idx;
-        GameObject oriTile = ClickCardcom.TileOb;
-        if (oriTile!=null)
-        {
-            if (oriTile.TryGetComponent(out TileInfo info))
-            {
-                info.tileGameob = null;
-            }
-        }
-        ClickCardcom.MoveIdx = idx;
-        tilecom.tileGameob = ob;
-        ClickCardcom.TileOb = Tile;
-        ClickCardcom.IsFiled = tilecom.IsFiled;
+        tilecom.AddTile(ob);
         Vector3 pos = Tile.transform.position;
         pos.y = CharaterHe;
         ob.transform.position = pos;
@@ -321,6 +317,7 @@ public class ClickManager : MonoBehaviour
         // }
     }
     */
+
 }
 
 // Vector3 mpos = Input.mousePosition;

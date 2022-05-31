@@ -51,6 +51,7 @@ MonoBehaviour:
   - CardResetNetworkFunc3
   - CardAddFunc
   - CardRemoveFunc
+  - MovingCheck
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

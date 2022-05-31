@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Realtime;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -32,5 +33,45 @@ public class TileInfo : MonoBehaviour
     public void SetColor()
     {
         transform.GetComponent<MeshRenderer>().material.color = colors[0];
+    }
+
+    public void AddTile(GameObject ob)
+    {
+        var ClickCardcom = ob.GetComponent<Card_Info>();
+        GameObject oriTile = ClickCardcom.TileOb;
+        if (oriTile!=null)
+        {
+            if (oriTile.TryGetComponent(out TileInfo info))
+            {
+                info.RemoveTile();
+            }
+        }
+        ClickCardcom.MoveIdx = Idx;
+        ClickCardcom.TileOb = gameObject;
+        ClickCardcom.IsFiled = IsFiled;
+        if (IsFiled)
+        {
+            PlayerInfo.Inst.FiledTilestate[Idx] = ClickCardcom.Idx;
+        }
+        else
+        {
+            PlayerInfo.Inst.PlayerTilestate[Idx] = ClickCardcom.Idx;
+        }
+        tileGameob = ob;
+ 
+    }
+
+    public void RemoveTile()
+    {
+        if (IsFiled)
+        {
+            PlayerInfo.Inst.FiledTilestate[Idx] = -1;
+        }
+        else
+        {
+            PlayerInfo.Inst.PlayerTilestate[Idx] = -1;
+        }
+        
+        tileGameob = null;
     }
 }

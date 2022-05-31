@@ -5,6 +5,27 @@ using UniRx;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[System.Serializable]
+public class PlayerCardCnt
+{
+    public List<GameObject> Lv1;
+    public List<GameObject> Lv2;
+    public List<GameObject> Lv3;
+
+    public List<GameObject> Lv(int lv)
+    {
+        if (lv==2)
+        {
+            return Lv2;
+        }
+        else if (lv==3)
+        {
+            return Lv3;
+        }
+
+        return Lv1;
+    }
+}
 public class PlayerInfo : MonoBehaviour
 {
     public static PlayerInfo Inst;
@@ -26,6 +47,14 @@ public class PlayerInfo : MonoBehaviour
     public List<GameObject> PlayerTile;
     public List<GameObject> FiledTile;
     public List<GameObject> EnemyTile;
+    public int[] PlayerTilestate;
+    public int[] FiledTilestate;
+    public int[] TraitandJobCnt;
+    
+    public int[] PlayerCardCnt;
+
+    public List<PlayerCardCnt> PlayerCardCntLv;
+    
     private void Awake()
     {
         
@@ -33,6 +62,13 @@ public class PlayerInfo : MonoBehaviour
         //테스트
         Level = 1;
     }
+
+    private void Start()
+    {
+        Gold = 100;
+        
+    }
+
 
     public int Gold
     {

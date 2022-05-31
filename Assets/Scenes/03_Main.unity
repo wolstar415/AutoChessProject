@@ -6551,6 +6551,7 @@ Transform:
   - {fileID: 618537402}
   - {fileID: 1611265959}
   - {fileID: 1967335923}
+  - {fileID: 1969498731}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15167,6 +15168,7 @@ MonoBehaviour:
   - {fileID: 794620965866707063, guid: 13c6d00d0a7cae644b986a5180ae5f8a, type: 3}
   - {fileID: 794620965866707063, guid: 13c6d00d0a7cae644b986a5180ae5f8a, type: 3}
   - {fileID: 794620965866707063, guid: 13c6d00d0a7cae644b986a5180ae5f8a, type: 3}
+  IsBattle: 0
 --- !u!1001 &731408326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25230,6 +25232,8 @@ MonoBehaviour:
   IsLock: 0
   _food: 0
   _foodMax: 0
+  Xp: 0
+  XpMax: 0
   FiledTileOb: {fileID: 114808408}
   PlayerTileOb: {fileID: 490546183}
   PlayerTile:
@@ -25300,6 +25304,221 @@ MonoBehaviour:
   - {fileID: 1735071281}
   - {fileID: 1350624336}
   - {fileID: 1444525000}
+  PlayerTilestate: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  FiledTilestate: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  TraitandJobCnt: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  PlayerCardCnt: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  PlayerCardCntLv:
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
+  - Lv1: []
+    Lv2: []
+    Lv3: []
 --- !u!1001 &1239780556
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39758,6 +39977,50 @@ MonoBehaviour:
   - {fileID: 147234171}
   - {fileID: 1850916085}
   - {fileID: 1707964914}
+--- !u!1 &1969498730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1969498731}
+  - component: {fileID: 1969498732}
+  m_Layer: 0
+  m_Name: CreateManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1969498731
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969498730}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 273505309}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1969498732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969498730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7188c4ffb3fd69e4db5ff7030c0f8010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1973586356
 GameObject:
   m_ObjectHideFlags: 0

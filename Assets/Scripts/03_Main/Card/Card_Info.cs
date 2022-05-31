@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Photon.Pun;
 using UnityEngine;
 
 using UnityEngine.Serialization;
@@ -13,8 +14,9 @@ Attacking
 }
 
 
-public class Card_Info : MonoBehaviour
+public class Card_Info : MonoBehaviourPunCallbacks
 {
+    [Header("네트워크")] public PhotonView pv;
     [Header("전투상태")] 
     public bool IsFiled;
     public bool IsFighting = false;
@@ -50,11 +52,17 @@ public class Card_Info : MonoBehaviour
     public int Character_Job2; //계열2
     public int  Character_trait1;//특성1
     public int  Character_trait2;//특성2
+    //[Header("UI")]
+     
     // Start is called before the first frame update
     void Start()
     {
+        if (pv.IsMine)
+        {
+            
         startSetting();
         Setting(Level);
+        }
         
     }
     public void startSetting()
@@ -75,7 +83,38 @@ public class Card_Info : MonoBehaviour
         Speed = info.Speed;
         Mana = Mana;
         ManaMax = ManaMax;
+
+        PlayerInfo.Inst.PlayerCardCnt[Idx]++;
+        PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(1).Add(gameObject);
+
+
     }
+
+    public void LevelUp()
+    {
+        PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level).Remove(gameObject);
+        Level++;
+        
+        PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level).Add(gameObject);
+        Setting(Level);
+        if (Level==2)
+        {
+        CreateManager.inst.CheckLevelUp(Idx,Level);
+            
+        }
+    }
+
+    public void remove()
+    {
+        if (TileOb.TryGetComponent(out TileInfo info))
+        {
+            info.RemoveTile();
+        }
+        PlayerInfo.Inst.PlayerCardCnt[Idx]--;
+        PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level).Remove(gameObject);
+        PhotonNetwork.Destroy(gameObject);
+    }
+    
 
     public void Setting(int Lv)
     {
@@ -84,6 +123,26 @@ public class Card_Info : MonoBehaviour
         Atk_Cool = info.AtSpeed[lv];
         Atk_Damage = info.At[lv];
     }
+
+
+    void NetCheck()
+    {
+        if (Level==1)
+        {
+            
+        }
+        else if (Level==2)
+        {
+            
+        }
+        else if(Level==3)
+        {
+            
+        }
+        
+        
+    }
+    
 
     // Update is called once per frame
 

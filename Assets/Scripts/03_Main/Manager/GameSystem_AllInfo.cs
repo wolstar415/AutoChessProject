@@ -18,6 +18,8 @@ public class GameSystem_AllInfo : MonoBehaviour
     public List<GameObject> Card_3;
     public List<GameObject> Card_4;
     public List<GameObject> Card_5;
+
+    public bool IsBattle = false;
     private void Awake()
     {
         inst = this;

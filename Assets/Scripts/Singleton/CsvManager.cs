@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -334,7 +335,9 @@ public class CsvManager : MonoBehaviour
     }
     void test()
     {
-        SceneManager.LoadScene("03_Main");
+        
+        PhotonNetwork.LoadLevel("03_Main");
+        //SceneManager.LoadScene("03_Main");
     }
 
     public List<int> ReRoll(int Lv)

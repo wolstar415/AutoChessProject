@@ -24,13 +24,6 @@ public class CardManager : MonoBehaviour
         
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            CardReset();
-        }
-    }
 
     public void CardReset()
     {
@@ -50,9 +43,12 @@ public class CardManager : MonoBehaviour
             return;
         }
 
+        if (!CreateManager.inst.CheckCreate(Cardinfo.Idx))
+        {
+            return;
+        }
         PlayerInfo.Inst.Gold -= Cardinfo.Cost;
         CardBuy(idx);
-        //캐릭터샀음
 
     }
 
@@ -85,7 +81,9 @@ public class CardManager : MonoBehaviour
     public void CardBuy(int idx)
     {
         var Cardinfo = CardUi[idx].GetComponent<CardUI_Info>();
+        int Cardidx = Cardinfo.Idx;
         Cardinfo.Cardback();
+        CreateManager.inst.CreateCharacter(Cardidx);
         
     }
 }
