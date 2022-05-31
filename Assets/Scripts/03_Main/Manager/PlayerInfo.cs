@@ -1,17 +1,26 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerInfo : MonoBehaviour
 {
     public static PlayerInfo Inst;
-    public int Gold;
+    [SerializeField]private int gold;
+    public int Level;
+    
     public int Life;
     public int PlayerIdx;
     public GameObject PlayerCharacter;
     public bool Dead = false;
-
+    public bool IsLock=false;
+    [SerializeField]private int _food=0;
+    [SerializeField]private int _foodMax=0;
+    public int Xp;
+    public int XpMax;
+    
     public GameObject FiledTileOb;
     public GameObject PlayerTileOb;
     public List<GameObject> PlayerTile;
@@ -19,6 +28,46 @@ public class PlayerInfo : MonoBehaviour
     public List<GameObject> EnemyTile;
     private void Awake()
     {
+        
         Inst = this;
+        //테스트
+        Level = 1;
     }
+
+    public int Gold
+    {
+        get { return gold;}
+        set
+        {
+            if (value<0)
+            {
+                value = 0;
+            }
+
+            gold = value;
+            UIManager.inst.GoldSet();
+        }
+    }
+
+    public int food
+    {
+        get { return _food;}
+        set
+        {
+            _food = value;
+            UIManager.inst.FoodSet();
+        }
+    }
+
+    public int foodMax
+    {
+        get { return _foodMax;}
+        set 
+        {
+            _foodMax = value;
+            UIManager.inst.FoodSet();
+        }
+    }
+
+
 }

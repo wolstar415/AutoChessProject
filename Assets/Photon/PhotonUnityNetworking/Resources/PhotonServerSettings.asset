@@ -43,6 +43,14 @@ MonoBehaviour:
   - zas
   - xcz
   - RPCCustomType
+  - check2
+  - check3
+  - CardAdd
+  - CardRemove
+  - CardResetNetworkFunc2
+  - CardResetNetworkFunc3
+  - CardAddFunc
+  - CardRemoveFunc
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

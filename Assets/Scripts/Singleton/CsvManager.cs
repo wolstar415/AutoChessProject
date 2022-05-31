@@ -23,7 +23,7 @@ public class SkillInfo
 public class CharacterInfo
 {
     public int Idx;
-    public int Level;
+    public int Tier;
     public int Name;
     public int Icon;
     public int Food;
@@ -74,6 +74,7 @@ public class CsvManager : MonoBehaviour
     [Header("특성")] public List<int> TraitandJobName;
     public List<int> TraitandJobInfo;
     public List<int> TraitandJobInfo1;
+    public List<int> TraitandJobIcon;
 
     [Header("가격")] public List<int> Cost1;
     public List<int> Cost2;
@@ -165,7 +166,7 @@ public class CsvManager : MonoBehaviour
         {
             characterInfo.Add(new CharacterInfo());
             characterInfo[i].Idx = i;
-            characterInfo[i].Level = int.Parse(csvdata[i]["Level"].ToString());
+            characterInfo[i].Tier = int.Parse(csvdata[i]["Level"].ToString());
             characterInfo[i].Icon = int.Parse(csvdata[i]["Icon"].ToString());
             characterInfo[i].Food = int.Parse(csvdata[i]["Food"].ToString());
             characterInfo[i].Name = int.Parse(csvdata[i]["Name"].ToString());
@@ -199,7 +200,9 @@ public class CsvManager : MonoBehaviour
         for (int i = 0; i < csvdata.Count; i++)
         {
             TraitandJobName.Add(int.Parse(csvdata[i]["Name"].ToString()));
+            TraitandJobInfo.Add(int.Parse(csvdata[i]["설명"].ToString()));
             TraitandJobInfo1.Add(int.Parse(csvdata[i]["설명1"].ToString()));
+            TraitandJobIcon.Add(int.Parse(csvdata[i]["Icon"].ToString()));
         }
     }
 
@@ -300,11 +303,69 @@ public class CsvManager : MonoBehaviour
             Text_English.Add(csvdata[i]["English"].ToString());
             Text_Japan.Add(csvdata[i]["Japan"].ToString());
             Text_China.Add(csvdata[i]["China"].ToString());
+            Text_Korea[i] = Text_Korea[i].Replace("`w`", "\n");
+            Text_English[i] = Text_English[i].Replace("`w`", "\n");
+            Text_Japan[i] = Text_Japan[i].Replace("`w`", "\n");
+            Text_China[i] = Text_China[i].Replace("`w`", "\n");
         }
+        
     }
 
+    public string GameText(int i)
+    {
+        if (GameManager.inst.GameLanguage=="Korean")
+        {
+            return Text_Korea[i];
+        }
+        else if (GameManager.inst.GameLanguage=="English")
+        {
+            
+            return Text_English[i];
+        }
+        else if (GameManager.inst.GameLanguage=="Japan")
+        {
+            return Text_Japan[i];
+        }
+        else if (GameManager.inst.GameLanguage=="China")
+        {
+            return Text_China[i];
+        }
+        return Text_Korea[i];
+    }
     void test()
     {
         SceneManager.LoadScene("03_Main");
+    }
+
+    public List<int> ReRoll(int Lv)
+    {
+        List<int> result=new List<int>();
+        result.Add(ReRoll1[Lv]);
+        result.Add(ReRoll2[Lv]);
+        result.Add(ReRoll3[Lv]);
+        result.Add(ReRoll4[Lv]);
+        result.Add(ReRoll5[Lv]);
+
+
+        return result;
+    }
+
+    public int GoldCost(int Tier, int Lv)
+    {
+        int cost = 0;
+        if (Tier==1)
+        {
+            cost = Cost1[Lv];
+        }
+        else if (Tier==2)
+        {
+            cost = Cost2[Lv];
+        }
+        else
+        {
+            cost = Cost3[Lv];
+        }
+
+        return cost;
     }
 }

@@ -12,6 +12,12 @@ public class GameSystem_AllInfo : MonoBehaviour
     public Transform PickPos;
     public LayerMask[] masks;
 
+    public List<string> Cards;
+    public List<GameObject> Card_1;
+    public List<GameObject> Card_2;
+    public List<GameObject> Card_3;
+    public List<GameObject> Card_4;
+    public List<GameObject> Card_5;
     private void Awake()
     {
         inst = this;
@@ -44,4 +50,6 @@ public class GameSystem_AllInfo : MonoBehaviour
 
         return neareastObject.gameObject;
     }
+
+
 }

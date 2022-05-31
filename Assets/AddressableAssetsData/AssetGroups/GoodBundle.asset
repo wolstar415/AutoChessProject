@@ -22,11 +22,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - GoGo
-  - m_GUID: 9adf0e359f767db4ca91f574d5d79474
-    m_Address: Assets/Prefabs/Image.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - GoGo
   - m_GUID: 3a30fa5b0262ec649b95c9160fb9c68d
     m_Address: ccc
     m_ReadOnly: 0

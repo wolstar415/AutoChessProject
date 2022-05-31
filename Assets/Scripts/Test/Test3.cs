@@ -23,13 +23,13 @@ public class Test3 : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers =10;
+        roomOptions.MaxPlayers =8;
         PhotonNetwork.JoinOrCreateRoom("asd", roomOptions,null);
     }
     public override void OnJoinedRoom()
     {
         //PhotonNetwork.NetworkingClient.EventReceived += EventReceive;
-        Debug.Log("");
+        Debug.Log("완료");
         
     }
 

@@ -23,6 +23,7 @@ public class Card_Info : MonoBehaviour
     public int EnemyTeamIdx = 0;
     public int Idx;
     public int MoveIdx;
+    public GameObject TileOb;
     public bool IsDead = false;
     public int GoldCost;//가격
 
