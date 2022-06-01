@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Card_fight : MonoBehaviour
 {
+    [SerializeField] private PhotonView pv;
     [SerializeField]private Card_Info info;
     [SerializeField] Fight_FSM fightFSM;
     [SerializeField] GameObject EnemyMoving;
@@ -29,6 +31,10 @@ public class Card_fight : MonoBehaviour
 
     void Update()
     {
+        if (!pv.IsMine)
+        {
+            return;
+        }
         if (info.IsFighting)
         {
             FightFSM();

@@ -15,9 +15,25 @@ public class SkillInfo
     public int Name;
     public int Icon;
     public int Info;
+    public int Info2;
     public float[] Real1 = new float[3];
     public float[] Real2 = new float[3];
     public float[] Real3 = new float[3];
+
+    public float Realcheck(int idx, int lv)
+    {
+        if (idx==2)
+        {
+            return Real2[lv - 1];
+        }
+        else if(idx==3)
+
+        {
+            return Real3[lv - 1];
+            
+        }
+            return Real1[lv - 1];
+    }
 }
 
 [System.Serializable]
@@ -61,6 +77,7 @@ public class ItemInfo
     public float CriPer;
     public float CriDmg;
     public float MissPer;
+    public float[] Real=new float[3];
 }
 
 public class CsvManager : MonoBehaviour
@@ -148,6 +165,7 @@ public class CsvManager : MonoBehaviour
             skillinfo[i].Icon = int.Parse(csvdata[i]["Icon"].ToString());
             skillinfo[i].Name = int.Parse(csvdata[i]["Name"].ToString());
             skillinfo[i].Info = int.Parse(csvdata[i]["Info"].ToString());
+            skillinfo[i].Info2 = int.Parse(csvdata[i]["Info2"].ToString());
             skillinfo[i].Real1[0] = float.Parse(csvdata[i]["1_Real1"].ToString());
             skillinfo[i].Real1[1] = float.Parse(csvdata[i]["2_Real1"].ToString());
             skillinfo[i].Real1[2] = float.Parse(csvdata[i]["3_Real1"].ToString());
@@ -239,6 +257,9 @@ public class CsvManager : MonoBehaviour
             itemInfo[i].CriPer = float.Parse(csvdata[i]["치명타확률"].ToString());
             itemInfo[i].CriDmg = float.Parse(csvdata[i]["치명타확률데미지"].ToString());
             itemInfo[i].MissPer = float.Parse(csvdata[i]["회피"].ToString());
+            itemInfo[i].Real[0] = float.Parse(csvdata[i]["Real1"].ToString());
+            itemInfo[i].Real[1] = float.Parse(csvdata[i]["Real2"].ToString());
+            itemInfo[i].Real[2] = float.Parse(csvdata[i]["Real3"].ToString());
 
             //characterInfo[i].Level = int.Parse(csvdata[i]["Level"].ToString());
         }
@@ -335,7 +356,7 @@ public class CsvManager : MonoBehaviour
     }
     void test()
     {
-        
+        PhotonNetwork.IsMessageQueueRunning = false;
         PhotonNetwork.LoadLevel("03_Main");
         //SceneManager.LoadScene("03_Main");
     }
@@ -356,17 +377,17 @@ public class CsvManager : MonoBehaviour
     public int GoldCost(int Tier, int Lv)
     {
         int cost = 0;
-        if (Tier==1)
+        if (Lv==1)
         {
-            cost = Cost1[Lv];
+            cost = Cost1[Tier];
         }
-        else if (Tier==2)
+        else if (Lv==2)
         {
-            cost = Cost2[Lv];
+            cost = Cost2[Tier];
         }
         else
         {
-            cost = Cost3[Lv];
+            cost = Cost3[Tier];
         }
 
         return cost;

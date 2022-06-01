@@ -34,19 +34,56 @@ public class Card_Info : MonoBehaviourPunCallbacks
     public int Icon;//이름
     [Header("스탯")] 
     public int Level = 0;//레벨
+    public int Tier = 0;//티어
     public int Food;//인구수
     public bool IsRangeAttack;//공격타입(원거리,근거리)
     public float Hp = 0; //체력
-    public float Range = 2f;//사정거리
+    public float HpMax = 0; //최대체력
+    public float Range = 0f;//사정거리
     public float Atk_Cool;//공속
     public float Atk_Damage;//데미지
+    public float Magic_Damage;//데미지
     public float Defence;//방어
     public float Defence_Magic;//마법방어
     public float Speed;//이동속도
     public float Mana;//마나
     public float ManaMax;//최대마나
-    
+    public float CriPer;//크리
+    public float CriDmg;//크리데미지
+    public int[] Item;
 
+    [Header("캐릭터스텟")] 
+    public float Char_Hp; //체력
+    public float Char_Range ;//사정거리
+    public float Char_Atk_Cool;//공속
+    public float Char_Atk_Damage;//데미지
+    public float Char_Magic_Damage;//데미지
+    public float Char_Defence;//방어
+    public float Char_Defence_Magic;//마법방어
+    public float Char_Speed;//이동속도
+    public float Char_Mana;//마나
+    public float Char_ManaMax;//최대마나
+
+    [Header("아이템스탯")] 
+    public float Item_Hp; //체력
+    public float Item_Range ;//사정거리
+    public float Item_Atk_Cool;//공속
+    public float Item_Atk_Damage;//데미지
+    public float Item_Defence;//방어
+    public float Item_Defence_Magic;//마법방어
+    public float Item_Speed;//이동속도
+    public float Item_Mana;//마나
+    public float Item_ManaMax;//최대마나
+    [Header("버프스탯")] 
+    public float Buff_Hp; //체력
+    public float Buff_Range ;//사정거리
+    public float Buff_Atk_Cool;//공속
+    public float Buff_Atk_Damage;//데미지
+    public float Buff_Defence;//방어
+    public float Buff_Defence_Magic;//마법방어
+    public float Buff_Speed;//이동속도
+    public float Buff_Mana;//마나
+    public float Buff_ManaMax;//최대마나
     [Header("특성 계열")]
     public int Character_Job1; //계열1
     public int Character_Job2; //계열2
@@ -69,6 +106,7 @@ public class Card_Info : MonoBehaviourPunCallbacks
     {
         info = CsvManager.inst.characterInfo[Idx];
         Level = 1;
+        Tier = info.Tier;
         Food = info.Food;
         IsRangeAttack = info.IsRange;
         Name = info.Name;
@@ -77,13 +115,14 @@ public class Card_Info : MonoBehaviourPunCallbacks
         Character_Job2 = info.Job2;
         Character_trait1 = info.Trait1;
         Character_trait2 = info.Trait2;
-        Range = info.Range;
-        Defence = info.Defense;
-        Defence_Magic = info.Defense;
-        Speed = info.Speed;
-        Mana = Mana;
-        ManaMax = ManaMax;
-
+        Char_Range = info.Range;
+        Char_Defence = info.Defense;
+        Char_Defence_Magic = info.Defense;
+        Char_Speed = info.Speed;
+        Char_Mana = Mana;
+        Char_ManaMax = ManaMax;
+        Char_Mana = info.Mana;
+        Char_ManaMax = info.Mana_Max;
         PlayerInfo.Inst.PlayerCardCnt[Idx]++;
         PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(1).Add(gameObject);
 
@@ -119,9 +158,10 @@ public class Card_Info : MonoBehaviourPunCallbacks
     public void Setting(int Lv)
     {
         int lv = Lv - 1;
-        Hp = info.Hp[lv];
-        Atk_Cool = info.AtSpeed[lv];
-        Atk_Damage = info.At[lv];
+        Char_Hp = info.Hp[lv];
+        
+        Char_Atk_Cool = info.AtSpeed[lv];
+        Char_Atk_Damage = info.At[lv];
     }
 
 
@@ -141,6 +181,11 @@ public class Card_Info : MonoBehaviourPunCallbacks
         }
         
         
+    }
+
+    public int costCheck()
+    {
+        return 0;
     }
     
 

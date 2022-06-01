@@ -1,0 +1,19 @@
+{
+    "name": "Sigleton",
+    "rootNamespace": "Singleton1",
+    "references": [
+        "Unity.TextMeshPro",
+        "PhotonRealtime",
+        "PhotonUnityNetworking.Utilities",
+        "PhotonUnityNetworking"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

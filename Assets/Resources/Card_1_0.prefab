@@ -1519,6 +1519,7 @@ MonoBehaviour:
       Name: 0
       Icon: 0
       Info: 0
+      Info2: 0
       Real1:
       - 0
       - 0
@@ -1534,17 +1535,51 @@ MonoBehaviour:
   Name: 0
   Icon: 0
   Level: 0
+  Tier: 0
   Food: 0
   IsRangeAttack: 0
   Hp: 0
+  HpMax: 0
   Range: 6
   Atk_Cool: 0
   Atk_Damage: 0
+  Magic_Damage: 0
   Defence: 0
   Defence_Magic: 0
   Speed: 0
   Mana: 0
   ManaMax: 0
+  CriPer: 0
+  CriDmg: 0
+  Item: ffffffffffffffffffffffff
+  Char_Hp: 0
+  Char_Range: 0
+  Char_Atk_Cool: 0
+  Char_Atk_Damage: 0
+  Char_Magic_Damage: 0
+  Char_Defence: 0
+  Char_Defence_Magic: 0
+  Char_Speed: 0
+  Char_Mana: 0
+  Char_ManaMax: 0
+  Item_Hp: 0
+  Item_Range: 0
+  Item_Atk_Cool: 0
+  Item_Atk_Damage: 0
+  Item_Defence: 0
+  Item_Defence_Magic: 0
+  Item_Speed: 0
+  Item_Mana: 0
+  Item_ManaMax: 0
+  Buff_Hp: 0
+  Buff_Range: 0
+  Buff_Atk_Cool: 0
+  Buff_Atk_Damage: 0
+  Buff_Defence: 0
+  Buff_Defence_Magic: 0
+  Buff_Speed: 0
+  Buff_Mana: 0
+  Buff_ManaMax: 0
   Character_Job1: 0
   Character_Job2: 0
   Character_trait1: 0
@@ -1561,6 +1596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463838f4f029703429b64c1a7213d140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pv: {fileID: 794620965866707051}
   info: {fileID: 794620965866707054}
   fightFSM: 0
   EnemyMoving: {fileID: 0}

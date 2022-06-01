@@ -45,6 +45,9 @@ public class ClickManager : MonoBehaviourPunCallbacks
     public GameObject TileOb;
     private bool DragStart = false;
 
+    private bool EnemyClick = false;
+
+    public GameObject Charinfoui;
     private void Awake()
     {
         inst = this;
@@ -52,7 +55,9 @@ public class ClickManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-       
+        PhotonNetwork.IsMessageQueueRunning = true;
+        
+        
         clickstate = PlayerClickState.None;
         clickstate2 = PlayerClickState2.None;
         
@@ -75,7 +80,7 @@ public class ClickManager : MonoBehaviourPunCallbacks
                 ClickCardFunc(hit.collider.gameObject);
             });
         this.UpdateAsObservable()
-            .Where(_=>ClickCard!=null&&Input.GetMouseButton(0)&&clickstate==PlayerClickState.Card)
+            .Where(_=>ClickCard!=null&&!EnemyClick&&Input.GetMouseButton(0)&&clickstate==PlayerClickState.Card)
             .Subscribe(_ =>
             {
                 DragCardFunc();
@@ -95,15 +100,15 @@ public class ClickManager : MonoBehaviourPunCallbacks
         ClickCard = ob;
         MousePos = ob.transform.position;
         clickstate = PlayerClickState.Card;
+        if (ClickCard.GetComponent<Card_Info>().pv.Owner!=PhotonNetwork.LocalPlayer)
+        {
+            EnemyClick = true;
+        }
                
     }
 
     void DragCardFunc()
     {
-        if (ClickCard.GetComponent<Card_Info>().pv.Owner!=PhotonNetwork.LocalPlayer)
-        {
-            return;
-        }
         
         Vector3 scrSpace = Camera.main.WorldToScreenPoint(ClickCard.transform.position);
 
@@ -137,20 +142,20 @@ public class ClickManager : MonoBehaviourPunCallbacks
 
     void UpCardFunc()
     {
-        
+        EnemyClick = false;
         if (ClickCard==null)
         {
             return;
         }
-        
+
+        //판매확인 레이캐스트로 쏘면될듯
+        //판매액션
         if (ClickCard.TryGetComponent(out CapsuleCollider col))
         {
             col.enabled = true;
         }
         if (clickstate==PlayerClickState.Card&&clickstate2!=PlayerClickState2.cardDraging)
         {
-            // 드래그안함 아무것도안하게
-            
             ShowCharacterInfo(ClickCard);
             return;
         }
@@ -289,7 +294,12 @@ public class ClickManager : MonoBehaviourPunCallbacks
 
     void ShowCharacterInfo(GameObject ob)
     {
-        
+        if (Charinfoui.TryGetComponent(out CardUI_Info2 info))
+        {
+            info.InfoSet(ClickCard);
+        }
+
+        ClickCard = null;
     }
     /*void Update()
     {
