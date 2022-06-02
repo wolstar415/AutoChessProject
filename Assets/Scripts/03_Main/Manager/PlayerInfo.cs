@@ -28,6 +28,7 @@ public class PlayerCardCnt
 }
 public class PlayerInfo : MonoBehaviour
 {
+    public GameObject PlayerOb;
     public static PlayerInfo Inst;
     [SerializeField]private int gold;
     public int Level;
@@ -54,7 +55,9 @@ public class PlayerInfo : MonoBehaviour
     public int[] PlayerCardCnt;
 
     public List<PlayerCardCnt> PlayerCardCntLv;
-    
+
+    public Transform PlayerMovePos;
+
     private void Awake()
     {
         
@@ -104,6 +107,7 @@ public class PlayerInfo : MonoBehaviour
             UIManager.inst.FoodSet();
         }
     }
+
 
 
 }

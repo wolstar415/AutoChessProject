@@ -3321,6 +3321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e793a226d9587a43b60b46debd7b484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pv: {fileID: 7927566782699119151}
   nav: {fileID: 7927566782699119148}
   ani: {fileID: 4376174971104935339}
 --- !u!195 &7927566782699119148

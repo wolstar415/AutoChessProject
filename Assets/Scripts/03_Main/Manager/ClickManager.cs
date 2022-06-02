@@ -10,7 +10,7 @@ using UniRx.Triggers;
 using Unity.VisualScripting;
 using UnityEngine.AI;
 using UnityEngine.Tilemaps;
-
+using UnityEngine.EventSystems;
 
 
 
@@ -19,6 +19,7 @@ public enum PlayerClickState
     None = 0,
     Card = 1,
     item,
+    Ui,
 }
 
 public enum PlayerClickState2
@@ -43,11 +44,13 @@ public class ClickManager : MonoBehaviourPunCallbacks
     public PlayerClickState2 clickstate2;
 
     public GameObject TileOb;
+    public GameObject ClickItem;
     private bool DragStart = false;
 
     private bool EnemyClick = false;
 
     public GameObject Charinfoui;
+    public GameObject ItemDropCard;
     private void Awake()
     {
         inst = this;
@@ -56,28 +59,30 @@ public class ClickManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         PhotonNetwork.IsMessageQueueRunning = true;
-        
-        
+
+        GameObject pob= PhotonNetwork.Instantiate("Player", PlayerInfo.Inst.PlayerMovePos.position, Quaternion.identity);
+        PlayerInfo.Inst.PlayerOb = pob;
         clickstate = PlayerClickState.None;
         clickstate2 = PlayerClickState2.None;
         
         this.UpdateAsObservable()
             .Where(_=>Input.GetMouseButtonDown(0))
-            .Select(_ =>
-            {
-                Vector3 mpos = Input.mousePosition;
-                Ray cast = Camera.main.ScreenPointToRay(mpos);
-                RaycastHit hit;
-                if (Physics.Raycast(cast, out hit, 100, laymaskCard))
-                {
-                    
-                }
-                return hit;
-            })
-            .Where(hit=>hit.collider!=null)
+            // .Select(_ =>
+            // {
+            //     Vector3 mpos = Input.mousePosition;
+            //     Ray cast = Camera.main.ScreenPointToRay(mpos);
+            //     RaycastHit hit;
+            //     if (Physics.Raycast(cast, out hit, 100, laymaskCard))
+            //     {
+            //         
+            //     }
+            //     return hit;
+            // })
+            // .Where(hit=>hit.collider!=null)
             .Subscribe(hit =>
             {
-                ClickCardFunc(hit.collider.gameObject);
+                ClickFunc();
+                //ClickCardFunc(hit.collider.gameObject);
             });
         this.UpdateAsObservable()
             .Where(_=>ClickCard!=null&&!EnemyClick&&Input.GetMouseButton(0)&&clickstate==PlayerClickState.Card)
@@ -93,8 +98,42 @@ public class ClickManager : MonoBehaviourPunCallbacks
             });
 
     }
+    private bool IsPointerOverUIObject()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
+    }
 
+    void ClickFunc()
+    {
+        if (IsPointerOverUIObject())
+        {
+            Debug.Log("UI누름");
+            return;
+        }
+        Vector3 mpos = Input.mousePosition;
+        Ray cast = Camera.main.ScreenPointToRay(mpos);
+        RaycastHit hit;
+        if (Physics.Raycast(cast, out hit, 100, laymaskCard))
+        {
+            ClickCardFunc(hit.collider.gameObject);
+            return;
+        }
+        
+        //플레이어 이동
+        if (PlayerInfo.Inst.PlayerOb.TryGetComponent(out PlayerMoving moving))
+        {
+            //Vector3 objPosition = Camera.main.ScreenToWorldPoint(mpos);
+            //moving.movePos(objPosition);
+            moving.check1();
+            Debug.Log("이동중");
+        }
 
+        
+    }
     void ClickCardFunc(GameObject ob)
     {
         ClickCard = ob;

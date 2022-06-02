@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 public enum Fight_FSM { 
@@ -14,7 +14,7 @@ Attacking
 }
 
 
-public class Card_Info : MonoBehaviourPunCallbacks
+public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointerExitHandler
 {
     [Header("네트워크")] public PhotonView pv;
     [Header("전투상태")] 
@@ -188,7 +188,33 @@ public class Card_Info : MonoBehaviourPunCallbacks
         return 0;
     }
     
+    public void OnPointerEnter(PointerEventData eventData)
+    {
 
+        if (ClickManager.inst.clickstate==PlayerClickState.Card)
+        {
+            if (pv.Owner!=PhotonNetwork.LocalPlayer)
+            {
+                return;
+            }
+
+            ClickManager.inst.ItemDropCard = gameObject;
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+
+       
+        if (ClickManager.inst.clickstate==PlayerClickState.Card)
+        {
+            if (pv.Owner!=PhotonNetwork.LocalPlayer)
+            {
+                return;
+            }
+            ClickManager.inst.ItemDropCard = null;
+        }
+    }
     // Update is called once per frame
 
 

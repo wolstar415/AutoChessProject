@@ -1,22 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
-public class PlayerMoving : MonoBehaviour
+public class PlayerMoving : MonoBehaviourPunCallbacks
 {
+    [SerializeField] private PhotonView pv;
     [SerializeField]NavMeshAgent nav;
     [SerializeField]Animator ani;
     bool IsMoving;
 
-    void Update()
+
+    public void check1()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
+        
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-
             if (Physics.Raycast(ray, out hit))
             {
                 nav.SetDestination(hit.point);
@@ -24,16 +25,26 @@ public class PlayerMoving : MonoBehaviour
                 IsMoving = true;
                 nav.isStopped = false;
             }
-
-        }
-        if (IsMoving)
+        
+    }
+    public void movePos(Vector3 pos)
+    {
+        nav.SetDestination(pos);
+        ani.SetBool("Run", true);
+        IsMoving = true;
+        nav.isStopped = false;
+    }
+    void Update()
+    {
+        if (!pv.IsMine)
         {
-
+            return;
         }
+
         if (IsMoving && (nav.velocity.sqrMagnitude >= 0.2f * 0.2f && nav.remainingDistance <= 0.5f))
            
-        // remainingDistance ÁöÁ¤µÈ ¸ñÀûÁö±îÁö ³²Àº °Å¸®¸¦ ¹ÝÈ¯.
-        // velocity.sqrMagnitude ¼Óµµ.
+        // remainingDistance ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½È¯.
+        // velocity.sqrMagnitude ï¿½Óµï¿½.
         {
             
             IsMoving = false;

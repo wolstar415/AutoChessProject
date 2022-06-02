@@ -97,8 +97,23 @@ public class CardUI_Info2 : MonoBehaviour
         string s1=string.Format(CsvManager.inst.GameText(info.info.skillinfo.Info),info.info.skillinfo.Real1[0],info.info.skillinfo.Real1[1],info.info.skillinfo.Real1[2],info.info.skillinfo.Real2[0],info.info.skillinfo.Real2[1],info.info.skillinfo.Real2[2],info.info.skillinfo.Real3[0],info.info.skillinfo.Real3[1],info.info.skillinfo.Real3[2]);
         SkillInfo_Info1.text = s;
         SkillInfo_Info2.text = s1;
+        ItemShow();
+        
     }
 
+    void ItemShow()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            ItemIcon[i].sprite = IconManager.inst.icon[230];
+            if (info.Item[0] != -1)
+            {
+                int itemicon = CsvManager.inst.itemInfo[info.Item[0]].Icon;
+
+                ItemIcon[i].sprite = IconManager.inst.icon[itemicon];
+            }
+        }
+    }
     void TraitJobCheck()
     {
         if (info.Character_Job2>0)
@@ -173,13 +188,11 @@ public class CardUI_Info2 : MonoBehaviour
         int idx = info.Item[i];
         ItemInfoName.text = CsvManager.inst.GameText(CsvManager.inst.itemInfo[idx].Name);
         ItemInfoIcon.sprite = IconManager.inst.icon[CsvManager.inst.itemInfo[idx].Icon];
-        float real1=info.info.skillinfo.Realcheck(1,info.Level);
-        float real2=info.info.skillinfo.Realcheck(2,info.Level);
-        float real3=info.info.skillinfo.Realcheck(3,info.Level);
-        string s=string.Format(CsvManager.inst.GameText(info.info.skillinfo.Info),real1,real2,real3);
-        string s1=string.Format(CsvManager.inst.GameText(info.info.skillinfo.Info),info.info.skillinfo.Real1[0],info.info.skillinfo.Real1[1],info.info.skillinfo.Real1[2],info.info.skillinfo.Real2[0],info.info.skillinfo.Real2[1],info.info.skillinfo.Real2[2],info.info.skillinfo.Real3[0],info.info.skillinfo.Real3[1],info.info.skillinfo.Real3[2]);
-        SkillInfo_Info1.text = s;
-        SkillInfo_Info2.text = s1;
+        float real1 = CsvManager.inst.itemInfo[idx].Real[0];
+        float real2 = CsvManager.inst.itemInfo[idx].Real[1];
+        float real3 = CsvManager.inst.itemInfo[idx].Real[2];
+        string s=string.Format(CsvManager.inst.GameText(CsvManager.inst.itemInfo[idx].Info),real1,real2,real3);
+        ItemInfo_Info.text = s;
         //das
         SkillInfo_ob.SetActive(false);
         ItemInfo_ob.SetActive(true);
