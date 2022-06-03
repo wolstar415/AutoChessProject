@@ -30,6 +30,7 @@ public class CardUI_Info : MonoBehaviour
     public GameObject Ob_Trait2;
     public GameObject Ob_Job1;
     public GameObject Ob_Job2;
+    public GameObject Effect;
     public void Cardback()
     {
         IsBuy = false;
@@ -39,6 +40,7 @@ public class CardUI_Info : MonoBehaviour
         Ob_Trait2.SetActive(false);
         Ob_Job1.SetActive(false);
         Ob_Job2.SetActive(false);
+        Effect.SetActive(false);
         Icon.sprite = IconManager.inst.icon[230];
     }
 
@@ -78,5 +80,27 @@ public class CardUI_Info : MonoBehaviour
         {
             Ob_Trait2.SetActive(true);
         }
+
+        CheckEffect();
     }
+
+    public void CheckEffect()
+    {
+        if (Idx==-1)
+        {
+            return;
+        }
+        
+        if (PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv1.Count>=2)
+        {
+            Effect.SetActive(true);
+        }
+        else
+        {
+            Effect.SetActive(false);
+        }
+
+    }
+    
+
 }

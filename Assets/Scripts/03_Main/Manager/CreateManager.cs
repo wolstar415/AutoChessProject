@@ -119,6 +119,7 @@ public class CreateManager : MonoBehaviour
                 
             if (remove.TryGetComponent(out Card_Info removeinfo))
             {
+                removeinfo.ItemMove(target);
                 removeinfo.remove();
             }
             
@@ -159,10 +160,12 @@ public class CreateManager : MonoBehaviour
         }
         if (obs[0].TryGetComponent(out Card_Info remove1))
         {
+            remove1.ItemMove(target);
             remove1.remove();
         }
         if (obs[1].TryGetComponent(out Card_Info remove2))
         {
+            remove2.ItemMove(target);
             remove2.remove();
         }
     }

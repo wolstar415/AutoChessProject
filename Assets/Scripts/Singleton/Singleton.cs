@@ -24,9 +24,9 @@ public class Singleton : MonoBehaviour
             //중복 방지용
         }
     }
-
+    
 }
-internal static class YieldInstructionCache
+public static class YieldInstructionCache
 {
     class FloatComparer : IEqualityComparer<float>
     {

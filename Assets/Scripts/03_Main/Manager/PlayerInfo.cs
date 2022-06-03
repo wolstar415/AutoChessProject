@@ -69,7 +69,7 @@ public class PlayerInfo : MonoBehaviour
     private void Start()
     {
         Gold = 100;
-        
+        XpMax = 2;
     }
 
 
@@ -108,6 +108,31 @@ public class PlayerInfo : MonoBehaviour
         }
     }
 
+    public void XpPlus(int xp)
+    {
+        Xp += xp;
+        
+        if (Xp >= XpMax)
+        {
+            LevelUp();
+        }
+        else
+        {
+            UIManager.inst.XpSliderSet();
+        }
+    }
+    public void LevelUp()
+    {
+        if (Level<=8)
+        {
+            
+        Level++;
+        UIManager.inst.ReRollSet(Level);
+        Xp = Xp - XpMax;
+        XpMax = CsvManager.inst.Player_Xp[Level];
+        UIManager.inst.XpSliderSet();
+        }
+    }
 
 
 }

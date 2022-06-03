@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GameS
 {
@@ -9,12 +10,76 @@ namespace GameS
     {
         public static ItemManager inst;
 
+        public GameObject itemPrefab;
+        
         private void Awake()
         {
             inst = this;
         }
 
-        public int ItemMixIdx(int idx1, int idx2)
+        public void ItemAdd(int idx)
+        {
+            GameObject item = Instantiate(itemPrefab, GameSystem_AllInfo.inst.ItemParent);
+            if (item.TryGetComponent(out ItemDraggable drag))
+            {
+               
+                drag.Startfunc(idx);
+            }
+        }
+
+        private void Update()
+        {
+            //test
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ItemAdd(Random.Range(0,11));
+            }
+        }
+        public bool ItemCheck(GameObject ob,int Idx)
+        {
+            bool b = false;
+            if (Idx<=8)
+            {
+                if (ob.TryGetComponent(out Card_Info info))
+                {
+               
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (info.Item[i]==-1)
+                        {
+                            b = true;
+                            break;
+                        }
+                        else if (info.Item[i]>=0 &&info.Item[i]<=8)
+                        {
+                            b = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (ob.TryGetComponent(out Card_Info info))
+                {
+               
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (info.Item[i]==-1)
+                        {
+                            b = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+
+            return b;
+        }
+        #region 아이템 확인 
+
+                public int ItemMixIdx(int idx1, int idx2)
         {
             int result = 0;
             int x1 = idx1;
@@ -63,7 +128,7 @@ namespace GameS
             {
                 result = ItemMix8(x2);
             }
-            Debug.Log(result);
+            
             return result;
         }
 
@@ -285,5 +350,8 @@ namespace GameS
 
             return 53;
         }
+
+        #endregion
+
     }
 }

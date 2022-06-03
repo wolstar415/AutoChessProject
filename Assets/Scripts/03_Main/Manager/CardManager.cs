@@ -8,7 +8,9 @@ public class CardManager : MonoBehaviour
 {
     public static CardManager inst;
 
+    
     public List<GameObject> CardUi;
+    
     private void Awake()
     {
         inst = this;
@@ -54,11 +56,13 @@ public class CardManager : MonoBehaviour
 
     public void CardSetting(int idx,int i)
     {
+        //i는 카드 번호
         var Cardinfo = CardUi[idx].GetComponent<CardUI_Info>();
         if (Cardinfo.IsBuy==true)
         {
             MasterInfo.inst.CardAdd(Cardinfo.Idx);
         }
+        
         Cardinfo.IsBuy = true;
         CharacterInfo chinfo = CsvManager.inst.characterInfo[i];
         int cardIdx = chinfo.Idx;
@@ -78,12 +82,17 @@ public class CardManager : MonoBehaviour
 
     }
 
+
     public void CardBuy(int idx)
     {
         var Cardinfo = CardUi[idx].GetComponent<CardUI_Info>();
         int Cardidx = Cardinfo.Idx;
         Cardinfo.Cardback();
         CreateManager.inst.CreateCharacter(Cardidx);
-        
+
+
+
     }
+    
+
 }

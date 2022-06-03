@@ -51,6 +51,7 @@ public class ClickManager : MonoBehaviourPunCallbacks
 
     public GameObject Charinfoui;
     public GameObject ItemDropCard;
+    public bool SellCheck = false;
     private void Awake()
     {
         inst = this;
@@ -111,7 +112,7 @@ public class ClickManager : MonoBehaviourPunCallbacks
     {
         if (IsPointerOverUIObject())
         {
-            Debug.Log("UI누름");
+            
             return;
         }
         Vector3 mpos = Input.mousePosition;
@@ -129,7 +130,7 @@ public class ClickManager : MonoBehaviourPunCallbacks
             //Vector3 objPosition = Camera.main.ScreenToWorldPoint(mpos);
             //moving.movePos(objPosition);
             moving.check1();
-            Debug.Log("이동중");
+            //Debug.Log("이동중");
         }
 
         
@@ -139,6 +140,7 @@ public class ClickManager : MonoBehaviourPunCallbacks
         ClickCard = ob;
         MousePos = ob.transform.position;
         clickstate = PlayerClickState.Card;
+        SellCheck = false;
         if (ClickCard.GetComponent<Card_Info>().pv.Owner!=PhotonNetwork.LocalPlayer)
         {
             EnemyClick = true;
@@ -168,6 +170,7 @@ public class ClickManager : MonoBehaviourPunCallbacks
                 }
                 PlayerInfo.Inst.PlayerTileOb.SetActive(true);
                 PlayerInfo.Inst.FiledTileOb.SetActive(true);
+                UIManager.inst.SellSet(ClickCard.GetComponent<Card_Info>().costCheck());
             }
         }
         else
@@ -181,52 +184,74 @@ public class ClickManager : MonoBehaviourPunCallbacks
 
     void UpCardFunc()
     {
+        
+            
         EnemyClick = false;
         if (ClickCard==null)
         {
             return;
         }
+           
 
-        //판매확인 레이캐스트로 쏘면될듯
-        //판매액션
-        if (ClickCard.TryGetComponent(out CapsuleCollider col))
+        if (SellCheck)
         {
-            col.enabled = true;
-        }
-        if (clickstate==PlayerClickState.Card&&clickstate2!=PlayerClickState2.cardDraging)
-        {
-            ShowCharacterInfo(ClickCard);
-            return;
-        }
-        clickstate = PlayerClickState.None;
-        clickstate2 = PlayerClickState2.None;
-        if (TileOb!=null)
-        {
-            if (TileOb.TryGetComponent(out TileInfo info))
+            
+            if (ClickCard.TryGetComponent(out Card_Info info))
             {
-                info.SetColor();
-                if (info.tileGameob==null)
-                {
-                    CharacterTileMove(ClickCard, TileOb);
-                }
-                else
-                {
-                    CharacterTileChange(ClickCard,info.tileGameob);
-                }
+            
+                int cost = info.costCheck();
+                PlayerInfo.Inst.Gold += cost;
+                info.remove();
             }
+            
         }
         else
         {
-            CharacterTileMoveReset(ClickCard);
+            
+            if (ClickCard.TryGetComponent(out CapsuleCollider col))
+            {
+                col.enabled = true;
+            }
+            if (clickstate==PlayerClickState.Card&&clickstate2!=PlayerClickState2.cardDraging)
+            {
+                ShowCharacterInfo(ClickCard);
+                return;
+            }
+            clickstate = PlayerClickState.None;
+            clickstate2 = PlayerClickState2.None;
+            if (TileOb!=null)
+            {
+                if (TileOb.TryGetComponent(out TileInfo info))
+                {
+                    info.SetColor();
+                    if (info.tileGameob==null)
+                    {
+                        CharacterTileMove(ClickCard, TileOb);
+                    }
+                    else
+                    {
+                        CharacterTileChange(ClickCard,info.tileGameob);
+                    }
+                }
+            }
+            else
+            {
+                CharacterTileMoveReset(ClickCard);
+            }
+            
+            
+            
         }
         MousePos=Vector3.zero;
         PlayerInfo.Inst.PlayerTileOb.SetActive(false);
         PlayerInfo.Inst.FiledTileOb.SetActive(false);
-        
+        clickstate = PlayerClickState.None;
+        clickstate2 = PlayerClickState2.None;
             
 
-        
-        ClickCard = null;
+        SellCheck = false;
+        ClickCard = null; 
+        UIManager.inst.SellClose();
     }
     void CharacterTileMove(GameObject ob,GameObject Tile)
     {

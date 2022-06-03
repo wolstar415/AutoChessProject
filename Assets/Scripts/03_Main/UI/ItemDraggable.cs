@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using UniRx;
 
 
 namespace GameS
@@ -47,15 +48,15 @@ namespace GameS
             CreateItemInfoOb.SetActive(false);
             CardItemInfoOb.SetActive(false);
             
-            //test
-            int d = UnityEngine.Random.Range(0, 9);
-            Startfunc(d);
+            
+            
         }
 
         public void Startfunc(int idx)
         {
             Idx = idx;
-            int icon = CsvManager.inst.itemInfo[Idx].Icon;
+            int icon = CsvManager.inst.itemInfo[idx].Icon;
+            
             ItemIcon.sprite = IconManager.inst.icon[icon];
         }
 
@@ -83,7 +84,7 @@ namespace GameS
             //transform.SetParent(canvas);
             //transform.SetAsLastSibling();
             CanvasGroup.blocksRaycasts = false;
-            ClickManager.inst.clickstate = PlayerClickState.Card;
+            ClickManager.inst.clickstate = PlayerClickState.item;
             ClickManager.inst.ClickItem = gameObject;
         }
 
@@ -101,21 +102,36 @@ namespace GameS
             }
         }
 
+
+        
+
         public void OnEndDrag(PointerEventData eventData)
         {
             GameObject ob = gob(eventData.position);
             CanvasGroup.blocksRaycasts = true;
             if (ClickManager.inst.ItemDropCard != null)
             {
-                Debug.Log("너 아이템가져가");
-            }
-            else
-            {
-                if (ob != null)
+                if (ItemManager.inst.ItemCheck(ClickManager.inst.ItemDropCard,Idx))
                 {
-                    Debug.Log("너 아이템가져가");
+                    if (ClickManager.inst.ItemDropCard.TryGetComponent(out Card_Info info))
+                    {
+                        info.Itemadd(Idx);
+                    }
+                    Destroy(gameObject);
                 }
             }
+            else if (ob!=null)
+            {
+                if (ItemManager.inst.ItemCheck(ob,Idx))
+                {
+                    if (ob.TryGetComponent(out Card_Info info))
+                    {
+                        info.Itemadd(Idx);
+                    }
+                    Destroy(gameObject);
+                }
+            }
+
 
             ClickManager.inst.ItemDropCard = null;
             ClickManager.inst.ClickItem = null;
@@ -147,9 +163,9 @@ namespace GameS
                 return;
             }
 
-            if (ClickManager.inst.clickstate == PlayerClickState.Card)
+            if (ClickManager.inst.clickstate == PlayerClickState.item)
             {
-                Debug.Log("들어옴");
+                
                 int idx1=0;
                 int idx2 = Idx;
                 if (ClickManager.inst.ClickItem.TryGetComponent(out ItemDraggable info1))
@@ -174,11 +190,12 @@ namespace GameS
                 return;
             }
 
-            if (ClickManager.inst.clickstate == PlayerClickState.Card)
+            if (ClickManager.inst.clickstate == PlayerClickState.item)
             {
-                Debug.Log("나감");
+                
                 CreateItemInfoOb.SetActive(false);
                 CreateItemOb.SetActive(false);
+                
             }
         }
 
@@ -204,8 +221,6 @@ namespace GameS
         void SetUiCreate2(int idx1,int idx2)
         {
             int mixidx = ItemManager.inst.ItemMixIdx(idx1, idx2);
-            Debug.Log($"1번은 : {idx1} \n2번은 : {idx2}\n조합은 {mixidx}");
-            Debug.Log(mixidx);
             int itemicon = CsvManager.inst.itemInfo[mixidx].Icon;
             int itemname = CsvManager.inst.itemInfo[mixidx].Name;
             int iteminfo = CsvManager.inst.itemInfo[mixidx].Info;
@@ -222,8 +237,70 @@ namespace GameS
             
         }
 
-        void SetUiCard()
+        public void outUicard()
         {
+            CreateItemInfoOb.SetActive(false);
+            CardItemInfoOb.SetActive(false);
+        }
+        public void SetUiCard(GameObject ob)
+        {
+            int check = -1;
+            int cardidx = 0;
+            bool b = ItemManager.inst.ItemCheck(ob,Idx);
+
+
+            if (b==false)
+            {
+                return;
+            }
+            if (check==-1)
+            {
+                setuicard(cardidx);
+            }
+            else
+            {
+                Setuicardmix(cardidx,check,Idx);
+            }
+        }
+
+         void Setuicardmix(int cardidx,int idx1,int idx2)
+        {
+            int mixidx = ItemManager.inst.ItemMixIdx(idx1, idx2);
+            int itemicon = CsvManager.inst.itemInfo[mixidx].Icon;
+            int itemname = CsvManager.inst.itemInfo[mixidx].Name;
+            int iteminfo = CsvManager.inst.itemInfo[mixidx].Info;
+            int cardicon = CsvManager.inst.characterInfo[cardidx].Icon;
+            int cardname = CsvManager.inst.characterInfo[cardidx].Name;
+            int itemicon1 = CsvManager.inst.itemInfo[idx1].Icon;
+            int itemicon2 = CsvManager.inst.itemInfo[idx2].Icon;
+            CardItemIcon.sprite = IconManager.inst.icon[itemicon];
+            CardItemName.text = CsvManager.inst.GameText(itemname);
+            CardItemInfo.text = CsvManager.inst.GameText(iteminfo);
+            CardIcon.sprite = IconManager.inst.icon[cardicon];
+            CardName.text = CsvManager.inst.GameText(cardname);
+            
+            CardItem1.sprite = IconManager.inst.icon[itemicon1];
+            CardItem2.sprite = IconManager.inst.icon[itemicon2];
+            CreateItemInfoOb.SetActive(false);
+            CardItemInfoOb.SetActive(true);
+            CardItemOb.SetActive(true);
+        }
+
+         void setuicard(int idx)
+        {
+            CardItemOb.SetActive(false);
+            int itemicon = CsvManager.inst.itemInfo[Idx].Icon;
+            int itemname = CsvManager.inst.itemInfo[Idx].Name;
+            int iteminfo = CsvManager.inst.itemInfo[Idx].Info;
+            int cardicon = CsvManager.inst.characterInfo[idx].Icon;
+            int cardname = CsvManager.inst.characterInfo[idx].Name;
+            CardItemIcon.sprite = IconManager.inst.icon[itemicon];
+            CardItemName.text = CsvManager.inst.GameText(itemname);
+            CardItemInfo.text = CsvManager.inst.GameText(iteminfo);
+            CardIcon.sprite = IconManager.inst.icon[cardicon];
+            CardName.text = CsvManager.inst.GameText(cardname);
+            CreateItemInfoOb.SetActive(false);
+            CardItemInfoOb.SetActive(true);
         }
 
 
