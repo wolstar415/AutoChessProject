@@ -41,14 +41,15 @@ public class Test2 : MonoBehaviourPunCallbacks
     }
     public void show()
     {
-       // Debug.Log(PhotonNetwork.PlayerList[1].CustomProperties["1"]);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "1", "xxx" } });
+        Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties["1"]);
     }
 
     public void bt()
     {
         JsonUtility.FromJsonOverwrite(s,test);
         //Debug.Log("������");
-      //  PhotonNetwork.PlayerList[1].SetCustomProperties(new Hashtable { { "1", "�ٺ�" } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "1", "zzz" } });
 
     }
 

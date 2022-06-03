@@ -79,7 +79,11 @@ public class ItemInfo
     public float MissPer;
     public float[] Real=new float[3];
 }
-
+[System.Serializable]
+public class TraitJobInfo
+{
+    public List<int> Cards;
+}
 public class CsvManager : MonoBehaviour
 {
     public static CsvManager inst;
@@ -93,6 +97,12 @@ public class CsvManager : MonoBehaviour
     public List<int> TraitandJobInfo;
     public List<int> TraitandJobInfo1;
     public List<int> TraitandJobIcon;
+    public List<int> TraitandJobCnt1;
+    public List<int> TraitandJobCnt2;
+    public List<int> TraitandJobCnt3;
+    public List<int> TraitandJobCnt4;
+    public List<int> TraitandJobCnt5;
+    public List<TraitJobInfo> traitJobInfo;
 
     [Header("가격")] public List<int> Cost1;
     public List<int> Cost2;
@@ -155,6 +165,7 @@ public class CsvManager : MonoBehaviour
         test();
     }
 
+
     void SkillSeet()
     {
         var csvdata = CSVReader.Read2(data[1]);
@@ -210,9 +221,29 @@ public class CsvManager : MonoBehaviour
             characterInfo[i].Mana = float.Parse(csvdata[i]["기본마나"].ToString());
             characterInfo[i].Mana_Max = float.Parse(csvdata[i]["마나"].ToString());
             characterInfo[i].skillinfo = skillinfo[i];
+            traitcheck(characterInfo[i].Trait1,characterInfo[i].Trait2,characterInfo[i].Job1,characterInfo[i].Job2,characterInfo[i].Icon);
         }
     }
 
+    void traitcheck(int trait1, int trait2, int job1, int job2,int icon)
+    {
+        if (trait1>=1)
+        {
+            traitJobInfo[trait1].Cards.Add(icon);
+        }
+        if (trait2>=1)
+        {
+            traitJobInfo[trait2].Cards.Add(icon);
+        }
+        if (job1>=1)
+        {
+            traitJobInfo[job1].Cards.Add(icon);
+        }
+        if (job2>=1)
+        {
+           traitJobInfo[job2].Cards.Add(icon);
+        }
+    }
     void TraitJobSeet()
     {
         var csvdata = CSVReader.Read2(data[2]);
@@ -222,6 +253,11 @@ public class CsvManager : MonoBehaviour
             TraitandJobInfo.Add(int.Parse(csvdata[i]["설명"].ToString()));
             TraitandJobInfo1.Add(int.Parse(csvdata[i]["설명1"].ToString()));
             TraitandJobIcon.Add(int.Parse(csvdata[i]["Icon"].ToString()));
+            TraitandJobCnt1.Add(int.Parse(csvdata[i]["1레벨"].ToString()));
+            TraitandJobCnt2.Add(int.Parse(csvdata[i]["2레벨"].ToString()));
+            TraitandJobCnt3.Add(int.Parse(csvdata[i]["3레벨"].ToString()));
+            TraitandJobCnt4.Add(int.Parse(csvdata[i]["4레벨"].ToString()));
+            TraitandJobCnt5.Add(int.Parse(csvdata[i]["5레벨"].ToString()));
         }
     }
 

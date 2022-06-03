@@ -264,6 +264,7 @@ public class ClickManager : MonoBehaviourPunCallbacks
             if (!tilecom.IsFiled)
             {
                 PlayerInfo.Inst.food--;
+                ClickCardcom.FiledOut();
             }
         }
         else
@@ -278,6 +279,7 @@ public class ClickManager : MonoBehaviourPunCallbacks
                 }
 
                 PlayerInfo.Inst.food++;
+                ClickCardcom.FiledIn();
             }
         }
         
@@ -329,6 +331,8 @@ public class ClickManager : MonoBehaviourPunCallbacks
                 }
 
                 PlayerInfo.Inst.food = food;
+                obcom1.FiledOut();
+                obcom2.FiledIn();
             }
 
         }
@@ -342,9 +346,12 @@ public class ClickManager : MonoBehaviourPunCallbacks
                     CharacterTileMoveReset(ClickCard);
                     return;
                 }
+                obcom1.FiledIn();
+                obcom2.FiledOut();
 
                 PlayerInfo.Inst.food = food;
             }
+ 
         }
 
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameS;
 using UniRx;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -52,24 +53,62 @@ public class PlayerInfo : MonoBehaviour
     public int[] FiledTilestate;
     public int[] TraitandJobCnt;
     
-    public int[] PlayerCardCnt;
+    [SerializeField]private int[] PlayerCardCnt;
+    [SerializeField] private int[] PlayerFiledCardCnt;
 
     public List<PlayerCardCnt> PlayerCardCntLv;
 
     public Transform PlayerMovePos;
 
+
+    public void PlayerCardCntAdd(int idx)
+    {
+        PlayerCardCnt[idx]++;
+    }
+    public void PlayerCardCntRemove(int idx)
+    {
+        PlayerCardCnt[idx]--;
+    }
+    public void PlayerFiledCardCntAdd(int trait1,int trait2,int job1,int job2,int idx)
+    {
+        if (PlayerFiledCardCnt[idx]==0)
+        {
+            TraitJobManager.inst.TraitJobAdd(trait1);
+            TraitJobManager.inst.TraitJobAdd(trait2);
+            TraitJobManager.inst.TraitJobAdd(job1);
+            TraitJobManager.inst.TraitJobAdd(job2);
+            TraitJobManager.inst.OrderList();
+
+        }
+
+        PlayerFiledCardCnt[idx]++;
+    }
+    public void PlayerFiledCardCntRemove(int trait1,int trait2,int job1,int job2,int idx)
+    {
+        if (PlayerFiledCardCnt[idx]==1)
+        {
+            TraitJobManager.inst.TraitJobRemove(trait1);
+            TraitJobManager.inst.TraitJobRemove(trait2);
+            TraitJobManager.inst.TraitJobRemove(job1);
+            TraitJobManager.inst.TraitJobRemove(job2);
+            TraitJobManager.inst.OrderList();
+        }
+        PlayerFiledCardCnt[idx]--;
+    }
     private void Awake()
     {
         
         Inst = this;
         //테스트
-        Level = 1;
+        
     }
 
     private void Start()
     {
-        Gold = 100;
         XpMax = 2;
+        Level = 1;
+        Gold = 100;
+        foodMax = Level;
     }
 
 
@@ -131,6 +170,7 @@ public class PlayerInfo : MonoBehaviour
         Xp = Xp - XpMax;
         XpMax = CsvManager.inst.Player_Xp[Level];
         UIManager.inst.XpSliderSet();
+        foodMax = Level;
         }
     }
 

@@ -52,6 +52,7 @@ MonoBehaviour:
   - CardAddFunc
   - CardRemoveFunc
   - MovingCheck
+  - IdxCheck
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

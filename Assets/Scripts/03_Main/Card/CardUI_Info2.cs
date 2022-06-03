@@ -56,7 +56,9 @@ public class CardUI_Info2 : MonoBehaviour
         SkillInfo_ob.SetActive(false);
         Card = ob;
         info = Card.GetComponent<Card_Info>();
-        gameObject.SetActive(true);
+        
+        //gameObject.SetActive(true);
+        
         Name.text = CsvManager.inst.GameText(info.Name);
         Icon.sprite = IconManager.inst.icon[info.Icon];
         int trait1text = CsvManager.inst.TraitandJobName[info.Character_trait1];
@@ -98,7 +100,7 @@ public class CardUI_Info2 : MonoBehaviour
         SkillInfo_Info1.text = s;
         SkillInfo_Info2.text = s1;
         ItemShow();
-        
+        UIManager.inst.CardInfoStart();
     }
 
     void ItemShow()

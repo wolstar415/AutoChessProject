@@ -127,7 +127,7 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
         Char_ManaMax = ManaMax;
         Char_Mana = info.Mana;
         Char_ManaMax = info.Mana_Max;
-        PlayerInfo.Inst.PlayerCardCnt[Idx]++;
+        PlayerInfo.Inst.PlayerCardCntAdd(Idx);
         PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(1).Add(gameObject);
 
         for (int i = 0; i < CardManager.inst.CardUi.Count; i++)
@@ -169,10 +169,14 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
         {
             info.RemoveTile();
         }
-        PlayerInfo.Inst.PlayerCardCnt[Idx]--;
+        PlayerInfo.Inst.PlayerCardCntRemove(Idx);
         PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level).Remove(gameObject);
         PhotonNetwork.Destroy(gameObject);
 
+        if (IsFiled)
+        {
+            FiledOut();
+        }
         for (int i = 0; i < 3; i++)
         {
             ItemNo(i, Item[i]);
@@ -377,8 +381,17 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
     // Update is called once per frame
 
 
-    
 
 
+    public void FiledIn()
+    {
+        PlayerInfo.Inst.PlayerFiledCardCntAdd(Character_trait1,Character_trait2,Character_Job1,Character_Job2,Idx);
+        
+    }
+    public void FiledOut()
+    {
+        PlayerInfo.Inst.PlayerFiledCardCntRemove(Character_trait1,Character_trait2,Character_Job1,Character_Job2,Idx);
+        
+    }
     
 }
