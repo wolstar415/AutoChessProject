@@ -7,10 +7,10 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 
-
 [System.Serializable]
 public class SkillInfo
 {
+   
     public int Idx;
     public int Name;
     public int Icon;
@@ -162,7 +162,7 @@ public class CsvManager : MonoBehaviour
         XpSeet();
         CardMaxSeet();
         GameTextSeet();
-        test();
+        IntroManager.inst.GoSAtart();
     }
 
 
@@ -390,12 +390,9 @@ public class CsvManager : MonoBehaviour
         }
         return Text_Korea[i];
     }
-    void test()
-    {
-        PhotonNetwork.IsMessageQueueRunning = false;
-        PhotonNetwork.LoadLevel("03_Main");
-        //SceneManager.LoadScene("03_Main");
-    }
+
+
+  
 
     public List<int> ReRoll(int Lv)
     {

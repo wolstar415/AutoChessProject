@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameS;
+using Photon.Pun;
 using UniRx;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -29,11 +30,12 @@ public class PlayerCardCnt
 }
 public class PlayerInfo : MonoBehaviour
 {
+    public PhotonView pv;
     public GameObject PlayerOb;
     public static PlayerInfo Inst;
+    public Camera camer;
     [SerializeField]private int gold;
     public int Level;
-    
     public int Life;
     public int PlayerIdx;
     public GameObject PlayerCharacter;
@@ -46,19 +48,34 @@ public class PlayerInfo : MonoBehaviour
     
     public GameObject FiledTileOb;
     public GameObject PlayerTileOb;
+    public GameObject EnemyPlayerTileob;
+    [Header("My")]
     public List<GameObject> PlayerTile;
     public List<GameObject> FiledTile;
+    public List<GameObject> GoldOb;
+    public Transform PlayerMovePos;
+    [Header("Enemy")]
     public List<GameObject> EnemyTile;
+    public List<GameObject> EnemyFiledTile;
+    public List<GameObject> EnemyGoldOb;
+    public Transform EnemyPlayerMovePos;
+    [Space]
     public int[] PlayerTilestate;
     public int[] FiledTilestate;
     public int[] TraitandJobCnt;
+    public Color[] colors;
     
     [SerializeField]private int[] PlayerCardCnt;
     [SerializeField] private int[] PlayerFiledCardCnt;
 
     public List<PlayerCardCnt> PlayerCardCntLv;
+    [Header("라운드관련")] 
+    public int Round = 0;
 
-    public Transform PlayerMovePos;
+    public bool PickRound = false;
+    [Header("전투관련")] 
+    public int EnemyIdx=-1;
+    
 
 
     public void PlayerCardCntAdd(int idx)
@@ -107,7 +124,6 @@ public class PlayerInfo : MonoBehaviour
     {
         XpMax = 2;
         Level = 1;
-        Gold = 100;
         foodMax = Level;
     }
 
@@ -124,8 +140,47 @@ public class PlayerInfo : MonoBehaviour
 
             gold = value;
             UIManager.inst.GoldSet();
+            interSet();
         }
     }
+
+    void interSet()
+    {
+        for (int i = 0; i <5; i++)
+        {
+            if (Gold <10*(i+1))
+            {
+                pv.RPC(nameof(GoldColorSet),RpcTarget.All,PlayerIdx,i,false);
+                
+            }
+            else
+            {
+                pv.RPC(nameof(GoldColorSet),RpcTarget.All,PlayerIdx,i,true);
+            }
+            
+            
+        }
+    }
+
+    [PunRPC]
+    void GoldColorSet(int Pidx, int idx, bool b)
+    {
+        GameObject ob=PositionManager.inst.playerPositioninfo[Pidx].GoldOb[idx];
+        if (ob.TryGetComponent(out MeshRenderer mesh))
+        {
+            if (b)
+            {
+            mesh.material.color = colors[1];
+                
+            }
+            else
+            {
+            mesh.material.color = colors[0];
+                
+            }
+        }
+    }
+    
 
     public int food
     {

@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider XpSlider;
     [SerializeField] private TextMeshProUGUI XpText;
     [SerializeField] private TextMeshProUGUI LvText;
+    [SerializeField] private GameObject TopPancel;
+    [SerializeField] private GameObject Foodob;
     [SerializeField] private GameObject DownPanel;
     [SerializeField] private GameObject SellPanel;
     [SerializeField] private TextMeshProUGUI Selltext1;
@@ -106,8 +108,12 @@ public class UIManager : MonoBehaviour
 
     public void SellClose()
     {
+        if (PlayerInfo.Inst.PickRound==false)
+        {
+            
         DownPanel.SetActive(true);
         SellPanel.SetActive(false);
+        }
     }
 
     public void CardUIClose()
@@ -145,6 +151,27 @@ public class UIManager : MonoBehaviour
         BuyPanelOb.SetActive(false);
         PlayerInfoPanelOb.SetActive(false);
     }
-    
+
+    public void PickUiSetting()
+    {
+        TopPancel.SetActive(false);
+        DownPanel.SetActive(false);
+        BuyPanelOb.SetActive(false);
+        InfoPanelOb.SetActive(false);
+        PlayerInfoPanelOb.SetActive(false);
+        Foodob.SetActive(false);
+        JobPanelOb.SetActive(false);
+    }
+
+    public void BattleUiSetting()
+    {
+        BuyPanelOb.SetActive(false);
+        InfoPanelOb.SetActive(false);
+        TopPancel.SetActive(true);
+        DownPanel.SetActive(true);
+        PlayerInfoPanelOb.SetActive(true);
+        Foodob.SetActive(true);
+        JobPanelOb.SetActive(true);
+    }
     
 }

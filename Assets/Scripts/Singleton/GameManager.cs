@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public string GameLanguage;
     public static GameManager inst;
+    public string OriNickName;
+    public string NickName;
+    
 
     private void Awake()
     {

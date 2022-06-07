@@ -11,8 +11,10 @@ public class TileInfo : MonoBehaviour
     public GameObject tileGameob;
     public int Idx;
     public bool IsFiled;
+
     private void OnMouseEnter()
     {
+  
         if (ClickManager.inst.clickstate2 == PlayerClickState2.cardDraging)
         {
             transform.GetComponent<MeshRenderer>().material.color = colors[1];
@@ -23,6 +25,7 @@ public class TileInfo : MonoBehaviour
 
     private void OnMouseExit()
     {
+
         if (ClickManager.inst.clickstate2 == PlayerClickState2.cardDraging)
         {
         transform.GetComponent<MeshRenderer>().material.color = colors[0];

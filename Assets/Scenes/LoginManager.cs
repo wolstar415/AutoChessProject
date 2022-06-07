@@ -5,6 +5,7 @@ using Firebase.Auth;
 using UnityEngine.UI;
 using TMPro;
 using Firebase;
+using Photon.Pun;
 using UnityEngine.AddressableAssets;
 using RobinBird.FirebaseTools.Storage.Addressables;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -38,7 +39,7 @@ public class LoginManager : MonoBehaviour
     private  void Start()
     {
        // FirebaseStorage storageInstance = FirebaseStorage.DefaultInstance;
-
+       
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(x =>
         {
             if (x.Result==DependencyStatus.Available)
@@ -82,8 +83,13 @@ public class LoginManager : MonoBehaviour
     IEnumerator LoginCheck()
     {
         yield return new WaitUntil(() => LoginSu == true);
+        PhotonNetwork.LocalPlayer.NickName = IdField.text;
+        GameManager.inst.OriNickName = IdField.text;
+        string[] s = GameManager.inst.OriNickName.Split('@');
+        GameManager.inst.NickName = s[0];
         LobyOb.SetActive(false);
-        PathOb.SetActive(true);
+        PathBtn();
+        //PathOb.SetActive(true);
     }
     public void IdCreateBtn()
     {
@@ -100,7 +106,7 @@ public class LoginManager : MonoBehaviour
          {
              if (!x.IsCanceled && !x.IsFaulted)
              {
-
+Debug.Log(IdField.text);
              Debug.Log("성공");
                  LobyOb.SetActive(true);
                  CreateOb.SetActive(false);
@@ -125,17 +131,18 @@ public class LoginManager : MonoBehaviour
         
         handle.Completed += (AsyncOperationHandle Obj) => {
             handle = Obj;
-            PathText.text = "100%";
+            //PathText.text = "100%";
             Loby2Ob.SetActive(true);
-            PathOb.SetActive(false);
-            StopCoroutine(IPathText());
+            //PathOb.SetActive(false);
+            //StopCoroutine(IPathText());
             //arf.LoadAssetAsync().Completed += (AsyncOperationHandle<AudioClip> mu) => { };
-            music();
+            //music();
+          // Debug.Log("실행중");
             Addressables.Release(Obj);
             Addressables.Release(handle);
 
         };
-        StartCoroutine(IPathText());
+        //StartCoroutine(IPathText());
     }
     void music()
     {

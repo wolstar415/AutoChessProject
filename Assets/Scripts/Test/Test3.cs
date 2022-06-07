@@ -14,9 +14,7 @@ public class Test3 : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.GameVersion = "1.0";
         PhotonNetwork.ConnectUsingSettings();
-         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "1", 1 } });
-         Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties["1"]);
-        
+
     }
     public override void OnConnectedToMaster()
     {
@@ -32,7 +30,7 @@ public class Test3 : MonoBehaviourPunCallbacks
     {
         //PhotonNetwork.NetworkingClient.EventReceived += EventReceive;
         Debug.Log("완료");
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "1", 5 } });
+        PhotonNetwork.LocalPlayer.CustomProperties["PlayerIdx"] = 1;
         Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties["1"]);
 
     }

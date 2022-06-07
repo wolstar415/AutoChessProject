@@ -22,13 +22,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - GoGo
-  - m_GUID: 3a30fa5b0262ec649b95c9160fb9c68d
-    m_Address: ccc
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - GoGo
-  - m_GUID: 6d55a498425d5f1408656ac192d60bce
-    m_Address: Capsule2
+  - m_GUID: e4bdf683b0428154b87fbb523c51ecc9
+    m_Address: Assets/Resources_moved/music2.mp3
     m_ReadOnly: 0
     m_SerializedLabels:
     - GoGo

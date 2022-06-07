@@ -59,10 +59,7 @@ public class ClickManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        PhotonNetwork.IsMessageQueueRunning = true;
-
-        GameObject pob= PhotonNetwork.Instantiate("Player", PlayerInfo.Inst.PlayerMovePos.position, Quaternion.identity);
-        PlayerInfo.Inst.PlayerOb = pob;
+        
         clickstate = PlayerClickState.None;
         clickstate2 = PlayerClickState2.None;
         
@@ -130,8 +127,12 @@ public class ClickManager : MonoBehaviourPunCallbacks
             //Vector3 objPosition = Camera.main.ScreenToWorldPoint(mpos);
             //moving.movePos(objPosition);
             moving.check1();
+            if (PlayerInfo.Inst.PickRound == false)
+            {
+
             UIManager.inst.CardUIClose();
             UIManager.inst.CardBuyUiClose();
+            }
             //Debug.Log("이동중");
         }
 

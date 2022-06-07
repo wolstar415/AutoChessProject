@@ -17,7 +17,7 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 4e4d2857e3781ab4f8f531057d421115
   m_SerializeEntries:
-  - m_GUID: e4bdf683b0428154b87fbb523c51ecc9
+  - m_GUID: 9a548d9d7766ad5478b55cfeba2e306e
     m_Address: music
     m_ReadOnly: 0
     m_SerializedLabels:
