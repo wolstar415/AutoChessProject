@@ -130,6 +130,8 @@ public class ClickManager : MonoBehaviourPunCallbacks
             //Vector3 objPosition = Camera.main.ScreenToWorldPoint(mpos);
             //moving.movePos(objPosition);
             moving.check1();
+            UIManager.inst.CardUIClose();
+            UIManager.inst.CardBuyUiClose();
             //Debug.Log("이동중");
         }
 

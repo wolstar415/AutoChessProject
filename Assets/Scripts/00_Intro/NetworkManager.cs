@@ -47,6 +47,7 @@ public class playerinfo
                     PlayerInfo.Inst.PlayerIdx = i;
                 Debug.Log(i);
                 }
+                
             }
 
             //pv.RPC(nameof(IdxCheck), RpcTarget.All);
