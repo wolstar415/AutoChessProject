@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameS;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -103,7 +104,7 @@ public class playerinfo
         }
 
         [PunRPC]
-        void CameraMoveNormal(int i=0)
+        void CameraMoveNormal(int i)
         {
             int idx = PlayerInfo.Inst.PlayerIdx;
             PlayerInfo.Inst.camer.transform.position = PositionManager.inst.Camera_Pos[idx].position;
@@ -113,7 +114,7 @@ public class playerinfo
                 UIManager.inst.BattleUiSetting();
             }
         }
-        void CameraMoveNormal2(int i=0)
+        void CameraMoveNormal2(int i)
         {
             int idx = PlayerInfo.Inst.PlayerIdx;
             PlayerInfo.Inst.camer.transform.position = PositionManager.inst.Camera_AttackPos[idx].position;
@@ -159,11 +160,25 @@ public class playerinfo
             {
                 CameraMoveNormal2(1);
             }
+            else if (Input.GetKeyDown(KeyCode.Keypad4))
+            {
+                PlayerInfo.Inst.EnemyIdx = 1;
+                PlayerInfo.Inst.BattleMove = true;
+                RoundManager.inst.BattleMoveFunc();
+            }
+            else if (Input.GetKeyDown(KeyCode.Keypad5))
+            {
+                //PlayerInfo.Inst.EnemyIdx = -1;
+               // PlayerInfo.Inst.BattleMove = false;
+                RoundManager.inst.BattleMoveFunc2();
+            }
             else if (Input.GetKeyDown(KeyCode.Keypad9))
             {
                 PlayerInfo.Inst.Gold += 5;
 
             }
         }
+        
+        
     }
 

@@ -311,9 +311,8 @@ public class ClickManager : MonoBehaviourPunCallbacks
     {
         var ClickCardcom = ob.GetComponent<Card_Info>();
         
-        Vector3 pos = ClickCardcom.TileOb.transform.position;
-        pos.y = CharaterHe;
-        ob.transform.position = pos;
+        ClickCardcom.MoveReset();
+        
     }
 
     void CharacterTileChange(GameObject ob1, GameObject ob2)

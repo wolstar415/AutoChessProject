@@ -108,12 +108,11 @@ public class UIManager : MonoBehaviour
 
     public void SellClose()
     {
-        if (PlayerInfo.Inst.PickRound==false)
-        {
+        
             
         DownPanel.SetActive(true);
         SellPanel.SetActive(false);
-        }
+        
     }
 
     public void CardUIClose()

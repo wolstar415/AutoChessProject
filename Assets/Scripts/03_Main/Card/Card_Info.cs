@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using UniRx;
 
 public enum Fight_FSM { 
 None=0,
@@ -94,7 +96,10 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
 
     [Header("UI")] 
     public GameObject[] StarUI; 
-    public GameObject[] ItemUI; 
+    public GameObject[] ItemUI;
+
+    private IDisposable Event_MoveReset;
+    private IDisposable Event_BattleMove;
     // Start is called before the first frame update
     void Start()
     {
@@ -138,6 +143,19 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
             }
         }
 
+        //이벤트부분 등록
+
+        Event_MoveReset=EventManager.inst.Sub_CardMove.Subscribe(_ =>
+            {
+                MoveReset();
+            }
+        );
+        Event_BattleMove=EventManager.inst.Sub_CardBattleMove.Subscribe(x =>
+            {
+                BattleMove(x);
+            }
+        );
+        
 
     }
 
@@ -165,6 +183,11 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
 
     public void remove()
     {
+        
+        //이벤트삭제
+        Event_MoveReset.Dispose();
+        Event_BattleMove.Dispose();
+        //
         if (TileOb.TryGetComponent(out TileInfo info))
         {
             info.RemoveTile();
@@ -382,6 +405,51 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
 
 
 
+    public void MoveReset()
+    {
+        Vector3 pos = TileOb.transform.position;
+        pos.y = 1.6f;
+        transform.position = pos;
+    }
+
+    public void BattleMove(int x)
+    {
+        var tilecom = TileOb.GetComponent<TileInfo>();
+        int tileidx = tilecom.Idx;
+        int enemyidx = PlayerInfo.Inst.EnemyIdx;
+        int Pidx = PlayerInfo.Inst.PlayerIdx;
+        
+        if (x==1)
+        {
+            if (IsFiled)
+            {
+                TileOb = PositionManager.inst.playerPositioninfo[enemyidx].EnemyFiledTile[tileidx];
+
+            }
+            else
+            {
+                TileOb = PositionManager.inst.playerPositioninfo[enemyidx].EnemyPlayerTile[tileidx];
+                tilecom.tileGameob = gameObject;
+            }
+            transform.rotation=Quaternion.Euler(0,180,0);
+        }
+        else
+        {
+            if (IsFiled)
+            {
+                TileOb = PlayerInfo.Inst.FiledTile[tileidx]; 
+
+            }
+            else
+            {
+                
+                TileOb = PlayerInfo.Inst.PlayerTile[tileidx]; 
+                tilecom.tileGameob = gameObject;
+            }
+            transform.rotation=Quaternion.Euler(0,0,0);
+        }
+        MoveReset();
+    }
 
     public void FiledIn()
     {

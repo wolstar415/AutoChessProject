@@ -75,6 +75,8 @@ public class PlayerInfo : MonoBehaviour
     public bool PickRound = false;
     [Header("전투관련")] 
     public int EnemyIdx=-1;
+
+    public bool BattleMove = false;
     
 
 
@@ -150,12 +152,12 @@ public class PlayerInfo : MonoBehaviour
         {
             if (Gold <10*(i+1))
             {
-                pv.RPC(nameof(GoldColorSet),RpcTarget.All,PlayerIdx,i,false);
+                pv.RPC(nameof(GoldColorSet),RpcTarget.All,PlayerIdx,i,false,EnemyIdx);
                 
             }
             else
             {
-                pv.RPC(nameof(GoldColorSet),RpcTarget.All,PlayerIdx,i,true);
+                pv.RPC(nameof(GoldColorSet),RpcTarget.All,PlayerIdx,i,true,EnemyIdx);
             }
             
             
@@ -163,9 +165,12 @@ public class PlayerInfo : MonoBehaviour
     }
 
     [PunRPC]
-    void GoldColorSet(int Pidx, int idx, bool b)
+    void GoldColorSet(int Pidx, int idx, bool b,int EnemyInt)
     {
+
+        
         GameObject ob=PositionManager.inst.playerPositioninfo[Pidx].GoldOb[idx];
+        
         if (ob.TryGetComponent(out MeshRenderer mesh))
         {
             if (b)
@@ -177,6 +182,26 @@ public class PlayerInfo : MonoBehaviour
             {
             mesh.material.color = colors[0];
                 
+            }
+        }
+        
+        
+        if (EnemyInt!=-1)
+        {
+            ob=PositionManager.inst.playerPositioninfo[EnemyInt].EnemyGoldOb[idx];
+
+            if (ob.TryGetComponent(out MeshRenderer mesh2))
+            {
+                if (b)
+                {
+                    mesh2.material.color = colors[1];
+                
+                }
+                else
+                {
+                    mesh2.material.color = colors[0];
+                
+                }
             }
         }
     }
