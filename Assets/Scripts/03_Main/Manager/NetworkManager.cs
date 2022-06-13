@@ -7,6 +7,7 @@ using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Random = UnityEngine.Random;
 
 [System.Serializable]
 public class playerinfo
@@ -16,19 +17,27 @@ public class playerinfo
     public String NickName;
     public int State;
     public bool Dead = false;
+    public int Life = 100;
     //0 : 없음
     //1 : 연결중
     //2 : 관전중
     //3 : 나감
-
+    public bool IsPickBool = false;
 }
 
     public class NetworkManager : MonoBehaviourPunCallbacks
     {
+        public static NetworkManager inst;
         public List<playerinfo> players;
      
 
         public PhotonView pv;
+
+        private void Awake()
+        {
+            inst = this;
+        }
+
         private void Start()
         {
             
@@ -54,6 +63,58 @@ public class playerinfo
 
         }
 
+        public void RoundFuncGo(int idx)
+        {
+            pv.RPC(nameof(NetworkRoundFuncGo),RpcTarget.All,idx);
+        }
+
+        [PunRPC]
+        void NetworkRoundFuncGo(int idx)
+        {
+            switch (idx)
+            {
+                case 1:
+                    RoundManager.inst.Round_PVP_EndFunc();
+                    break;
+                case 2:
+                    RoundManager.inst.Round_PVE_EndFunc();
+                    break;
+                case 3:
+                    RoundManager.inst.Round_PICk_EndFunc();
+                    break;
+                default:
+                    Debug.Log("버그");
+                    break;
+            }
+        }
+
+        public void PickAllOpen()
+        {
+            pv.RPC(nameof(NetworkPickAllOpen),RpcTarget.All);
+        }
+
+        [PunRPC]
+        void NetworkPickAllOpen()
+        {
+            PickRoundManager.inst.PickAllOpen();
+            if (PlayerInfo.Inst.Dead==false)
+            {
+            PlayerInfo.Inst.IsPick = true;
+            }
+        }
+        [PunRPC]
+        void NetworkPickOpen(int idx)
+        {
+            PickRoundManager.inst.PickOpen(idx);
+            if (PlayerInfo.Inst.PlayerIdx==idx)
+            {
+                if (PlayerInfo.Inst.Dead==false)
+                {
+                    PlayerInfo.Inst.IsPick = true;
+                }
+            }
+            
+        }
         void Master()
         {
             for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
@@ -64,6 +125,7 @@ public class playerinfo
                 string[] s = PhotonNetwork.PlayerList[i].NickName.Split("@");
                 players[i].NickName = s[0];
                 players[i].State = 1;
+                players[i].Life = 100;
                 //PhotonNetwork.PlayerList[i].CustomProperties.Add("PlayerIdx",i);
 
             }
@@ -77,9 +139,7 @@ public class playerinfo
             yield return YieldInstructionCache.WaitForSeconds(0.5f);
             pv.RPC(nameof(IdxCheck),RpcTarget.All);
             yield return YieldInstructionCache.WaitForSeconds(0.5f);
-            pv.RPC(nameof(CameraMovePick),RpcTarget.All);
-            yield return YieldInstructionCache.WaitForSeconds(1);
-            pv.RPC(nameof(CameraMoveNormal),RpcTarget.All,1);
+            MasterRoundStart(0);
             
         }
         [PunRPC]
@@ -146,6 +206,36 @@ public class playerinfo
 
         }
 
+        public void MasterRoundStart(int Round)
+        {
+            pv.RPC(nameof(NetworkRoundStart),RpcTarget.All,Round);
+        }
+
+        [PunRPC]
+        void NetworkRoundStart(int Round)
+        {
+            if (Round==0)
+            {
+                GameSystem_AllInfo.inst.StartFunc();
+            }
+            RoundManager.inst.RoundStart(Round);
+        }
+
+
+
+        public void PickSelect()
+        {
+            pv.RPC(nameof(NetWorkPickSelct),RpcTarget.MasterClient,PlayerInfo.Inst.PlayerIdx);
+        }
+
+        [PunRPC]
+        void NetWorkPickSelct(int PlayerIdx)
+        {
+            MasterInfo.inst.player_PickCheck[PlayerIdx] = 0;
+            NetworkManager.inst.players[PlayerIdx].IsPickBool = false;
+
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Keypad1))
@@ -176,6 +266,41 @@ public class playerinfo
             {
                 PlayerInfo.Inst.Gold += 5;
 
+            }
+        }
+
+        public void NoSelectPickFunc()
+        {
+            for (int i = 0; i < NetworkManager.inst.players.Count; i++)
+            {
+                if (NetworkManager.inst.players[i].State==1)
+                {
+                    if (MasterInfo.inst.player_PickCheck[i]==1)
+                    {
+                        int ran = Random.Range(0, MasterInfo.inst.pickCards.Count);
+                        int idx = 0;
+                        if (MasterInfo.inst.pickCards[ran].TryGetComponent(out Card_Info info))
+                        {
+                            info.pickIdx = idx;
+                        }
+                        MasterInfo.inst.pickCards.RemoveAt(ran);
+                        pv.RPC(nameof(NetworkNoSelectPickFunc),RpcTarget.All,i,idx);
+                        //너 강제로 선택해.
+                    }
+                }
+            }
+        }
+
+        [PunRPC]
+        void NetworkNoSelectPickFunc(int Playeridx, int Idx)
+        {
+            if (PlayerInfo.Inst.PlayerIdx==Playeridx&&PlayerInfo.Inst.IsPick)
+            {
+                GameObject ob = GameSystem_AllInfo.inst.PickCard[Idx];
+                if (PlayerInfo.Inst.PlayerOb.TryGetComponent(out PlayerPickSelect pick))
+                {
+                    pick.PickOb(ob);
+                }
             }
         }
         

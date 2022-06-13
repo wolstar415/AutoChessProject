@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class PlayerMoving : MonoBehaviourPunCallbacks
 {
     [SerializeField] private PhotonView pv;
-    [SerializeField]NavMeshAgent nav;
+    public NavMeshAgent nav;
     [SerializeField]Animator ani;
     bool IsMoving;
 
@@ -20,19 +20,26 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                nav.SetDestination(hit.point);
+                nav.ResetPath();
                 ani.SetBool("Run", true);
                 IsMoving = true;
                 nav.isStopped = false;
+                nav.updatePosition = true;
+                nav.updateRotation = true;
+                nav.SetDestination(hit.point);
             }
         
     }
     public void movePos(Vector3 pos)
     {
-        nav.SetDestination(pos);
+        nav.ResetPath();
         ani.SetBool("Run", true);
         IsMoving = true;
+        
         nav.isStopped = false;
+        nav.updatePosition = true;
+        nav.updateRotation = true;
+        nav.SetDestination(pos);
     }
     void Update()
     {
@@ -49,8 +56,11 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
             
             IsMoving = false;
             nav.isStopped = true;
+            nav.updatePosition = false;
+            nav.updateRotation = false;
+            nav.velocity=Vector3.zero;
             ani.SetBool("Run", false);
-            
+            nav.ResetPath();
         }
 
         

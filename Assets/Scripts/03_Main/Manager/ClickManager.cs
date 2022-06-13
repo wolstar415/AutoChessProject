@@ -107,19 +107,29 @@ public class ClickManager : MonoBehaviourPunCallbacks
 
     void ClickFunc()
     {
+        if (!GameSystem_AllInfo.inst.IsStart)
+        {
+            return;
+        }
         if (IsPointerOverUIObject())
         {
             
             return;
         }
+
+        
         Vector3 mpos = Input.mousePosition;
         Ray cast = Camera.main.ScreenPointToRay(mpos);
         RaycastHit hit;
-        if (Physics.Raycast(cast, out hit, 100, laymaskCard))
+        if (!PlayerInfo.Inst.PickRound)
         {
-            ClickCardFunc(hit.collider.gameObject);
-            return;
+            if (Physics.Raycast(cast, out hit, 100, laymaskCard))
+            {
+                ClickCardFunc(hit.collider.gameObject);
+                return;
+            }
         }
+        
         
         //플레이어 이동
         if (PlayerInfo.Inst.PlayerOb.TryGetComponent(out PlayerMoving moving))

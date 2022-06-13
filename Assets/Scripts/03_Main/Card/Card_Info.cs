@@ -100,18 +100,89 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
 
     private IDisposable Event_MoveReset;
     private IDisposable Event_BattleMove;
+
+    [Header("Pick")] 
+    public int pickIdx = -1;
+    public Boolean IsPick;
     // Start is called before the first frame update
-    void Start()
+
+
+    public void PickStart(int Idx, int ItemIdx)
     {
-        if (pv.IsMine)
-        {
+        pv.RPC(nameof(itemStatadd),RpcTarget.All,0,ItemIdx);
+        pv.RPC(nameof(NetworkdPickStart),RpcTarget.All,Idx);
+    }
+    public void PickSelect()
+    {
+        pv.RPC(nameof(NetworkdPickSelect), RpcTarget.All,PlayerInfo.Inst.PlayerIdx);
+        MasterInfo.inst.CardRemove(Idx);
+    }
+
+    [PunRPC]
+    void NetworkdPickStart(int Idx)
+    {
+        transform.parent = GameSystem_AllInfo.inst.PickPos;
             
-        startSetting();
-        Setting(Level);
-        }
         
+        pickIdx = Idx;
+        IsPick = true;
+        GameSystem_AllInfo.inst.PickCard[Idx] = gameObject;
+    }
+    [PunRPC]
+    void NetworkdPickSelect(int Playeridx)
+    {
+
+            transform.parent = null;
+            
+        
+        GameSystem_AllInfo.inst.PickCard[pickIdx] = null;
+        pickIdx = -1;
+        IsPick = false;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            MasterInfo.inst.pickCards.Remove(gameObject);
+        }
+
     }
     public void startSetting()
+    {
+        pv.RPC(nameof(NetworkSetting),RpcTarget.All,PlayerInfo.Inst.PlayerIdx);
+        PlayerInfo.Inst.PlayerCardCntAdd(Idx);
+        PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(1).Add(gameObject);
+
+        if (pv.Owner!=PhotonNetwork.LocalPlayer)
+        {
+            pv.TransferOwnership(PhotonNetwork.LocalPlayer);
+        }
+        
+
+        for (int i = 0; i < CardManager.inst.CardUi.Count; i++)
+        {
+            if (CardManager.inst.CardUi[i].TryGetComponent(out CardUI_Info check))
+            {
+                check.CheckEffect();
+            }
+        }
+
+        
+
+        //이벤트부분 등록
+
+        Event_MoveReset=EventManager.inst.Sub_CardMove.Subscribe(_ =>
+            {
+                MoveReset();
+            }
+        );
+        Event_BattleMove=EventManager.inst.Sub_CardBattleMove.Subscribe(x =>
+            {
+                BattleMove(x);
+            }
+        );
+        
+
+    }
+    [PunRPC]
+    void NetworkSetting(int PlayerIdx)
     {
         info = CsvManager.inst.characterInfo[Idx];
         Level = 1;
@@ -132,33 +203,9 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
         Char_ManaMax = ManaMax;
         Char_Mana = info.Mana;
         Char_ManaMax = info.Mana_Max;
-        PlayerInfo.Inst.PlayerCardCntAdd(Idx);
-        PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(1).Add(gameObject);
-
-        for (int i = 0; i < CardManager.inst.CardUi.Count; i++)
-        {
-            if (CardManager.inst.CardUi[i].TryGetComponent(out CardUI_Info check))
-            {
-                check.CheckEffect();
-            }
-        }
-
-        //이벤트부분 등록
-
-        Event_MoveReset=EventManager.inst.Sub_CardMove.Subscribe(_ =>
-            {
-                MoveReset();
-            }
-        );
-        Event_BattleMove=EventManager.inst.Sub_CardBattleMove.Subscribe(x =>
-            {
-                BattleMove(x);
-            }
-        );
-        
-
+        TeamIdx = PlayerIdx;
+       gameObject.layer = 6+PlayerIdx;
     }
-
     public void LevelUp()
     {
         PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level).Remove(gameObject);
@@ -194,7 +241,7 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
         }
         PlayerInfo.Inst.PlayerCardCntRemove(Idx);
         PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level).Remove(gameObject);
-        PhotonNetwork.Destroy(gameObject);
+        MasterInfo.inst.CardAdd_Lv(Idx, Level);
 
         if (IsFiled)
         {
@@ -211,6 +258,8 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
                 check.CheckEffect();
             }
         }
+        
+        PhotonNetwork.Destroy(gameObject);
     }
     
 
@@ -348,40 +397,60 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
             }
         }
 
-        if (itemseat==-1)
-        {
-            return;
-        }
+
 
         if (itemidx==-1 || itemidx>=54)
         {
+            
+            return;
+        }
+        if (itemseat==-1)
+        {
+            ItemManager.inst.ItemAdd(itemidx);
             return;
         }
 
-
         if (Item[itemseat]>=0&&Item[itemseat]<=8)
         {
-            itemStatRemove(itemseat);
-            itemStatadd(itemseat, itemidx);
+            //itemStatRemove(itemseat);
+            //itemStatadd(itemseat, itemidx);
+            pv.RPC(nameof(itemStateUp),RpcTarget.All,itemseat,itemidx);
             
         }
         else
         {
-            itemStatadd(itemseat, itemidx);
+            pv.RPC(nameof(itemStatadd),RpcTarget.All,itemseat,itemidx);
+            //itemStatadd(itemseat, itemidx);
             
         }
 
 
     }
 
+    [PunRPC]
+    void itemStateUp(int seat,int idx)
+    {
+        //스탯내림
+        int itemicon=CsvManager.inst.itemInfo[idx].Icon;
+        Item[seat] = idx;
+        if (ItemUI[seat].TryGetComponent(out Image image))
+        {
+            image.sprite = IconManager.inst.icon[itemicon];
+        }
+        ItemUI[seat].SetActive(true);
+    }
+
+    [PunRPC]
     void itemStatRemove(int seat)
     {
         ItemUI[seat].SetActive(false);
         Item[seat] = -1;
         //스탯내림
     }
+    [PunRPC]
     void itemStatadd(int seat,int idx)
     {
+        
         int itemicon=CsvManager.inst.itemInfo[idx].Icon;
         Item[seat] = idx;
         if (ItemUI[seat].TryGetComponent(out Image image))

@@ -21,12 +21,11 @@ public class Card_fight : MonoBehaviour
     {
         IsCool = true;
         fightFSM = Fight_FSM.None;
-
-        fightFSM= Fight_FSM.Idle;
         
         
         
-        info.IsFighting = true;
+        
+        
     }
 
     void Update()

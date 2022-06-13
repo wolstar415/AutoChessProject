@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameS;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
@@ -15,6 +16,10 @@ public class MasterInfo : MonoBehaviourPunCallbacks
     public List<int> Cnt_Card3;
     public List<int> Cnt_Card4;
     public List<int> Cnt_Card5;
+    
+    public List<int> player_PickCheck;
+
+    public List<GameObject> pickCards;
     private void Start()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -125,6 +130,8 @@ public class MasterInfo : MonoBehaviourPunCallbacks
         return Cnt_Card1;
     }
 
+    
+
     public void CardResetNetworkFunc1()
     {
         int lv = PlayerInfo.Inst.Level;
@@ -143,6 +150,29 @@ public class MasterInfo : MonoBehaviourPunCallbacks
     }
 
 
+    public void PickPlayerCheck()
+    {
+        for (int i = 0; i < NetworkManager.inst.players.Count; i++)
+        {
+            player_PickCheck[i] = 0;
+            if (NetworkManager.inst.players[i].Dead==false&&NetworkManager.inst.players[i].State==1)
+            {
+                player_PickCheck[i] = 1;
+                NetworkManager.inst.players[i].IsPickBool = true;
+            }
+        }
+        
+    }
+    public void PickCardCreate(int idxCheck)
+    {
+        
+        if (idxCheck==1000)
+        {
+            PickRoundManager.inst.FirstFunc();
+        }
+    }
+    
+    
 
     [PunRPC]
     public void CardResetNetworkFunc3(Player p,int[] idxs)
@@ -182,7 +212,20 @@ public class MasterInfo : MonoBehaviourPunCallbacks
 
     public void CardAdd(int idx)
     {
-        pv.RPC(nameof(CardAddFunc),RpcTarget.MasterClient,idx);
+        pv.RPC(nameof(CardAddFunc),RpcTarget.MasterClient,idx,1);
+    }
+    public void CardAdd_Lv(int idx,int lv)
+    {
+        int cnt = 1;
+        if (lv==2)
+        {
+            cnt =3;
+        }
+        else if (lv==3)
+        {
+            cnt =9;
+        }
+        pv.RPC(nameof(CardAddFunc),RpcTarget.MasterClient,idx,cnt);
     }
     [PunRPC]
     
@@ -193,10 +236,14 @@ public class MasterInfo : MonoBehaviourPunCallbacks
         ranlist.Remove(idx);
     }
     [PunRPC]
-     void CardAddFunc(int idx)
+     void CardAddFunc(int idx,int cnt)
     {
         int lv = CsvManager.inst.characterInfo[idx].Tier;
         List<int> ranlist = CardList(lv);
+        for (int i = 0; i < cnt; i++)
+        {
         ranlist.Add(idx);
+            
+        }
     }
 }

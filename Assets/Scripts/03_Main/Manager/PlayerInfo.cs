@@ -71,13 +71,15 @@ public class PlayerInfo : MonoBehaviour
     public List<PlayerCardCnt> PlayerCardCntLv;
     [Header("라운드관련")] 
     public int Round = 0;
+    public int RoundIdx = 0;
 
     public bool PickRound = false;
     [Header("전투관련")] 
     public int EnemyIdx=-1;
 
     public bool BattleMove = false;
-    
+    [Header("픽관련")] 
+    public bool IsPick = false;
 
 
     public void PlayerCardCntAdd(int idx)

@@ -81,13 +81,83 @@ public class CreateManager : MonoBehaviour
             Vector3 Pos = tile.transform.position;
             Pos.y = 1.6f;
             GameObject ob =PhotonNetwork.Instantiate(s, Pos, Quaternion.identity);
+            if (ob.TryGetComponent(out Card_Info cardinfo))
+            {
+                cardinfo.startSetting(); 
+                cardinfo.Setting(1);
+            }
+            if (tile.TryGetComponent(out TileInfo info))
+            {
+                info.AddTile(ob);
+                
+                
+                
+            }
+        }
+    }
+    public void Pick_CreateCharacter(GameObject ob)
+    {
+        int CreatePosidx = CreateIdx();
+        int idx = 0;
+        if (CreatePosidx==-1)
+        {
+            for (int i = 0; i < PlayerInfo.Inst.FiledTile.Count; i++)
+            {
+                if (PlayerInfo.Inst.FiledTile[i].TryGetComponent(out TileInfo check))
+                {
+                    if (check.tileGameob==null)
+                    {
+                        CreatePosidx = i;
+                        break;
+                    }
+                }
+            }
+            GameObject tile = PlayerInfo.Inst.FiledTile[CreatePosidx];
+            Vector3 Pos = tile.transform.position;
+            
+            Pos.y = 1.6f;
+            ob.transform.position = Pos;
+            if (ob.TryGetComponent(out Card_Info cardinfo))
+            {
+                cardinfo.startSetting(); 
+                cardinfo.Setting(1);
+                idx = cardinfo.Idx;
+                PlayerInfo.Inst.food++;
+                cardinfo.FiledIn();
+                
+                
+            }
+            if (tile.TryGetComponent(out TileInfo info))
+            {
+                info.AddTile(ob);
+            }
+            
+            
+        }
+        else if (CreatePosidx >= 0)
+        {
+            GameObject tile = PlayerInfo.Inst.PlayerTile[CreatePosidx];
+            Vector3 Pos = tile.transform.position;
+            Pos.y = 1.6f;
+            ob.transform.position = Pos;
+            if (ob.TryGetComponent(out Card_Info cardinfo))
+            {
+                cardinfo.startSetting(); 
+                cardinfo.Setting(1);
+                idx = cardinfo.Idx;
+            }
             if (tile.TryGetComponent(out TileInfo info))
             {
                 info.AddTile(ob);
             }
         }
-    }
 
+
+        CheckLevelUp(idx, 1);
+
+
+
+    }
     public void CreateLevelUp(int idx)
     {
         List<GameObject> obs = new List<GameObject>();
