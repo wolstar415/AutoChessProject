@@ -245,6 +245,7 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
 
         if (IsFiled)
         {
+            PlayerInfo.Inst.food--;
             FiledOut();
         }
         for (int i = 0; i < 3; i++)

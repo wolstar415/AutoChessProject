@@ -68,6 +68,12 @@ MonoBehaviour:
   - NetworkSetting
   - NetWorkPickSelct
   - NetworkNoSelectPickFunc
+  - PlayerSetting
+  - RPC_HpSetting
+  - RPC_LevelSet
+  - RPC_NickNameSetting
+  - RPC_PlayerInfoOrder
+  - MasterGoLife
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -36,7 +36,26 @@ public class PlayerInfo : MonoBehaviour
     public Camera camer;
     [SerializeField]private int gold;
     public int Level;
-    public int Life;
+    [SerializeField] private int life;
+
+    public int Life
+    {
+        get { return life;}
+        set
+        {
+            life = value;
+            if (life <= 0)
+            {
+                life = 0;
+                
+                DeadFunc();
+            }
+            pv.RPC(nameof(MasterGoLife),RpcTarget.MasterClient,PlayerIdx,life);
+            
+            
+
+        }
+    }
     public int PlayerIdx;
     public GameObject PlayerCharacter;
     public bool Dead = false;
@@ -72,6 +91,7 @@ public class PlayerInfo : MonoBehaviour
     [Header("라운드관련")] 
     public int Round = 0;
     public int RoundIdx = 0;
+    public bool PVP = false;
 
     public bool PickRound = false;
     [Header("전투관련")] 
@@ -82,6 +102,24 @@ public class PlayerInfo : MonoBehaviour
     public bool IsPick = false;
 
 
+    [PunRPC]
+    void MasterGoLife(int i,int life)
+    {
+        NetworkManager.inst.players[i].Life = life;
+        if (life<=0)
+        {
+        NetworkManager.inst.players[i].State = 2;
+        NetworkManager.inst.players[i].Dead = true;
+            
+        }
+
+        MasterInfo.inst.lifeCheck[i].LifeSet(life);
+
+    }
+    public void LifeDamage(int i)
+    {
+        Life -= i;
+    }
     public void PlayerCardCntAdd(int idx)
     {
         PlayerCardCnt[idx]++;
@@ -253,7 +291,16 @@ public class PlayerInfo : MonoBehaviour
         XpMax = CsvManager.inst.Player_Xp[Level];
         UIManager.inst.XpSliderSet();
         foodMax = Level;
+        if (PlayerOb.TryGetComponent(out PlayerMoving p))
+        {
+            p.LevelSet(Level);
         }
+        }
+    }
+
+    void DeadFunc()
+    {
+        Dead = true;
     }
 
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameS;
+using Newtonsoft.Json;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -13,6 +14,7 @@ using Random = UnityEngine.Random;
 public class playerinfo
 {
     public Player player;
+    public int Idx;
     public String OriNickName;
     public String NickName;
     public int State;
@@ -93,6 +95,12 @@ public class playerinfo
             pv.RPC(nameof(NetworkPickAllOpen),RpcTarget.All);
         }
 
+        public void PickOpen(int idx)
+        {
+            
+            pv.RPC(nameof(NetworkPickOpen),RpcTarget.All,idx);
+        }
+
         [PunRPC]
         void NetworkPickAllOpen()
         {
@@ -126,12 +134,21 @@ public class playerinfo
                 players[i].NickName = s[0];
                 players[i].State = 1;
                 players[i].Life = 100;
+                players[i].Idx = i;
+                MasterInfo.inst.lifeCheck.Add(new LifeRank(i,100));
+                pv.RPC(nameof(PlayerSetting),RpcTarget.All,i,players[i].OriNickName);
                 //PhotonNetwork.PlayerList[i].CustomProperties.Add("PlayerIdx",i);
 
             }
             
             
             StartCoroutine(masterSetting());
+        }
+
+        [PunRPC]
+        void PlayerSetting(int idx,string name)
+        {
+            UIManager.inst.PlayerUiSetting(idx,name);
         }
 
         IEnumerator masterSetting()
@@ -153,6 +170,10 @@ public class playerinfo
             PlayerInfo.Inst.PlayerOb = ob;
             PlayerInfo.Inst.PickRound = true;
             PosSetting();
+            if (ob.TryGetComponent(out PlayerMoving player))
+            {
+                player.NickNameSetting(GameManager.inst.NickName);
+            }
         }
 
         [PunRPC]
@@ -303,7 +324,19 @@ public class playerinfo
                 }
             }
         }
-        
-        
+
+        public void MasterInfoOrder()
+        {
+            
+            string c=MasterInfo.inst.LifeOrder2();
+            pv.RPC(nameof(RPC_PlayerInfoOrder),RpcTarget.All,c);
+        }
+
+        [PunRPC]
+        void RPC_PlayerInfoOrder(string s)
+        {
+            MasterInfo.inst.lifeRank2=JsonConvert.DeserializeObject<List<LifeRank>>(s);
+            UIManager.inst.PlayerInfoOrder();
+        }
     }
 

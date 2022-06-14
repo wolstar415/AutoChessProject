@@ -1,12 +1,31 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GameS;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Random = System.Random;
+using Newtonsoft.Json;
 
+[System.Serializable]
+public struct LifeRank
+{
+    public int PlayerIdx;
+    public int Life;
+
+    public LifeRank(int _idx, int _Life)
+    {
+        PlayerIdx = _idx;
+        Life = _Life;
+    }
+
+    public void LifeSet(int life)
+    {
+        Life = life;
+    }
+}
 public class MasterInfo : MonoBehaviourPunCallbacks
 {
     public PhotonView pv;
@@ -20,13 +39,38 @@ public class MasterInfo : MonoBehaviourPunCallbacks
     public List<int> player_PickCheck;
 
     public List<GameObject> pickCards;
+    public List<LifeRank> lifeCheck;
+    public List<LifeRank> lifeRank;
+    public List<LifeRank> lifeRank2;
+    
+
+   
+    //public List<LifeRank> lifeRanks;
     private void Start()
     {
+        
         if (PhotonNetwork.IsMasterClient)
         {
             masterFunc();
             
         }
+    }
+
+    public string LifeOrder()
+    {
+
+        lifeRank=lifeCheck.OrderBy(o => o.Life).ToList();
+        return JsonConvert.SerializeObject(lifeRank);
+
+
+    }
+    public string LifeOrder2()
+    {
+
+
+        lifeRank2=lifeCheck.OrderByDescending(o => o.Life).ToList();
+        return JsonConvert.SerializeObject(lifeRank2);
+
     }
 
     private void Awake()
@@ -169,6 +213,10 @@ public class MasterInfo : MonoBehaviourPunCallbacks
         if (idxCheck==1000)
         {
             PickRoundManager.inst.FirstFunc();
+        }
+        else
+        {
+            PickRoundManager.inst.PickFunc();
         }
     }
     

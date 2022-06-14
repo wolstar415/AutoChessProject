@@ -99,19 +99,32 @@ namespace GameS
             int RoundCheck = CsvManager.inst.RoundCheck3[Round];
             PlayerInfo.Inst.RoundIdx = RoundCheck;
             PlayerInfo.Inst.Round = Round;
+            int TimeWait = CsvManager.inst.RoundCheck4[Round];
 
+            if (PlayerInfo.Inst.Round==4)
+            {
+                UIManager.inst.RoundChange();
+            }
+            
+            
+            
             if (RoundCheck<100)
             {
                 Round_PVE();
+                UIManager.inst.TimeFunc(TimeWait);
+                PlayerInfo.Inst.PVP = false;
             }
             else if (RoundCheck<1000)
             {
                 Round_PVP();
+                UIManager.inst.TimeFunc(TimeWait);
+                PlayerInfo.Inst.PVP = true;
             }
             else
             {
                 Round_Pick();
             }
+            UIManager.inst.RoundSet();
         }
 
 
@@ -149,6 +162,8 @@ namespace GameS
         {
             if (PlayerInfo.Inst.Dead == true) return;
             
+            
+            
         }
          void Round_PICk_StartFunc()
         {
@@ -171,7 +186,7 @@ namespace GameS
             //플레이어이동
             PlayerInfo.Inst.PlayerOb.transform.position = PositionManager.inst.PickPos[idx].position;
             //길막기 모두 정상
-            PickRoundManager.inst.PickAllOpen();
+            PickRoundManager.inst.PickAllClose();
             
             
         }
@@ -236,8 +251,18 @@ namespace GameS
         {
             if (Input.GetKeyUp(KeyCode.T))
             {
-                PlayerInfo.Inst.PlayerOb.transform.position = PlayerInfo.Inst.PlayerMovePos.position;
+                UIManager.inst.TimeEnd();
             }
+            else if (Input.GetKeyUp(KeyCode.F))
+            {
+                NetworkManager.inst.MasterInfoOrder();
+            }
+            else if (Input.GetKeyUp(KeyCode.G))
+            {
+                UIManager.inst.PlayerInfoBattleStart();
+            }
+                
+                
         }
     }
 }

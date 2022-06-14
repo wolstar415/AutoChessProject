@@ -108,9 +108,9 @@ public class CardUI_Info2 : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             ItemIcon[i].sprite = IconManager.inst.icon[230];
-            if (info.Item[0] != -1)
+            if (info.Item[i] != -1)
             {
-                int itemicon = CsvManager.inst.itemInfo[info.Item[0]].Icon;
+                int itemicon = CsvManager.inst.itemInfo[info.Item[i]].Icon;
 
                 ItemIcon[i].sprite = IconManager.inst.icon[itemicon];
             }

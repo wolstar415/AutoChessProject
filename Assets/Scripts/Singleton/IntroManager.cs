@@ -5,9 +5,9 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = System.Random;
 
 
-    
 public class IntroManager : MonoBehaviourPunCallbacks
 {
      public static  IntroManager inst;
@@ -34,6 +34,9 @@ public class IntroManager : MonoBehaviourPunCallbacks
 
     void test()
     {
+        string name = "Hey" + UnityEngine.Random.Range(0, 1000000);
+        PhotonNetwork.LocalPlayer.NickName = name;
+        GameManager.inst.NickName = name;
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers =8;
         PhotonNetwork.JoinOrCreateRoom("asd", roomOptions,null);

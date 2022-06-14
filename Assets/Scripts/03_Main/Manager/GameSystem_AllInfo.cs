@@ -35,6 +35,7 @@ public class GameSystem_AllInfo : MonoBehaviour
     private void Awake()
     {
         inst = this;
+        Black.SetActive(true);
     }
 
     public void StartFunc()

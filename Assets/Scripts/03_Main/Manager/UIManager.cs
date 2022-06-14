@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameS;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,6 +26,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI Selltext1;
     [SerializeField] private TextMeshProUGUI Selltext2;
     [SerializeField] private GameObject BuyPanelOb;
+    [SerializeField] private GameObject JobAndItemOb;
 
     
     [Header("TraitAndJob")]
@@ -35,6 +37,21 @@ public class UIManager : MonoBehaviour
     [Header("item")] 
     [SerializeField] private GameObject ItemPanelOb;
     [SerializeField] private Image ItemBtnImage;
+    [Header("TopUI")] 
+    [SerializeField] private TextMeshProUGUI RoundText;
+    [SerializeField] private GameObject FirstRound;
+    [SerializeField] private GameObject NormalRound;
+    [SerializeField] private Image[] FirstRoundImages;
+    [SerializeField] private Image[] RoundImages;
+    [SerializeField] private GameObject TopPanelOb;
+    [SerializeField] private TextMeshProUGUI TimeText;
+    [SerializeField] private Slider TimeSlider;
+    private Coroutine timeCoroutine=null;
+    [Header("PlayerInfo")]
+    [SerializeField] 
+    private GameObject playerInfoOb_Parent;
+    [SerializeField] private GameObject[] playerInfoObs;
+
     private void Awake()
     {
         inst = this;
@@ -55,6 +72,7 @@ public class UIManager : MonoBehaviour
     public void CardBuyButtonFunc1()
     {
         BuyPanelOb.SetActive(true);
+        TopPanelOb.SetActive(false);
         PlayerInfoPanelOb.SetActive(false);
     }
 
@@ -124,6 +142,7 @@ public class UIManager : MonoBehaviour
     public void CardBuyUiClose()
     {
         BuyPanelOb.SetActive(false);
+        TopPanelOb.SetActive(true);
         PlayerInfoPanelOb.SetActive(true);
         
     }
@@ -159,7 +178,7 @@ public class UIManager : MonoBehaviour
         InfoPanelOb.SetActive(false);
         PlayerInfoPanelOb.SetActive(false);
         Foodob.SetActive(false);
-        JobPanelOb.SetActive(false);
+        JobAndItemOb.SetActive(false);
     }
 
     public void BattleUiSetting()
@@ -170,7 +189,126 @@ public class UIManager : MonoBehaviour
         DownPanel.SetActive(true);
         PlayerInfoPanelOb.SetActive(true);
         Foodob.SetActive(true);
-        JobPanelOb.SetActive(true);
+        JobAndItemOb.SetActive(true);
     }
-    
+
+    public void RoundChange()
+    {
+        FirstRound.SetActive(false);
+        NormalRound.SetActive(true);
+    }
+
+    public void RoundSet()
+    {
+        int r = PlayerInfo.Inst.Round;
+        int round=CsvManager.inst.RoundCheck1[r];
+        int round2=CsvManager.inst.RoundCheck2[r];
+
+        RoundText.text = round + "-" + round2;
+
+        if (round==1)
+        {
+            for (int i = 0; i < FirstRoundImages.Length; i++)
+            {
+                FirstRoundImages[i].color = colors[2];
+            }
+            FirstRoundImages[round2-1].color = colors[3];
+        }
+        else
+        {
+            for (int i = 0; i < RoundImages.Length; i++)
+            {
+                RoundImages[i].color = colors[2];
+            }
+            RoundImages[round2-1].color = colors[3];
+        }
+    }
+
+    public void TimeFunc(int Time)
+    {
+        if (timeCoroutine!=null)
+        {
+            StopCoroutine(timeCoroutine);
+        }
+        timeCoroutine=StartCoroutine(ITimeFunc(Time));
+    }
+
+    public void TimeEnd()
+    {
+        StopCoroutine(timeCoroutine);
+        timeCoroutine = null;
+    }
+
+    IEnumerator ITimeFunc(int MaxTime)
+    {
+        TimeText.text = MaxTime.ToString();
+        
+        float f = 0;
+        TimeSlider.value = f;
+        TimeSlider.maxValue = MaxTime;
+        while (true)
+        {
+            
+            f += Time.deltaTime;
+            if (f>=MaxTime)
+            {
+                break;
+            }
+            float maxf = MaxTime - f;
+        TimeText.text = maxf.ToString("F0");
+        TimeSlider.value = f;
+            yield return null;
+        }
+        TimeSlider.value = MaxTime;
+        TimeText.text = "0";
+
+    }
+
+    public void PlayerUiSetting(int idx, string name)
+    {
+        playerInfoObs[idx].SetActive(true);
+        if (playerInfoObs[idx].TryGetComponent(out PlayerInfoUI info))
+        {
+            info.NickNameSet(name);
+        }
+    }
+
+    public void PlayerInfoClick(int idx)
+    {
+        
+    }
+    public void PlayerInfoBattleStart()
+    {
+        for (int i = 0; i < playerInfoObs.Length; i++)
+        {
+            if (playerInfoObs[i].TryGetComponent(out PlayerInfoUI p))
+            {
+                p.BattleStart();
+
+            }
+
+        }
+    }
+    public void PlayerInfoOrder()
+    {
+        for (int i = 0; i < MasterInfo.inst.lifeRank2.Count; i++)
+        {
+            int idx = MasterInfo.inst.lifeRank2[i].PlayerIdx;
+            playerInfoObs[idx].transform.SetSiblingIndex(i);
+            if (playerInfoObs[idx].TryGetComponent(out PlayerInfoUI p))
+            {
+                p.HpSet(MasterInfo.inst.lifeRank2[i].Life);
+                p.BattleEnd();
+
+            }
+        }
+    }
+
+    public void PlayerInfoClear(int idx)
+    {
+        if (playerInfoObs[idx].TryGetComponent(out PlayerInfoUI p))
+        {
+            p.Clear();
+        }
+    }
 }

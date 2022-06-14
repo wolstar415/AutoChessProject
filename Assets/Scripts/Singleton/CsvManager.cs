@@ -117,6 +117,7 @@ public class CsvManager : MonoBehaviour
     [Header("라운드")] public List<int> RoundCheck1;
     public List<int> RoundCheck2;
     public List<int> RoundCheck3;
+    public List<int> RoundCheck4;
     [Header("데미지")] public List<int> RoundDamage;
     [Header("XP")] public List<int> Player_Xp;
     [Header("CardMax")] public List<int> CardMax;
@@ -322,6 +323,7 @@ public class CsvManager : MonoBehaviour
             RoundCheck1.Add(int.Parse(csvdata[i]["Round"].ToString()));
             RoundCheck2.Add(int.Parse(csvdata[i]["Round2"].ToString()));
             RoundCheck3.Add(int.Parse(csvdata[i]["선택"].ToString()));
+            RoundCheck4.Add(int.Parse(csvdata[i]["대기시간"].ToString()));
         }
     }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -11,6 +12,9 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
     public NavMeshAgent nav;
     [SerializeField]Animator ani;
     bool IsMoving;
+    public TextMeshProUGUI nickNameText;
+    public TextMeshProUGUI lvText;
+    public Slider hpSlider;
 
 
     public void check1()
@@ -67,5 +71,36 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
         
 
         
+    }
+
+    public void NickNameSetting(string name)
+    {
+        pv.RPC(nameof(RPC_NickNameSetting),RpcTarget.All,name);
+    }
+
+    [PunRPC]
+    void RPC_NickNameSetting(string name)
+    {
+        nickNameText.text = name;
+    }
+    public void LevelSet(int lv)
+    {
+        pv.RPC(nameof(RPC_LevelSet),RpcTarget.All,lv);
+    }
+
+    [PunRPC]
+    void RPC_LevelSet(int lv)
+    {
+        lvText.text = lv.ToString();
+    }
+    public void HpSetting(int hp)
+    {
+        pv.RPC(nameof(RPC_HpSetting),RpcTarget.All,hp);
+    }
+
+    [PunRPC]
+    void RPC_HpSetting(int hp)
+    {
+        hpSlider.value = hp;
     }
 }
