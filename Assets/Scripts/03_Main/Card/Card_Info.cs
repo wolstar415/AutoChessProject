@@ -36,7 +36,7 @@ public class Card_Info : MonoBehaviourPunCallbacks,IPointerEnterHandler,IPointer
     public CharacterInfo info;
     public int Name;//이름
     public int Icon;//이름
-    [Header("스탯")] 
+    [Header("정보")] 
     public int Level = 0;//레벨
     public int Tier = 0;//티어
     public int Food;//인구수

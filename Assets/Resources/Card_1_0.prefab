@@ -1296,6 +1296,7 @@ GameObject:
   - component: {fileID: 794620965866707062}
   - component: {fileID: 794620965866707054}
   - component: {fileID: 794620965866707041}
+  - component: {fileID: 910973219689201242}
   m_Layer: 6
   m_Name: Card_1_0
   m_TagString: Cards
@@ -1614,3 +1615,15 @@ MonoBehaviour:
   nav: {fileID: 794620965866707049}
   Enemies: []
   IsCool: 0
+--- !u!114 &910973219689201242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794620965866707063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 903e66e38250747409db3e6a555ac3ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
