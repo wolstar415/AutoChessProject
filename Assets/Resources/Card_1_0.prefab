@@ -1264,7 +1264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   info: {fileID: 794620965866707054}
-  info_fight: {fileID: 794620965866707041}
+  info_fight: {fileID: 0}
 --- !u!65 &794620964592794633
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1295,7 +1295,6 @@ GameObject:
   - component: {fileID: 794620965866707049}
   - component: {fileID: 794620965866707062}
   - component: {fileID: 794620965866707054}
-  - component: {fileID: 794620965866707041}
   - component: {fileID: 910973219689201242}
   m_Layer: 6
   m_Name: Card_1_0
@@ -1595,26 +1594,6 @@ MonoBehaviour:
   - {fileID: 1533280405}
   pickIdx: -1
   IsPick: 0
---- !u!114 &794620965866707041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 794620965866707063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 463838f4f029703429b64c1a7213d140, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pv: {fileID: 794620965866707051}
-  info: {fileID: 794620965866707054}
-  fightFSM: 0
-  EnemyMoving: {fileID: 0}
-  Enemy: {fileID: 0}
-  nav: {fileID: 794620965866707049}
-  Enemies: []
-  IsCool: 0
 --- !u!114 &910973219689201242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1627,3 +1606,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 903e66e38250747409db3e6a555ac3ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pv: {fileID: 794620965866707051}
+  EnemyMoving: {fileID: 0}
+  Enemy: {fileID: 0}
+  nav: {fileID: 794620965866707049}
+  Enemies: []
+  IsCool: 0
+  state: 0
+  stop: 0
+  info: {fileID: 794620965866707054}

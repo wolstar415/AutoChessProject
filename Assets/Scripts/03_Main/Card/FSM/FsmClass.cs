@@ -22,10 +22,7 @@ public class FsmClass<T> where T : System.Enum
         }
     }
 
-    public void Stop()
-    {
-        m_state = null;
-    }
+
 
     public virtual void Init()
     {
@@ -56,45 +53,21 @@ public class FsmClass<T> where T : System.Enum
     }
 
 
-    public virtual void SetState( T _stateType, FSMMsg _msg = null )
-    {
-        if( false == m_stateList.ContainsKey(_stateType))
-        {
-            Debug.LogError("FsmClass::SetState()[ no have state : " + _stateType);
-            return;
-        }
-
-
-
-        FsmState<T> _nextState = m_stateList[_stateType];
-        if( _nextState == m_state )
-        {
-            Debug.LogWarning("FsmClass::SetState()[ same state : " + _stateType);
-        }
-
-
-        if( null != m_state )
-        {
-            m_state.Finally();
-            m_state.End();
-        }
-
-        m_state = _nextState;
-        m_state.Enter(_msg);
-        
-    }
     /// <summary>
-    /// 강제로 바꿀때 사용합니다 End 실행 X Finally만 실행
+    /// 상태변환
     /// </summary>
     /// <param name="_stateType"></param>
+    /// <param name="Change">강제로바꿀때 true 하시면 end 처리안함</param>
     /// <param name="_msg"></param>
-    public virtual void ChaneState( T _stateType, FSMMsg _msg = null )
+    public virtual void SetState( T _stateType,bool Change=false, FSMMsg _msg = null )
     {
         if( false == m_stateList.ContainsKey(_stateType))
         {
             Debug.LogError("FsmClass::SetState()[ no have state : " + _stateType);
             return;
         }
+
+
 
         FsmState<T> _nextState = m_stateList[_stateType];
         if( _nextState == m_state )
@@ -106,6 +79,11 @@ public class FsmClass<T> where T : System.Enum
         if( null != m_state )
         {
             m_state.Finally();
+            if (!Change)
+            {
+            m_state.End();
+                
+            }
         }
 
         m_state = _nextState;

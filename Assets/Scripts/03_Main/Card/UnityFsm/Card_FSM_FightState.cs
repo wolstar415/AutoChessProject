@@ -10,14 +10,22 @@ namespace GameS
         Idle,
         Moving,
         Attack,
-        Skill,
+        Dead,
+        NoCon,
     }
     public class Card_FSM_FightState : FsmState<eCardFight_STATE>
     {
-        protected Card_FSM_Fight cardFsmFight;
+        protected Card_FSM_Fight Fight;
         public Card_FSM_FightState(Card_FSM_Fight _cardFsmFight,eCardFight_STATE _stateType) : base(_stateType)
         {
-            cardFsmFight = _cardFsmFight;
+            Fight = _cardFsmFight;
+        }
+
+        public override void Enter(FSMMsg _msg)
+        {
+            if (!Fight.info.IsFiled)
+                return; // 혹시나하는 버그방지용
+            
         }
     }
 }

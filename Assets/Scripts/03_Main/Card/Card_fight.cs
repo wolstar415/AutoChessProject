@@ -46,10 +46,7 @@ public class Card_fight : MonoBehaviour
         {
             case Fight_FSM.None: break;
             case Fight_FSM.Idle:
-                if (Enemy == null)
-                {
-                    EnemyFind(); // 적 찾는거
-                }
+                
 
 
                 if (EnemyMoving !=null)
