@@ -38,7 +38,7 @@ namespace GameS
                 return;
             }
             //거리가멀거나 적이없거나 무적이거나 죽었을때
-            if (Fight.EnemyCheck() == false||Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position) > Fight.info.Range)
+            if (Fight.EnemyCheck() == false||Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position) > Fight.info.stat.Range())
             {
                 Fight.fsm.SetState(eCardFight_STATE.Idle);
                 return;
@@ -49,7 +49,8 @@ namespace GameS
 
                 
                 Fight.IsCool = false;
-                Fight.attackFunc.BasicAttack();
+                Fight.attackFunc.BasicAttack(Fight.Enemy);
+                
                 
             }
             //base.Update();

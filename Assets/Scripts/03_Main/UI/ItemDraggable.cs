@@ -19,7 +19,7 @@ namespace GameS
         [SerializeField] private Vector3 oriPos;
         [SerializeField] private CanvasGroup CanvasGroup;
         [SerializeField] private GridLayoutGroup gridLayout;
-        [SerializeField] LayerMask laymaskCard;
+        //[SerializeField] LayerMask laymaskCard;
         public int Idx;
         [SerializeField] private Image ItemIcon;
         [Header("ItemUI")] [SerializeField] private GameObject CreateItemInfoOb;
@@ -39,6 +39,8 @@ namespace GameS
         [SerializeField] private Image CardIcon;
         [SerializeField] private TextMeshProUGUI CardName;
         [SerializeField] private bool ShowInfo = false;
+        GameObject targetcard = null;
+        private bool ShowCard=false;
 
         private void Start()
         {
@@ -80,12 +82,15 @@ namespace GameS
         {
             gridLayout.enabled = false;
             ShowInfo = false;
+            ShowCard = false;
+            targetcard = null;
             // = transform.parent;
             //transform.SetParent(canvas);
             //transform.SetAsLastSibling();
             CanvasGroup.blocksRaycasts = false;
             ClickManager.inst.clickstate = PlayerClickState.item;
             ClickManager.inst.ClickItem = gameObject;
+            
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -99,6 +104,43 @@ namespace GameS
             if (ShowInfo)
             {
                 rect.position = eventData.position;
+
+                
+                
+                
+
+                Ray cast = Camera.main.ScreenPointToRay(eventData.position);
+                RaycastHit hit;
+
+                GameObject hitob = null;
+                    if (Physics.Raycast(cast, out hit, 100, GameSystem_AllInfo.inst.masks[PlayerInfo.Inst.PlayerIdx]))
+                    {
+                        hitob = hit.collider.gameObject;
+
+
+
+
+                    }
+
+                    if (hitob==null)
+                    {
+                        if (ShowCard)
+                        {
+                            targetcard = null;
+                            ShowCard = false;
+                            outUicard();
+                        }
+                    }
+                    else
+                    {
+                        if (targetcard!=hitob)
+                        {
+                            targetcard = hitob;
+                            ShowCard = true;
+                            SetUiCard(targetcard);
+                        }
+                    }
+
             }
         }
 
@@ -148,7 +190,7 @@ namespace GameS
             GameObject ob = null;
             Ray cast = Camera.main.ScreenPointToRay(pos);
             RaycastHit hit;
-            if (Physics.Raycast(cast, out hit, 100, laymaskCard))
+            if (Physics.Raycast(cast, out hit, 100, GameSystem_AllInfo.inst.masks[PlayerInfo.Inst.PlayerIdx]))
             {
                 return hit.collider.gameObject;
             }
@@ -158,6 +200,7 @@ namespace GameS
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+           
             if (ClickManager.inst.ClickItem == gameObject)
             {
                 return;
@@ -248,7 +291,18 @@ namespace GameS
             int cardidx = 0;
             bool b = ItemManager.inst.ItemCheck(ob,Idx);
 
-
+            if (ob.TryGetComponent(out Card_Info info))
+            {
+               
+                for (int i = 0; i < 3; i++)
+                {
+                    if (info.Item[i]>=0 &&info.Item[i]<=8)
+                    {
+                        check = info.Item[i];
+                        break;
+                    }
+                }
+            }
             if (b==false)
             {
                 return;

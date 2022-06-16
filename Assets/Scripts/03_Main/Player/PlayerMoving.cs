@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
@@ -15,7 +16,18 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
     public TextMeshProUGUI nickNameText;
     public TextMeshProUGUI lvText;
     public Slider hpSlider;
+    private static readonly int Run = Animator.StringToHash("Run");
 
+    private void Start()
+    {
+
+        gameObject.name = pv.Owner.NickName;
+        if (!pv.IsMine)
+        {
+            return;
+        }
+        nav.enabled = true;
+    }
 
     public void check1()
     {
@@ -24,8 +36,8 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                nav.ResetPath();
-                ani.SetBool("Run", true);
+                //nav.ResetPath();
+                ani.SetBool(Run, true);
                 IsMoving = true;
                 nav.isStopped = false;
                 nav.updatePosition = true;
@@ -36,8 +48,8 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
     }
     public void movePos(Vector3 pos)
     {
-        nav.ResetPath();
-        ani.SetBool("Run", true);
+        //nav.ResetPath();
+        ani.SetBool(Run, true);
         IsMoving = true;
         
         nav.isStopped = false;
@@ -63,8 +75,8 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
             nav.updatePosition = false;
             nav.updateRotation = false;
             nav.velocity=Vector3.zero;
-            ani.SetBool("Run", false);
-            nav.ResetPath();
+            ani.SetBool(Run, false);
+           // nav.ResetPath();
         }
 
         
@@ -102,5 +114,18 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
     void RPC_HpSetting(int hp)
     {
         hpSlider.value = hp;
+    }
+
+    public void MovePos(Vector3 pos)
+    {
+        pv.RPC(nameof(RPC_MovePos),RpcTarget.All,pos);
+    }
+
+    [PunRPC]
+    void RPC_MovePos(Vector3 pos)
+    {
+        nav.enabled = false;
+        transform.position = pos;
+        nav.enabled = true;
     }
 }

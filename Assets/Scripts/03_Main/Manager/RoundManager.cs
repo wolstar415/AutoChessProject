@@ -231,11 +231,10 @@ namespace GameS
             
             if (PlayerInfo.Inst.PlayerOb.TryGetComponent(out PlayerMoving moving))
             {
-                
                 moving.nav.enabled = false;
-            PlayerInfo.Inst.PlayerOb.transform.position = PlayerInfo.Inst.PlayerMovePos.position;
-                
+                moving.gameObject.transform.position = PlayerInfo.Inst.PlayerMovePos.position;
                 moving.nav.enabled = true;
+               // moving.MovePos(PlayerInfo.Inst.PlayerMovePos.position);
             }
             RoundNext();
         }
@@ -247,22 +246,5 @@ namespace GameS
             RoundStart(Round+1);
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyUp(KeyCode.T))
-            {
-                UIManager.inst.TimeEnd();
-            }
-            else if (Input.GetKeyUp(KeyCode.F))
-            {
-                NetworkManager.inst.MasterInfoOrder();
-            }
-            else if (Input.GetKeyUp(KeyCode.G))
-            {
-                UIManager.inst.PlayerInfoBattleStart();
-            }
-                
-                
-        }
     }
 }

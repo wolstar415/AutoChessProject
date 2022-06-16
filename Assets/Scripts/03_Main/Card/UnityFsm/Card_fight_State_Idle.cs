@@ -31,7 +31,7 @@ namespace GameS
             if (Fight.Enemy==null)
             return;
 
-            if (Vector3.Distance(Fight.transform.position,Fight.Enemy.transform.position)<=Fight.info.Range)
+            if (Vector3.Distance(Fight.transform.position,Fight.Enemy.transform.position)<=Fight.info.stat.Range())
             {
                 Fight.fsm.SetState(eCardFight_STATE.Attack);
             }

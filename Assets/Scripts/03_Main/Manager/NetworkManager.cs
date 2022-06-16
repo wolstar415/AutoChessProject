@@ -34,6 +34,7 @@ public class playerinfo
      
 
         public PhotonView pv;
+        public Color[] Dagamecolors;
 
         private void Awake()
         {
@@ -257,38 +258,7 @@ public class playerinfo
 
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Keypad1))
-            {
-                CameraMovePick();
-            }
-            else if (Input.GetKeyDown(KeyCode.Keypad2))
-            {
-                CameraMoveNormal(1);
-            }
-            else if (Input.GetKeyDown(KeyCode.Keypad3))
-            {
-                CameraMoveNormal2(1);
-            }
-            else if (Input.GetKeyDown(KeyCode.Keypad4))
-            {
-                PlayerInfo.Inst.EnemyIdx = 1;
-                PlayerInfo.Inst.BattleMove = true;
-                RoundManager.inst.BattleMoveFunc();
-            }
-            else if (Input.GetKeyDown(KeyCode.Keypad5))
-            {
-                //PlayerInfo.Inst.EnemyIdx = -1;
-               // PlayerInfo.Inst.BattleMove = false;
-                RoundManager.inst.BattleMoveFunc2();
-            }
-            else if (Input.GetKeyDown(KeyCode.Keypad9))
-            {
-                PlayerInfo.Inst.Gold += 5;
-
-            }
-        }
+        
 
         public void NoSelectPickFunc()
         {
@@ -338,5 +308,22 @@ public class playerinfo
             MasterInfo.inst.lifeRank2=JsonConvert.DeserializeObject<List<LifeRank>>(s);
             UIManager.inst.PlayerInfoOrder();
         }
+
+        public void TextUi(string text, int coloridx, Vector3 pos, float gap = 0.1f)
+        {
+            pv.RPC(nameof(RPC_TextUi),RpcTarget.All,text,coloridx,pos,gap);
+        }
+
+        [PunRPC]
+        void RPC_TextUi(string text, int coloridx, Vector3 pos, float gap)
+        {
+
+            GameObject UI = ObjectPooler.SpawnFromPool("DamageText", pos, Quaternion.identity);
+            if (UI.TryGetComponent(out UIHUDText hud))
+            {
+                hud.Play2(text,Dagamecolors[coloridx],pos,gap);
+            }
+        }
+
     }
 

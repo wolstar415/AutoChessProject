@@ -74,6 +74,30 @@ MonoBehaviour:
   - RPC_NickNameSetting
   - RPC_PlayerInfoOrder
   - MasterGoLife
+  - RPC_SetCurrentHp
+  - RPC_SetCurrentMana
+  - RPC_SetShiled
+  - RPC_Buff_Set
+  - RPC_Char_Set
+  - RPC_HPAndMpSet
+  - RPC_HpPlus
+  - RPC_Item_Set
+  - RPC_AtkPlus
+  - RPC_CoolPlus
+  - RPC_CriDmgPlus
+  - RPC_CriPerPlus
+  - RPC_Defence_MagicPlus
+  - RPC_DefencePlus
+  - RPC_MagicPlus
+  - RPC_ManaMaxPlus
+  - RPC_ManaPlus
+  - RPC_RangePlus
+  - RPC_SpeedPlus
+  - RPC_ReSetFunc1
+  - CreateBullet
+  - RPC_StunShow
+  - RPC_TextUi
+  - RPC_MovePos
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

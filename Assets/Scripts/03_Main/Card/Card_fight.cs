@@ -8,6 +8,7 @@ using UnityEngine.AI;
 
 public class Card_fight : MonoBehaviour
 {
+    /*
     [SerializeField] private PhotonView pv;
     [SerializeField]private Card_Info info;
     [SerializeField] Fight_FSM fightFSM;
@@ -44,6 +45,7 @@ public class Card_fight : MonoBehaviour
     {
         switch (fightFSM)
         {
+                return;
             case Fight_FSM.None: break;
             case Fight_FSM.Idle:
                 
@@ -74,7 +76,7 @@ public class Card_fight : MonoBehaviour
                     fightFSM = Fight_FSM.Idle;
                     break;
                 }
-                if (Vector3.Distance(transform.position, EnemyMoving.transform.position) <= info.Range)
+                if (Vector3.Distance(transform.position, EnemyMoving.transform.position) <= info.stat.Range)
                 {
                     nav.isStopped = true;
                     fightFSM = Fight_FSM.Attacking;
@@ -104,7 +106,7 @@ public class Card_fight : MonoBehaviour
                 }
                 Vector3 dir = Enemy.transform.position - this.transform.position;
                 transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
-                if (Vector3.Distance(transform.position,Enemy.transform.position)> info.Range+0.1f)
+                if (Vector3.Distance(transform.position,Enemy.transform.position)> info.stat.Range+0.1f)
                 {
                     fightFSM = Fight_FSM.Idle;
                     break;
@@ -172,4 +174,5 @@ public class Card_fight : MonoBehaviour
         yield return a;
         IsCool = true;
     }
+    */
 }

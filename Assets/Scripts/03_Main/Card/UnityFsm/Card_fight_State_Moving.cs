@@ -7,6 +7,8 @@ namespace GameS
     public class Card_fight_State_Moving : Card_FSM_FightState
     {
         private bool IsMoving = false;
+        private static readonly int Run = Animator.StringToHash("Run");
+
         public Card_fight_State_Moving(Card_FSM_Fight _cardFsmFight): base(_cardFsmFight, eCardFight_STATE.Moving)
         {
         }
@@ -43,6 +45,7 @@ namespace GameS
         {
             IsMoving = true;
             Fight.nav.isStopped = false;
+            Fight.info.stat.ani.SetBool(Run,true);
         }
 
         public override void Update()
@@ -65,7 +68,7 @@ namespace GameS
             Fight.nav.SetDestination(Fight.Enemy.transform.position); 
             
             //거리체크
-            if (Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position) <= Fight.info.Range)
+            if (Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position) <= Fight.info.stat.Range())
             {
                 Fight.nav.isStopped = true;
                 Fight.fsm.SetState(eCardFight_STATE.Attack);
@@ -80,6 +83,7 @@ namespace GameS
 
         public override void Finally()
         {
+            Fight.info.stat.ani.SetBool(Run,false);
             //base.Finally();
             //Fight.info.MoveIdx = 1;
             IsMoving = false;
@@ -87,6 +91,7 @@ namespace GameS
         }
         public override void SetMsg(FSMMsg _msg)
         {
+            
             if (_msg.m_msgType == 2) // 적들이 새로 들어왔으니 바로 검색!
             {
                 Checking();

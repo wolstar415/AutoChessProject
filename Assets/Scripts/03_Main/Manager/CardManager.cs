@@ -4,95 +4,100 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CardManager : MonoBehaviour
+namespace GameS
 {
-    public static CardManager inst;
-
-    
-    public List<GameObject> CardUi;
-    
-    private void Awake()
+    public class CardManager : MonoBehaviour
     {
-        inst = this;
-    }
+        public static CardManager inst;
 
-    public void CardResetFunc(int[] idxs)
-    {
-        for (int i = 0; i < idxs.Length; i++)
+
+        public List<GameObject> CardUi;
+
+        private void Awake()
         {
-            CardSetting(i, idxs[i]);
-            
-        }
-        
-    }
-
-
-    public void CardReset()
-    {
-        
-        MasterInfo.inst.CardResetNetworkFunc1();
-    }
-
-    public void CardButton(int idx)
-    {
-        var Cardinfo = CardUi[idx].GetComponent<CardUI_Info>();
-        if (Cardinfo.IsBuy==false)
-        {
-            return;
-        }
-        if (PlayerInfo.Inst.Gold<Cardinfo.Cost)
-        {
-            return;
+            inst = this;
         }
 
-        if (!CreateManager.inst.CheckCreate(Cardinfo.Idx))
+        public void CardResetFunc(int[] idxs)
         {
-            return;
+            for (int i = 0; i < idxs.Length; i++)
+            {
+                CardSetting(i, idxs[i]);
+
+            }
+
         }
-        PlayerInfo.Inst.Gold -= Cardinfo.Cost;
-        CardBuy(idx);
 
-    }
 
-    public void CardSetting(int idx,int i)
-    {
-        //i는 카드 번호
-        var Cardinfo = CardUi[idx].GetComponent<CardUI_Info>();
-        if (Cardinfo.IsBuy==true)
+        public void CardReset()
         {
-            MasterInfo.inst.CardAdd(Cardinfo.Idx);
+
+            MasterInfo.inst.CardResetNetworkFunc1();
         }
-        
-        Cardinfo.IsBuy = true;
-        CharacterInfo chinfo = CsvManager.inst.characterInfo[i];
-        int cardIdx = chinfo.Idx;
-        int icon = chinfo.Icon;
-        int name = chinfo.Name;
-        int cost = chinfo.Tier;
-        int Trait1 = chinfo.Trait1;
-        int Trait2 = chinfo.Trait2;
-        int Job1 = chinfo.Job1;
-        int Job2 = chinfo.Job2;
+
+        public void CardButton(int idx)
+        {
+            var Cardinfo = CardUi[idx].GetComponent<CardUI_Info>();
+            if (Cardinfo.IsBuy == false)
+            {
+                return;
+            }
+
+            if (PlayerInfo.Inst.Gold < Cardinfo.Cost)
+            {
+                return;
+            }
+
+            if (!CreateManager.inst.CheckCreate(Cardinfo.Idx))
+            {
+                return;
+            }
+
+            PlayerInfo.Inst.Gold -= Cardinfo.Cost;
+            CardBuy(idx);
+
+        }
+
+        public void CardSetting(int idx, int i)
+        {
+            //i는 카드 번호
+            var Cardinfo = CardUi[idx].GetComponent<CardUI_Info>();
+            if (Cardinfo.IsBuy == true)
+            {
+                MasterInfo.inst.CardAdd(Cardinfo.Idx);
+            }
+
+            Cardinfo.IsBuy = true;
+            CharacterInfo chinfo = CsvManager.inst.characterInfo[i];
+            int cardIdx = chinfo.Idx;
+            int icon = chinfo.Icon;
+            int name = chinfo.Name;
+            int cost = chinfo.Tier;
+            int Trait1 = chinfo.Trait1;
+            int Trait2 = chinfo.Trait2;
+            int Job1 = chinfo.Job1;
+            int Job2 = chinfo.Job2;
 
 
-        Cardinfo.CardSet(cardIdx,icon,name,cost,Trait1,Trait2,Job1,Job2);
-        //MasterInfo.inst.CardRemove(i);
+            Cardinfo.CardSet(cardIdx, icon, name, cost, Trait1, Trait2, Job1, Job2);
+            //MasterInfo.inst.CardRemove(i);
 
+
+
+        }
+
+
+        public void CardBuy(int idx)
+        {
+            var Cardinfo = CardUi[idx].GetComponent<CardUI_Info>();
+            int Cardidx = Cardinfo.Idx;
+            Cardinfo.Cardback();
+            CreateManager.inst.CreateCharacter(Cardidx);
+
+
+
+        }
 
 
     }
-
-
-    public void CardBuy(int idx)
-    {
-        var Cardinfo = CardUi[idx].GetComponent<CardUI_Info>();
-        int Cardidx = Cardinfo.Idx;
-        Cardinfo.Cardback();
-        CreateManager.inst.CreateCharacter(Cardidx);
-
-
-
-    }
-    
-
 }

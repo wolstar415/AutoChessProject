@@ -58,6 +58,8 @@ public class CharacterInfo
     public float Speed;
     public float Mana;
     public float Mana_Max;
+    public float CriPer;
+    public float CriDmg;
     public SkillInfo skillinfo;
 }
 
@@ -221,6 +223,8 @@ public class CsvManager : MonoBehaviour
             characterInfo[i].Speed = float.Parse(csvdata[i]["이속"].ToString());
             characterInfo[i].Mana = float.Parse(csvdata[i]["기본마나"].ToString());
             characterInfo[i].Mana_Max = float.Parse(csvdata[i]["마나"].ToString());
+            characterInfo[i].CriPer = float.Parse(csvdata[i]["크리"].ToString());
+            characterInfo[i].CriDmg = float.Parse(csvdata[i]["크리데미지"].ToString());
             characterInfo[i].skillinfo = skillinfo[i];
             traitcheck(characterInfo[i].Trait1,characterInfo[i].Trait2,characterInfo[i].Job1,characterInfo[i].Job2,characterInfo[i].Icon);
         }

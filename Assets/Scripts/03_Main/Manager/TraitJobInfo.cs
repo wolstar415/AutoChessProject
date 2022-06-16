@@ -49,11 +49,12 @@ namespace GameS
             // 챔피언들 추가
             for (int i = 0; i < CsvManager.inst.traitJobInfo[Idx].Cards.Count; i++)
             {
-                int cicon = CsvManager.inst.traitJobInfo[Idx].Cards[i];
+                int card = CsvManager.inst.traitJobInfo[Idx].Cards[i];
+                int cicon = CsvManager.inst.characterInfo[card].Icon;
                 GameObject ob = Instantiate(IconPrefab, parent);
                 if (ob.TryGetComponent(out Image image))
                 {
-                    image.sprite = IconManager.inst.icon[icon];
+                    image.sprite = IconManager.inst.icon[cicon];
                 }
 
             }

@@ -77,6 +77,8 @@ namespace GameS
 
             return b;
         }
+
+
         #region 아이템 확인 
 
                 public int ItemMixIdx(int idx1, int idx2)

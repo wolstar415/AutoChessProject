@@ -8,6 +8,7 @@ public class Enemy_Scan : MonoBehaviour
 {
     [SerializeField] Card_Info info;
     [SerializeField] Card_FSM_Fight info_fight;
+    
 
     private void OnTriggerEnter(Collider other)
     {

@@ -13,13 +13,16 @@ namespace GameS
     public GameObject Enemy;
     public NavMeshAgent nav;
     public AttackFunc attackFunc;
+    
     [Header("적")]
     public List<GameObject> Enemies;
     public bool IsCool=false;
+    
 
 
      public eCardFight_STATE state; // 인스펙터 확인용
-    [Header("기본")] 
+     [Header("기본")] 
+     public float noConTime = 0;
     public bool stop = false;
         public Card_Info info;
 
@@ -158,13 +161,19 @@ namespace GameS
 
         public void CoolStart()
         {
-            StartCoroutine(CoolFunc(info.Atk_Cool) );
+            StartCoroutine(CoolFunc(info.stat.Atk_Cool()) );
         }
         IEnumerator CoolFunc(float f)
         {
             yield return YieldInstructionCache.WaitForSeconds(f);
             IsCool = true;
 
+        }
+        
+        public void NoConTime(float Time)
+        {
+            noConTime = Time;
+            fsm.SetState(eCardFight_STATE.NoCon);
         }
 
     }
