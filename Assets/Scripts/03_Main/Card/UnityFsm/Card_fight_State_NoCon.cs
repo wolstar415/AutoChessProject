@@ -16,6 +16,7 @@ namespace GameS
 
         public override void Enter(FSMMsg _msg)
         {
+            Fight.state = eCardFight_STATE.NoCon;
             CurTime = 0f;
             //base.Enter(_msg);
 

@@ -34,7 +34,7 @@ namespace GameS
                 if (PlayerInfo.Inst.PlayerCardCntLv[idx].Lv1[i].TryGetComponent(out Card_Info info))
                 {
                     bool b = info.IsFiled;
-                    if (GameSystem_AllInfo.inst.IsBattle == true)
+                    if (PlayerInfo.Inst.IsBattle == true)
                     {
                         if (b == false)
                         {

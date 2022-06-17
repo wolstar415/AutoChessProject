@@ -57,7 +57,8 @@ namespace GameS
             }
             else if (Input.GetKeyUp(KeyCode.S))
             {
-                NetworkManager.inst.TextUi("999",0,PlayerInfo.Inst.PlayerOb.transform.position);
+                NetworkManager.inst.TextUi("999",PlayerInfo.Inst.PlayerOb.transform.position,5);
+                NetworkManager.inst.TextUi("999",PlayerInfo.Inst.PlayerOb.transform.position-new Vector3(0,0,3),1);
             }
         }
     }

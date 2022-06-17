@@ -294,4 +294,64 @@ public class MasterInfo : MonoBehaviourPunCallbacks
             
         }
     }
+
+     public void MaserGoPveEnd()
+     {
+         pv.RPC(nameof(RPC_MaserGoPveEnd),RpcTarget.MasterClient,PlayerInfo.Inst.PlayerIdx);
+     }
+
+     [PunRPC]
+     void RPC_MaserGoPveEnd(int pidx)
+     {
+         NetworkManager.inst.players[pidx].BattleEnd = true;
+     }
+
+     public void MasterPveStart(float t)
+     {
+         StartCoroutine(IPVEStart(t));
+     }
+     IEnumerator IPVEStart(float t)
+     {
+         yield return YieldInstructionCache.WaitForSeconds(t);
+         //전부 실행
+         NetworkManager.inst.BattleReady();
+         yield return YieldInstructionCache.WaitForSeconds(2);
+         NetworkManager.inst.BattleStart();
+         //배틀시작
+
+         while (true)
+         {
+             bool b = true;
+             for (int i = 0; i < NetworkManager.inst.players.Count; i++)
+             {
+                 if (NetworkManager.inst.players[i].State==1&&NetworkManager.inst.players[i].BattleEnd==false)
+                 {
+                     b = false;
+                     break;
+                 }
+             }
+
+             if (b)
+             {
+                 break;
+             }
+             yield return YieldInstructionCache.WaitForSeconds(1);
+         }
+         
+         yield return YieldInstructionCache.WaitForSeconds(1);
+         NetworkManager.inst.BattleEnd();
+         yield return YieldInstructionCache.WaitForSeconds(1);
+         if (PlayerInfo.Inst.PVP)
+         {
+             NetworkManager.inst.RoundFuncGo(1);
+         }
+         else
+         {
+             NetworkManager.inst.RoundFuncGo(2);
+                
+         }
+
+
+     }
+     
 }

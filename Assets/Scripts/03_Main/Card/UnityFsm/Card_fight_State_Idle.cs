@@ -27,7 +27,7 @@ namespace GameS
 
         void NextFind()
         {
-            Fight.FindEnemy();
+            Fight.Enemy=Fight.FindEnemy();
             if (Fight.Enemy==null)
             return;
 

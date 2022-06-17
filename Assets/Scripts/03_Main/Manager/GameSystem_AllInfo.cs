@@ -30,7 +30,7 @@ namespace GameS
         public List<GameObject> PickCard;
 
         public List<GameObject> pickNoMove;
-        public bool IsBattle = false;
+        //public bool IsBattle = false;
 
         [Header("UI정보들")] public Transform ItemCanvs;
         public Transform ItemParent;

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameS;
+using JetBrains.Annotations;
 using Photon.Pun;
 using UniRx;
 using Unity.VisualScripting;
@@ -28,7 +29,7 @@ public class PlayerCardCnt
         return Lv1;
     }
 }
-public class PlayerInfo : MonoBehaviour
+public class PlayerInfo : MonoBehaviourPunCallbacks
 {
     public PhotonView pv;
     public GameObject PlayerOb;
@@ -37,6 +38,11 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField]private int gold;
     public int Level;
     [SerializeField] private int life;
+    public int victoryCnt;
+    public int defeatCnt;
+    public bool IsVictory;
+
+    public bool BattleEnd;
 
     public int Life
     {
@@ -96,10 +102,18 @@ public class PlayerInfo : MonoBehaviour
     public bool PickRound = false;
     [Header("전투관련")] 
     public int EnemyIdx=-1;
-
+    public bool IsBattle=false;
+    public int deadCnt;
+    public int pVEdeadCnt;
+    
     public bool BattleMove = false;
     [Header("픽관련")] 
     public bool IsPick = false;
+
+    [Header("현황")] 
+    public List<GameObject> PlayerCard;
+    public List<GameObject> PlayerCard_Filed;
+    public List<GameObject> PlayerCard_NoFiled;
 
 
     [PunRPC]
@@ -296,6 +310,52 @@ public class PlayerInfo : MonoBehaviour
             p.LevelSet(Level);
         }
         }
+    }
+
+    public void PveDeadCheck()
+    {
+        pVEdeadCnt--;
+        if (pVEdeadCnt<=0)
+        {
+            //몹 다 잡음 게임끝났다!.
+            PlayerInfo.Inst.BattleEnd = true;
+            MasterInfo.inst.MaserGoPveEnd();
+        }
+    }
+
+    public void DeadCheck()
+    {
+        deadCnt--;
+        if (deadCnt<=0)
+        {
+            if (!PlayerInfo.Inst.PVP)
+            {
+                //몹들한테 데미지 받기.
+            }
+            else
+            {
+                //현재 복사랑싸우고있는지 체크하기
+            }
+        }
+    }
+
+    public void Victory()
+    {
+        
+    }
+
+    public void SelfPveDamage()
+    {
+        
+    }
+    public void SelfPvPDamage()
+    {
+        
+    }
+
+    public void GoDamage()
+    {
+        
     }
 
     void DeadFunc()

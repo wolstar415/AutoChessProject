@@ -16,6 +16,7 @@ namespace GameS
 
         public override void Enter(FSMMsg _msg)
         {
+            //Debug.Log("어택");
             coolTime = 0;
             Fight.state = eCardFight_STATE.Attack;
             Fight.FindEnemy(); // 체크
@@ -38,11 +39,14 @@ namespace GameS
                 return;
             }
             //거리가멀거나 적이없거나 무적이거나 죽었을때
-            if (Fight.EnemyCheck() == false||Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position) > Fight.info.stat.Range())
+            if (Fight.Enemy==null||Fight.EnemyCheck() == false||Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position) > Fight.info.stat.Range())
             {
                 Fight.fsm.SetState(eCardFight_STATE.Idle);
                 return;
             }
+            Vector3 dir = Fight.Enemy.transform.position - Fight.transform.position;
+            Fight.transform.rotation = Quaternion.Lerp(Fight.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
+
 
             if (Fight.IsCool) // 공격할수있을때 공격!
             {

@@ -68,8 +68,9 @@ namespace GameS
             Fight.nav.SetDestination(Fight.Enemy.transform.position); 
             
             //거리체크
-            if (Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position) <= Fight.info.stat.Range())
+            if (Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position) <= Fight.info.stat.Range()+1f)
             {
+            // Debug.Log($"거리 :{Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position)}\n 사정거리:{Fight.info.stat.Range()}");
                 Fight.nav.isStopped = true;
                 Fight.fsm.SetState(eCardFight_STATE.Attack);
             }

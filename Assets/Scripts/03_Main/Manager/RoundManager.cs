@@ -27,13 +27,25 @@ namespace GameS
             EventManager.inst.Sub_CardBattleMove.OnNext(1);
             GoldSet();
             CameraMoveFunc2();
+
+            PlayerInfo.Inst.PlayerOb.GetComponent<PlayerMoving>().nav.enabled = false;
+            PlayerInfo.Inst.PlayerOb.transform.position =
+                PositionManager.inst.playerPositioninfo[Enemyidx].PlayerMovePos.position;
+            PlayerInfo.Inst.PlayerOb.GetComponent<PlayerMoving>().nav.enabled = true;
+
+
+
         }
 
         //원래대로 이동하기
         public void BattleMoveFunc2()
         {
             GoldObReSet();
-            if (PlayerInfo.Inst.EnemyIdx==-1|| PlayerInfo.Inst.BattleMove==false) return;
+            if (PlayerInfo.Inst.EnemyIdx == -1 || PlayerInfo.Inst.BattleMove == false)
+            {
+                EventManager.inst.Sub_CardBattleMove.OnNext(2);
+                return;
+            }
             
             int pidx = PlayerInfo.Inst.PlayerIdx;
             EventManager.inst.Sub_CardBattleMove.OnNext(2);
@@ -41,6 +53,10 @@ namespace GameS
             CameraMoveFunc1();
             PlayerInfo.Inst.EnemyIdx = -1;
             PlayerInfo.Inst.BattleMove = false;
+            PlayerInfo.Inst.PlayerOb.GetComponent<PlayerMoving>().nav.enabled = false;
+            PlayerInfo.Inst.PlayerOb.transform.position =
+                PositionManager.inst.playerPositioninfo[pidx].PlayerMovePos.position;
+            PlayerInfo.Inst.PlayerOb.GetComponent<PlayerMoving>().nav.enabled = true;
         }
 
         public void GoldSet()
@@ -113,6 +129,8 @@ namespace GameS
                 Round_PVE();
                 UIManager.inst.TimeFunc(TimeWait);
                 PlayerInfo.Inst.PVP = false;
+                
+                
             }
             else if (RoundCheck<1000)
             {
@@ -156,14 +174,25 @@ namespace GameS
          void Round_PVP_StartFunc()
         {
             if (PlayerInfo.Inst.Dead == true) return;
+            int TimeWait = CsvManager.inst.RoundCheck4[PlayerInfo.Inst.Round];
+            CardManager.inst.CardReset();
             
         }
          void Round_PVE_StartFunc()
         {
             if (PlayerInfo.Inst.Dead == true) return;
-            
-            
-            
+            int TimeWait = CsvManager.inst.RoundCheck4[PlayerInfo.Inst.Round];
+            PlayerInfo.Inst.EnemyIdx = 10;
+            if (PlayerInfo.Inst.Round>=2)
+            {
+                CardManager.inst.CardReset();
+            }
+            PVEManager.inst.PVEstart();
+            if (PhotonNetwork.IsMasterClient)
+            {
+                MasterInfo.inst.MasterPveStart(TimeWait);
+            }
+
         }
          void Round_PICk_StartFunc()
         {
@@ -171,6 +200,7 @@ namespace GameS
             int idxcheck = PlayerInfo.Inst.RoundIdx;
             int idx = PlayerInfo.Inst.PlayerIdx;
 
+            
             PlayerInfo.Inst.PickRound = true;
             //UI설정
             UIManager.inst.PickUiSetting();
@@ -194,14 +224,104 @@ namespace GameS
         public void Round_PVP_EndFunc()
         {
             if (PlayerInfo.Inst.Dead == true) return;
-            
+            PlayerInfo.Inst.IsBattle = false;
+            UIManager.inst.BattleUiSetting();
+            MoneyCheck(true);
             RoundNext();
         }
         public void Round_PVE_EndFunc()
         {
             if (PlayerInfo.Inst.Dead == true) return;
-            
+            PlayerInfo.Inst.IsBattle = false;
+            UIManager.inst.BattleUiSetting();
+            PlayerInfo.Inst.EnemyIdx = -1;
+            MoneyCheck(false);
             RoundNext();
+        }
+
+        public void MoneyCheck(bool PVP)
+        {
+            int money = 0;
+
+            int round = PlayerInfo.Inst.Round;
+            int m = PlayerInfo.Inst.Gold;
+            if (round<=2)
+            {
+                money += 2;
+            }
+            else if(round==3)
+            {
+                money += 3;
+            }
+            else if(round==4)
+            {
+                money += 4;
+            }
+            else
+            {
+                money += 5;
+            }
+
+            if (PVP)
+            {
+                
+            
+
+            if (PlayerInfo.Inst.IsVictory&&PlayerInfo.Inst.victoryCnt>=2)
+            {
+                if (PlayerInfo.Inst.victoryCnt>=5)
+                {
+                    money += 3;
+                }
+                else if (PlayerInfo.Inst.victoryCnt>=4)
+                {
+                    money += 2;
+                }
+                else
+                {
+                    money += 1;
+                }
+            }
+            else if(PlayerInfo.Inst.defeatCnt>=2)
+            {
+                if (PlayerInfo.Inst.defeatCnt>=5)
+                {
+                    money += 3;
+                }
+                else if (PlayerInfo.Inst.defeatCnt>=4)
+                {
+                    money += 2;
+                }
+                else
+                {
+                    money += 1;
+                }
+            }
+            }
+            
+            if (m>=50)
+            {
+                money += 5;
+            }
+            else if (m>=40)
+            {
+                money += 4;
+            }
+            else if (m>=30)
+            {
+                money += 3;
+            }
+            else if (m>=20)
+            {
+                money += 2;
+            }
+            else if (m>=10)
+            {
+                money += 1;
+            }
+
+            PlayerInfo.Inst.Gold += money;
+
         }
         public void Round_PICk_EndFunc()
         {

@@ -26,10 +26,11 @@ namespace GameS
             StartCoroutine(OnHUDText(bounds, gap));
         }
 
-        public void Play2(string text, Color color, Vector3 pos, float gap = 0.1f)
+        public void Play2(string text, Color color, Vector3 pos,float Size=1.0f, float gap = 0.1f)
         {
             textHUD.text = text;
             textHUD.color = color;
+            rectTransform.localScale = new Vector3(Size, Size, Size);
             StartCoroutine(OnHUDText2(pos, gap));
         }
 

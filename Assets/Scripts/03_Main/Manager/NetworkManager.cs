@@ -25,6 +25,7 @@ public class playerinfo
     //2 : 관전중
     //3 : 나감
     public bool IsPickBool = false;
+    public bool BattleEnd = false;
 }
 
     public class NetworkManager : MonoBehaviourPunCallbacks
@@ -206,6 +207,23 @@ public class playerinfo
                 UIManager.inst.BattleUiSetting();
             }
         }
+        public void  CameraMovePlayer(int playeridx,bool b)
+        {
+
+            if (b)
+            {
+                PlayerInfo.Inst.camer.transform.position = PositionManager.inst.Camera_AttackPos[playeridx].position;
+                PlayerInfo.Inst.camer.transform.rotation = PositionManager.inst.Camera_AttackPos[playeridx].rotation;
+
+            }
+            else
+            {
+                PlayerInfo.Inst.camer.transform.position = PositionManager.inst.Camera_Pos[playeridx].position;
+                PlayerInfo.Inst.camer.transform.rotation = PositionManager.inst.Camera_Pos[playeridx].rotation;
+
+            }
+
+        }
 
         void PosSetting()
         {
@@ -309,20 +327,121 @@ public class playerinfo
             UIManager.inst.PlayerInfoOrder();
         }
 
-        public void TextUi(string text, int coloridx, Vector3 pos, float gap = 0.1f)
+        public void TextUi(string text, Vector3 pos,float Size=1f,int coloridx=0, float gap = 0.1f)
         {
-            pv.RPC(nameof(RPC_TextUi),RpcTarget.All,text,coloridx,pos,gap);
+            pv.RPC(nameof(RPC_TextUi),RpcTarget.All,text,Size,coloridx,pos,gap);
         }
 
         [PunRPC]
-        void RPC_TextUi(string text, int coloridx, Vector3 pos, float gap)
+        void RPC_TextUi(string text,float Size, int coloridx, Vector3 pos, float gap)
         {
 
             GameObject UI = ObjectPooler.SpawnFromPool("DamageText", pos, Quaternion.identity);
             if (UI.TryGetComponent(out UIHUDText hud))
             {
-                hud.Play2(text,Dagamecolors[coloridx],pos,gap);
+                hud.Play2(text,Dagamecolors[coloridx],pos,Size,gap);
             }
+        }
+
+        public void BattleReady()
+        {
+            pv.RPC(nameof(RPC_BattleReady),RpcTarget.All);
+
+        }
+
+        [PunRPC]
+        void RPC_BattleReady()
+        {
+            
+            PlayerInfo.Inst.IsBattle = true;
+            PlayerInfo.Inst.deadCnt = PlayerInfo.Inst.PlayerCard_Filed.Count;
+            UIManager.inst.BattleStartUi();
+            for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+            {
+                if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
+                {
+                    info.BattleReady();
+                }
+            }
+
+            if (!PlayerInfo.Inst.PVP)
+            {
+                for (int i = 0; i < PVEManager.inst.Enemis.Count; i++)
+                {
+                    if (PVEManager.inst.Enemis[i].TryGetComponent(out Card_Info info))
+                    {
+                        info.BattleReady();
+                    }
+                }
+            }
+            UIManager.inst.PlayerInfoBattleStart();
+            UIManager.inst.TimeFunc(2);
+        }
+        public void BattleStart()
+        {
+            pv.RPC(nameof(RPC_BattleStart),RpcTarget.All);
+            
+        }
+
+        [PunRPC]
+        void RPC_BattleStart()
+        {
+            
+            for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+            {
+                if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
+                {
+                    info.BattleStart();
+                    
+                }
+            }
+
+            if (!PlayerInfo.Inst.PVP)
+            {
+                for (int i = 0; i < PVEManager.inst.Enemis.Count; i++)
+                {
+                    if (PVEManager.inst.Enemis[i].TryGetComponent(out Card_Info info))
+                    {
+                        info.BattleStart();
+                    }
+                }
+            }
+            UIManager.inst.TimeFunc(60);
+        }
+
+        public void BattleEnd()
+        {
+            pv.RPC(nameof(RPC_BattleEnd),RpcTarget.All);
+        }
+
+        [PunRPC]
+        void RPC_BattleEnd()
+        {
+            //죽은애 다시 살리기
+            if (PhotonNetwork.IsMasterClient)
+            {
+                MasterInfoOrder();
+            }
+            
+            // 에너미 완전삭제
+            for (int i = 0; i < PVEManager.inst.Enemis.Count; i++)
+            {
+                PhotonNetwork.Destroy(PVEManager.inst.Enemis[i]);
+            }
+            PVEManager.inst.Enemis.Clear();
+
+            
+            
+            for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+            {
+                if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
+                {
+                    
+                    info.BattleEnd();
+                }
+            }
+            RoundManager.inst.BattleMoveFunc2();
+
         }
 
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
@@ -21,6 +22,7 @@ namespace GameS
         public float Char_ManaMax;//최대마나
         public float Char_CriPer;//크리
         public float Char_CriDmg;//크리데미지
+        public float Char_NoAttack;//회피
         
         [Header("아이템스탯")] 
         public float Item_Hp; //체력
@@ -35,6 +37,7 @@ namespace GameS
         public float Item_CriPer;//크리
         public float Item_CriDmg;//크리데미지
         public float Item_ManaMax;//최대마나
+        public float Item_NoAttack;//회피
         [Header("버프스탯")] 
         public float Buff_Hp; //체력
         public float Buff_Range ;//사정거리
@@ -48,7 +51,10 @@ namespace GameS
         public float Buff_CriPer;//크리
         public float Buff_CriDmg;//크리데미지
         public float Buff_ManaMax;//최대마나
+        public float Buff_NoAttack;//회피
         private static readonly int Cool = Animator.StringToHash("Cool");
+
+
 
         public override float AtkAniTime()
         {
@@ -62,11 +68,25 @@ namespace GameS
             Mathf.Clamp(hp, 0, 99999999);
             return hp;
         }
+        public override float Mana()//마나
+        {
+            
+            float mp=Char_Mana+Item_Mana+Buff_Mana;
+            Mathf.Clamp(mp, 0, ManaMax());
+            return mp;
+        }
         public override float ManaMax()//최대마나
         {
-            float mp=Char_Mana+Item_Mana+Buff_Mana;
+            float mp=Char_ManaMax+Item_ManaMax+Buff_ManaMax;
             Mathf.Clamp(mp, 0, 9999999);
             return mp;
+        }
+        
+        public override float NoAttack()//회피
+        {
+            float v = Char_NoAttack + Item_NoAttack + Buff_NoAttack;
+            Mathf.Clamp(v, 0f, 100);
+            return v;
         }
         public override float Range()//사정거리
         {
@@ -546,16 +566,18 @@ namespace GameS
 
         public void HpAndMpSet()
         {
+            
+            
             if (currentMana==0||ManaMax()==0)
             {
                 ManaSlider.value = 0;
             }
             else
-            {
-                
-            float mper = currentMana / ManaMax() ;
-            ManaSlider.value = mper;
+            { 
+                float mper = currentMana / ManaMax() ;
+                ManaSlider.value = mper;
             }
+            
 
             if (currentHp==0||HpMax()==0)
             {
@@ -564,10 +586,10 @@ namespace GameS
             }
             else
             {
-                
-            float hper = currentHp / HpMax() ;
-            HpSlider.value = hper;
-            HpSliderCheck.value = hper;
+
+                float hper = currentHp / HpMax();
+                HpSlider.value = hper;
+                HpSliderCheck.value = hper;
             }
         }
 
@@ -579,6 +601,44 @@ namespace GameS
         void RPC_HPAndMpSet()
         {
             HpAndMpSet();
+        }
+        
+        public override void UnitKill()
+        {
+            KillCnt++;
+        }
+
+        public override void UnitDead()
+        {
+            if (!PlayerInfo.Inst.PVP)
+            {
+                if (!IsCard)
+                {
+                    PlayerInfo.Inst.PveDeadCheck();
+                }
+                else
+                {
+                    PlayerInfo.Inst.DeadCheck();
+                }
+            }
+            else
+            {
+                    PlayerInfo.Inst.DeadCheck();
+                
+            }
+
+ 
+            pv.RPC(nameof(RPC_Dead),RpcTarget.All);
+        }
+        
+        
+
+        [PunRPC]
+        void RPC_Dead()
+        {
+            
+            IsDead = true;
+            gameObject.SetActive(false);
         }
     }
 }

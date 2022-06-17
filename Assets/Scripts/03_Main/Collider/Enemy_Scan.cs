@@ -12,23 +12,30 @@ public class Enemy_Scan : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Cards")&& other.gameObject.layer!=info.TeamIdx+6)
+        if ((other.CompareTag("Cards")||other.CompareTag("Enemy"))&& other.gameObject.layer!=info.TeamIdx+6)
         {
-            info_fight.Enemies.Add(other.gameObject);
-            info_fight.EnemyEnter();
+            if (other.GetComponent<Card_Info>().IsFiled )
+            {
+                info_fight.Enemies.Add(other.gameObject);
+                info_fight.EnemyEnter();
+            }
+            
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Cards")&& other.gameObject.layer!=info.TeamIdx+6)
+        if ((other.CompareTag("Cards")||other.CompareTag("Enemy"))&& other.gameObject.layer!=info.TeamIdx+6)
         {
-            
-            info_fight.Enemies.Remove(other.gameObject);
-            if (info_fight.Enemy==other.gameObject)
+            if (other.GetComponent<Card_Info>().IsFiled )
             {
-                info_fight.Enemy = null;
+                info_fight.Enemies.Remove(other.gameObject);
+                if (info_fight.Enemy==other.gameObject)
+                {
+                    info_fight.Enemy = null;
+                }
             }
+            
 
         }
     }

@@ -86,7 +86,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1343,7 +1343,8 @@ GameObject:
   - component: {fileID: 794620965866707054}
   - component: {fileID: 910973219689201242}
   - component: {fileID: 5533469372153832835}
-  m_Layer: 6
+  - component: {fileID: 4009239644382235231}
+  m_Layer: 0
   m_Name: Card_1_0
   m_TagString: Cards
   m_Icon: {fileID: 0}
@@ -1482,7 +1483,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 794620965866707063}
   m_Enabled: 0
   m_AgentTypeID: 0
-  m_Radius: 0.5000001
+  m_Radius: 0.1
   m_Speed: 2
   m_Acceleration: 20
   avoidancePriority: 50
@@ -1525,6 +1526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pv: {fileID: 794620965866707051}
   IsFiled: 0
+  fsm: {fileID: 910973219689201242}
   IsFighting: 0
   IsAttacker: 0
   TeamIdx: 0
@@ -1620,8 +1622,9 @@ MonoBehaviour:
   pv: {fileID: 794620965866707051}
   Enemy: {fileID: 0}
   nav: {fileID: 794620965866707049}
-  attackFunc: {fileID: 0}
+  attackFunc: {fileID: 4009239644382235231}
   Enemies: []
+  Enmies2: []
   IsCool: 0
   state: 0
   noConTime: 0
@@ -1644,11 +1647,11 @@ MonoBehaviour:
   collider: {fileID: 794620964592794633}
   nav: {fileID: 794620965866707049}
   ani: {fileID: 6922979768061096268}
+  IsCard: 1
   StunOb: {fileID: 3324066299501613067}
   _currentHp: 0
   _shiled: 0
   _currentMana: 0
-  _range: 0
   KillCnt: 0
   AttackCnt: 0
   AttackOb: {fileID: 0}
@@ -1658,6 +1661,7 @@ MonoBehaviour:
   ManaSlider: {fileID: 82530741}
   ShiledSlider1: {fileID: 1943425437909673387}
   ShiledSlider2: {fileID: 677942953834748674}
+  info: {fileID: 794620965866707054}
   IsDead: 0
   IsInvin: 0
   IsStun: 0
@@ -1673,6 +1677,7 @@ MonoBehaviour:
   Char_ManaMax: 0
   Char_CriPer: 0
   Char_CriDmg: 0
+  Char_NoAttack: 0
   Item_Hp: 0
   Item_Range: 0
   Item_Atk_Cool: 0
@@ -1685,6 +1690,7 @@ MonoBehaviour:
   Item_CriPer: 0
   Item_CriDmg: 0
   Item_ManaMax: 0
+  Item_NoAttack: 0
   Buff_Hp: 0
   Buff_Range: 0
   Buff_Atk_Cool: 0
@@ -1697,6 +1703,26 @@ MonoBehaviour:
   Buff_CriPer: 0
   Buff_CriDmg: 0
   Buff_ManaMax: 0
+  Buff_NoAttack: 0
+--- !u!114 &4009239644382235231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794620965866707063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50137edc4228dd948a59c8bb0342dcf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: {fileID: 794620965866707054}
+  stat: {fileID: 5533469372153832835}
+  fsm: {fileID: 910973219689201242}
+  IsFastSkill: 0
+  CreatePos: {fileID: 794620965866707055}
+  bulletPrefab: {fileID: 8047877468769543902, guid: 41218a79503f1dd47b64d56752ecd345, type: 3}
+  Target: {fileID: 0}
 --- !u!1 &823211600542394274
 GameObject:
   m_ObjectHideFlags: 0
@@ -1972,7 +1998,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

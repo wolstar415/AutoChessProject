@@ -114,6 +114,19 @@ public class UIManager : MonoBehaviour
         LvText.text = PlayerInfo.Inst.Level.ToString();
 
     }
+
+
+
+    public void BattleStartUi()
+    {
+        TopPanelOb.SetActive(false);
+        FoodText.gameObject.SetActive(false);
+    }
+    public void BattleEndUi()
+    {
+        TopPanelOb.SetActive(true);
+        FoodText.gameObject.SetActive(true);
+    }
     
 
     public void SellSet(int cost)
@@ -127,8 +140,11 @@ public class UIManager : MonoBehaviour
     public void SellClose()
     {
         
+        if (PlayerInfo.Inst.Round>=2)
+        {
+            DownPanel.SetActive(true);
             
-        DownPanel.SetActive(true);
+        }
         SellPanel.SetActive(false);
         
     }
@@ -142,7 +158,11 @@ public class UIManager : MonoBehaviour
     public void CardBuyUiClose()
     {
         BuyPanelOb.SetActive(false);
+        if (!PlayerInfo.Inst.IsBattle)
+        {
         TopPanelOb.SetActive(true);
+            
+        }
         PlayerInfoPanelOb.SetActive(true);
         
     }
@@ -186,7 +206,11 @@ public class UIManager : MonoBehaviour
         BuyPanelOb.SetActive(false);
         InfoPanelOb.SetActive(false);
         TopPancel.SetActive(true);
+        if (PlayerInfo.Inst.Round>=2)
+        {
         DownPanel.SetActive(true);
+            
+        }
         PlayerInfoPanelOb.SetActive(true);
         Foodob.SetActive(true);
         JobAndItemOb.SetActive(true);
@@ -275,7 +299,12 @@ public class UIManager : MonoBehaviour
 
     public void PlayerInfoClick(int idx)
     {
-        
+        //공격중이라면 공격중인곳으로가기
+        //아니라면 그곳으로 이동
+
+
+        NetworkManager.inst.CameraMovePlayer(idx,false);
+
     }
     public void PlayerInfoBattleStart()
     {

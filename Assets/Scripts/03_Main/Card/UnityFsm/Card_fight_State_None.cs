@@ -20,14 +20,14 @@ namespace GameS
             Fight.state = eCardFight_STATE.None;
             if (_msg!=null)
                 return; //맨처음일때는 밑에 못하게
-            
-            
-            //다 돌아오게하기. 위치 등등등.
+ 
 
+            
         }
         
         public override void End()
         {
+            Fight.info.IsFighting = true;
             //공격상태로 변경하기
             //
         }

@@ -151,6 +151,11 @@ namespace GameS
         void ClickCardFunc(GameObject ob)
         {
             ClickCard = ob;
+            if (PlayerInfo.Inst.IsBattle&&ob.GetComponent<Card_Info>().IsFiled)
+            {
+                ShowCharacterInfo(ClickCard);
+                return;
+            }
             MousePos = ob.transform.position;
             clickstate = PlayerClickState.Card;
             SellCheck = false;
@@ -183,7 +188,11 @@ namespace GameS
                     }
 
                     PlayerInfo.Inst.PlayerTileOb.SetActive(true);
+                    if (!PlayerInfo.Inst.IsBattle)
+                    {
                     PlayerInfo.Inst.FiledTileOb.SetActive(true);
+                        
+                    }
                     UIManager.inst.SellSet(ClickCard.GetComponent<Card_Info>().costCheck());
                 }
             }

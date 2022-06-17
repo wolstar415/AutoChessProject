@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using UnityEngine.AI;
 
 namespace GameS
 {
@@ -23,6 +24,7 @@ namespace GameS
     {
         [Header("네트워크")] public PhotonView pv;
         [Header("전투상태")] public bool IsFiled;
+        public Card_FSM_Fight fsm;
         public bool IsFighting = false;
         public bool IsAttacker = false;
         public int TeamIdx = 0;
@@ -57,6 +59,7 @@ namespace GameS
         [Header("Pick")] public int pickIdx = -1;
 
         public Boolean IsPick;
+
         // Start is called before the first frame update
 
 
@@ -124,6 +127,7 @@ namespace GameS
 
 
             stat.RangeSet();
+            PlayerInfo.Inst.PlayerCard.Add(gameObject);
             //이벤트부분 등록
 
             Event_MoveReset = EventManager.inst.Sub_CardMove.Subscribe(_ => { MoveReset(); }
@@ -170,6 +174,33 @@ namespace GameS
             }
         }
 
+        public void EnemyStart(float hp,float damage,float Cool,int Checkidx)
+        {
+            IsFiled = true;
+            stat.nav.speed = 200 * 0.01f;
+            stat.Char_Range = 1.8f;
+            stat.RangeSet();
+            pv.RPC(nameof(RPC_EnemyStart),RpcTarget.All,hp,damage,Cool,Checkidx,PlayerInfo.Inst.PlayerIdx);
+        }
+
+        [PunRPC]
+        void RPC_EnemyStart(float hp,float damage,float Cool,int Checkidx,int playeridx)
+        {
+
+
+
+            stat.Char_Hp = hp;
+            stat.Char_Atk_Cool = Cool;
+            stat.Char_Atk_Damage = damage;
+            
+
+            TeamIdx = 10;
+            EnemyTeamIdx = playeridx;
+            gameObject.layer = 16;
+            stat.currentHp = stat.HpMax();
+            stat.currentMana = stat.ManaMax();
+            stat.HpAndMpSet();
+        }
         public void LevelUp()
         {
             PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level).Remove(gameObject);
@@ -196,6 +227,9 @@ namespace GameS
         public void remove()
         {
 
+            PlayerInfo.Inst.PlayerCard_NoFiled.Remove(gameObject);
+            PlayerInfo.Inst.PlayerCard_Filed.Remove(gameObject);
+            PlayerInfo.Inst.PlayerCard.Remove(gameObject);
             //이벤트삭제
             Event_MoveReset.Dispose();
             Event_BattleMove.Dispose();
@@ -212,7 +246,7 @@ namespace GameS
             if (IsFiled)
             {
                 PlayerInfo.Inst.food--;
-                FiledOut();
+                FiledOut(true);
             }
 
             for (int i = 0; i < 3; i++)
@@ -500,19 +534,103 @@ namespace GameS
             MoveReset();
         }
 
-        public void FiledIn()
+        public void FiledIn(bool b=false)
         {
+            if (!b)
+            {
+                PlayerInfo.Inst.PlayerCard_Filed.Add(gameObject);
+                
+            }
+            
+            PlayerInfo.Inst.PlayerCard_NoFiled.Remove(gameObject);
             PlayerInfo.Inst.PlayerFiledCardCntAdd(Character_trait1, Character_trait2, Character_Job1, Character_Job2,
                 Idx);
 
         }
 
-        public void FiledOut()
+        public void FiledOut(bool b=false)
         {
+            if (!b)
+            {
+            PlayerInfo.Inst.PlayerCard_NoFiled.Add(gameObject);
+                
+            }
+            PlayerInfo.Inst.PlayerCard_Filed.Remove(gameObject);
             PlayerInfo.Inst.PlayerFiledCardCntRemove(Character_trait1, Character_trait2, Character_Job1, Character_Job2,
                 Idx);
 
         }
+
+        public int IsItemHave(int item)
+        {
+            int check = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                if (Item[i]==item)
+                {
+                    check++;
+                }
+            }
+
+
+            return check;
+        }
+
+
+        public void BattleReady()
+        {
+            if (!IsFiled) return;
+
+            if (stat.IsCard)
+            {
+                
+            int Eidx = PlayerInfo.Inst.EnemyIdx;
+            EnemyTeamIdx = Eidx;
+            }
+            else
+            {
+                EnemyTeamIdx = PlayerInfo.Inst.PlayerIdx;
+            }
+
+            stat.collider.enabled = true;
+            stat.nav.enabled = true;
+        }
+        public void BattleStart()
+        {
+            if (!IsFiled) return;
+
+            fsm.BattleStart();
+        }
+
+        public void BattleEnd()
+        {
+            if (!IsFiled) return;
+            
+            fsm.fsm.SetState(eCardFight_STATE.None);
+            gameObject.SetActive(true);
+            //MoveReset();
+            stat.currentHp = stat.HpMax();
+            stat.currentMana = stat.Mana();
+            stat.shiled = 0;
+            stat.nav.enabled = false;
+            stat.collider.enabled = false;
+            
+            stat.IsDead = false;
+            stat.IsInvin = false;
+            IsFighting = false;
+            fsm.Enemies.Clear();
+            
+            //
+            //버프리셋
+
+            
+            
+            stat.currentHp = stat.HpMax();
+            stat.currentMana = stat.Mana();
+        }
+
+
+
 
 
     }
