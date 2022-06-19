@@ -11,7 +11,7 @@ namespace GameS
     {
         public float attackTime=1f;
         public PhotonView pv;
-        public BoxCollider collider;
+        public SphereCollider collider;
         public NavMeshAgent nav;
         public Animator ani;
         public bool IsCard = true;
@@ -37,9 +37,11 @@ namespace GameS
         [SerializeField] protected Slider ShiledSlider1;
         [SerializeField] protected Slider ShiledSlider2;
         [Header("카드만")] 
-        [SerializeField] protected Card_Info info;
+        [SerializeField] public Card_Info info;
 
         private Coroutine HpFunc;
+        public bool NoDmg = false;
+        public bool IsCopy = false;
 
         public virtual float HpMax()//최대체력
         {
@@ -258,7 +260,7 @@ namespace GameS
         {
             float f = Range();
             Mathf.Clamp(f, 0, 10);
-            collider.size = new Vector3(f, f, f);
+            collider.radius =f;
         }
 
         IEnumerator IHpSlider(float time=0.8f)

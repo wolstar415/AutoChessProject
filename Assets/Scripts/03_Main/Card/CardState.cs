@@ -54,6 +54,8 @@ namespace GameS
         public float Buff_NoAttack;//회피
         private static readonly int Cool = Animator.StringToHash("Cool");
 
+        public int Checkidx = 0; //중립몹전용
+
 
 
         public override float AtkAniTime()
@@ -214,6 +216,9 @@ namespace GameS
                 pv.RPC(nameof(RPC_CoolPlus),RpcTarget.All,f1,f2,f3);
                 
             }
+
+            float f = (100+f2 + f3) * 0.01f;
+            ani.SetFloat("Speed",f);
         }
         public void AtkPlus(float Char, float Item, float buff, bool network = false)
         {
@@ -615,6 +620,8 @@ namespace GameS
                 if (!IsCard)
                 {
                     PlayerInfo.Inst.PveDeadCheck();
+
+                    pveDeadItem();
                 }
                 else
                 {
@@ -630,8 +637,40 @@ namespace GameS
  
             pv.RPC(nameof(RPC_Dead),RpcTarget.All);
         }
-        
-        
+
+
+        public void pveDeadItem()
+        {
+            if (Checkidx==0)
+            {
+                int itemidx = UnityEngine.Random.Range(0, 8);
+                EffectManager.inst.pveItemCreate(transform.position,"Box",itemidx,1);
+                
+            }
+            else if (Checkidx==1)
+            {
+                int coinidx = UnityEngine.Random.Range(1, 3);
+                EffectManager.inst.pveItemCreate(transform.position,"Coin",0,coinidx);
+            }
+            else if (Checkidx==2)
+            {
+                int itemidx = UnityEngine.Random.Range(0, 8);
+                int coinidx = UnityEngine.Random.Range(0, 3);
+                EffectManager.inst.pveItemCreate(transform.position,"Box",itemidx,1);
+                EffectManager.inst.pveItemCreate(transform.position,"Coin",0,coinidx);
+            }
+            else if (Checkidx==100)
+            {
+                if (info.Item[0]>=0)
+                {
+                    EffectManager.inst.pveItemCreate(transform.position,"Box",info.Item[0],1);
+                }
+            }
+            
+
+            
+            
+        }
 
         [PunRPC]
         void RPC_Dead()

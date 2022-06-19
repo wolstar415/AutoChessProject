@@ -106,6 +106,11 @@ MonoBehaviour:
   - RPC_BattleEnd
   - RPC_MaserGoPveEnd
   - RPC_LayerSet
+  - RPC_BattelEndFunc1
+  - RPC_RoundDamage
+  - Victory
+  - RPC_EffectCreate
+  - RPC_DeadFunc
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

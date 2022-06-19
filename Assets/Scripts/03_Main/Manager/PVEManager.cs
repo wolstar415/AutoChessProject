@@ -31,6 +31,11 @@ namespace GameS
             switch (roundidx)
             {
                 case 1:
+                    if (true)
+                    {
+                        
+                
+                    
                     pos = PlayerInfo.Inst.EnemyFiledTile[8].transform.position;
                     pos.y = 1.5f;
                    GameObject ob1= PhotonNetwork.Instantiate("Monster1", pos, Quaternion.Euler(0, 180, 0));
@@ -40,10 +45,62 @@ namespace GameS
                     pos.y = 1.5f;
                     GameObject ob2=  PhotonNetwork.Instantiate("Monster1", pos, Quaternion.Euler(0, 180, 0));
                     Enemis.Add(ob2);
-                    ob2.GetComponent<Card_Info>().EnemyStart(150,35,1,0);
+                    ob2.GetComponent<Card_Info>().EnemyStart(150,35,1,1);
 
                     PlayerInfo.Inst.pVEdeadCnt = 2;
                     break;
+                    }
+                
+                case 2:
+                    if (true)
+                    {
+                        
+                    pos = PlayerInfo.Inst.EnemyFiledTile[8].transform.position;
+                    pos.y = 1.5f;
+                    GameObject ob1= PhotonNetwork.Instantiate("Monster1", pos, Quaternion.Euler(0, 180, 0));
+                    Enemis.Add(ob1);
+                    ob1.GetComponent<Card_Info>().EnemyStart(150,35,1,0);
+                    
+                    pos = PlayerInfo.Inst.EnemyFiledTile[11].transform.position;
+                    pos.y = 1.5f;
+                    GameObject ob2=  PhotonNetwork.Instantiate("Monster1", pos, Quaternion.Euler(0, 180, 0));
+                    Enemis.Add(ob2);
+                    ob2.GetComponent<Card_Info>().EnemyStart(150,35,1,1);
+                    
+                    pos = PlayerInfo.Inst.EnemyFiledTile[23].transform.position;
+                    pos.y = 1.5f;
+                    GameObject ob3=  PhotonNetwork.Instantiate("Monster1", pos, Quaternion.Euler(0, 180, 0));
+                    Enemis.Add(ob3);
+                    ob3.GetComponent<Card_Info>().EnemyStart(150,35,1,1);
+
+                    PlayerInfo.Inst.pVEdeadCnt = 3;
+                    break;
+                    }
+                case 3:
+                    if (true)
+                    {
+                        
+                    pos = PlayerInfo.Inst.EnemyFiledTile[8].transform.position;
+                    pos.y = 1.5f;
+                    GameObject ob1= PhotonNetwork.Instantiate("Monster1", pos, Quaternion.Euler(0, 180, 0));
+                    Enemis.Add(ob1);
+                    ob1.GetComponent<Card_Info>().EnemyStart(150,35,1,0);
+                    
+                    pos = PlayerInfo.Inst.EnemyFiledTile[11].transform.position;
+                    pos.y = 1.5f;
+                    GameObject ob2=  PhotonNetwork.Instantiate("Monster1", pos, Quaternion.Euler(0, 180, 0));
+                    Enemis.Add(ob2);
+                    ob2.GetComponent<Card_Info>().EnemyStart(150,35,1,1);
+                    
+                    pos = PlayerInfo.Inst.EnemyFiledTile[23].transform.position;
+                    pos.y = 1.5f;
+                    GameObject ob3=  PhotonNetwork.Instantiate("Monster2", pos, Quaternion.Euler(0, 180, 0));
+                    Enemis.Add(ob3);
+                    ob3.GetComponent<Card_Info>().EnemyStart(150,35,1,2);
+
+                    PlayerInfo.Inst.pVEdeadCnt = 3;
+                    break;
+                    }
                 default:
                     break;
             }

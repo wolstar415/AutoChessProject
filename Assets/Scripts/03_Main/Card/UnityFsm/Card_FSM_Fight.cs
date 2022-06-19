@@ -78,8 +78,9 @@ namespace GameS
 
         public List<GameObject> EnemyReal()
         {
+
             List<GameObject> result = Enemies.
-                Where(ob => ob.GetComponent<UnitState>().IsDead == false &&
+                Where(ob => ob.GetComponent<UnitState>().IsDead == false &&ob.GetComponent<Card_Info>().IsFiled&&
                                                           ob.GetComponent<UnitState>().IsInvin == false).
                 OrderBy(obj =>
             {
@@ -110,15 +111,22 @@ namespace GameS
             
             }
             Enmies2.Clear();
+            if (Enemies.Count>0)
+            {
+                
             Enmies2 = EnemyReal();
+            }
 
             if (Enmies2.Count==0)
-                return Enemy = FindNearestObject();
+                Enemy = FindNearestObject();
 
 
-            
-            //Enemysort();
-            if (Enemy==null)
+
+            if (Enemy!=null)
+            {
+                return Enemy;
+            }
+            else if (Enmies2.Count>0)
             {
                 return Enemy = Enmies2[0];
             }
@@ -130,6 +138,7 @@ namespace GameS
         public GameObject FindNearestObject()
         {
 
+            
             // Collider[] c =
             // Physics.OverlapSphereNonAlloc(transform.position, 30f, c,
             //     GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
@@ -137,15 +146,16 @@ namespace GameS
             // var size = Physics.OverlapSphereNonAlloc(transform.position, 30f, c, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
 
             Collider[] c = Physics.OverlapSphere(transform.position, 30f, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
+              c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false&&ob.GetComponent<Card_Info>().IsFiled&&
+                          ob.GetComponent<UnitState>().IsInvin == false).OrderBy(ob => Vector3.Distance(transform.position, ob.transform.position)).ToArray();
 
-            c.Where(ob => ob.GetComponent<UnitState>().IsDead == false &&
-                          ob.GetComponent<UnitState>().IsInvin == false).OrderBy(ob => Vector3.Distance(transform.position, ob.transform.position));
             
-            if (c.Length >0)
-            {
-                Enemy = c[0].gameObject;
-                return Enemy;
-            }
+             if (c.Length >0)
+             {
+            
+                 Enemy = c[0].gameObject;
+                 return Enemy;
+             }
 
             return null;
         }
@@ -155,13 +165,13 @@ namespace GameS
             // Physics.OverlapSphereNonAlloc(transform.position, 30f, c,
             //     GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
             Collider[] c = Physics.OverlapSphere(transform.position, 30f, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
+            c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false &&
+                             ob.GetComponent<UnitState>().IsInvin == false&&ob.GetComponent<Card_Info>().IsFiled).OrderByDescending(ob => Vector3.Distance(transform.position, ob.transform.position)).ToArray();
 
-            c.Where(ob => ob.GetComponent<UnitState>().IsDead == false &&
-                          ob.GetComponent<UnitState>().IsInvin == false&&
-                          ob.GetComponent<Card_Info>().IsFiled == true).OrderByDescending(ob => Vector3.Distance(transform.position, ob.transform.position));
             
             if (c.Length >0)
             {
+
                 Enemy = c[0].gameObject;
                 return Enemy;
             }
@@ -183,7 +193,7 @@ namespace GameS
             }
             if (Enemy.TryGetComponent(out UnitState state))
             {
-                if (state.IsDead||state.IsInvin)
+                if (state.IsDead||state.IsInvin||state.info.IsFiled==false)
                 {
                     Enemy = null;
                     return false;

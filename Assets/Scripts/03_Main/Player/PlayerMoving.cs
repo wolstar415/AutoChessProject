@@ -12,11 +12,14 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
     [SerializeField] private PhotonView pv;
     public NavMeshAgent nav;
     [SerializeField]Animator ani;
-    bool IsMoving;
+    [SerializeField] bool IsMoving;
     public TextMeshProUGUI nickNameText;
     public TextMeshProUGUI lvText;
     public Slider hpSlider;
     private static readonly int Run = Animator.StringToHash("Run");
+    private Vector3 movepos;
+    public LayerMask mask;
+    
 
     private void Start()
     {
@@ -34,28 +37,20 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
         
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit,mask))
             {
                 //nav.ResetPath();
+                
                 ani.SetBool(Run, true);
                 IsMoving = true;
-                nav.isStopped = false;
-                nav.updatePosition = true;
-                nav.updateRotation = true;
-                nav.SetDestination(hit.point);
+
+                    nav.isStopped = false;
+                    nav.updatePosition = true;
+                    nav.updateRotation = true;
+                    nav.SetDestination(hit.point);
+                
             }
         
-    }
-    public void movePos(Vector3 pos)
-    {
-        //nav.ResetPath();
-        ani.SetBool(Run, true);
-        IsMoving = true;
-        
-        nav.isStopped = false;
-        nav.updatePosition = true;
-        nav.updateRotation = true;
-        nav.SetDestination(pos);
     }
     void Update()
     {
@@ -64,12 +59,13 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
             return;
         }
 
+
+            
         if (IsMoving && (nav.velocity.sqrMagnitude >= 0.2f * 0.2f && nav.remainingDistance <= 0.5f))
            
         // remainingDistance ������ ���������� ���� �Ÿ��� ��ȯ.
         // velocity.sqrMagnitude �ӵ�.
         {
-            
             IsMoving = false;
             nav.isStopped = true;
             nav.updatePosition = false;
@@ -79,6 +75,7 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
            // nav.ResetPath();
         }
 
+        
         
         
 

@@ -3234,8 +3234,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4376174971097764811}
   - component: {fileID: 4376174971104935339}
-  - component: {fileID: 7927566782699119138}
-  - component: {fileID: 7927566782699119147}
   - component: {fileID: 7927566782699119139}
   - component: {fileID: 7927566782699119146}
   - component: {fileID: 7927566782699119148}
@@ -3243,7 +3241,9 @@ GameObject:
   - component: {fileID: 7927566782699119150}
   - component: {fileID: 7927566782699119151}
   - component: {fileID: 5717842375704211065}
-  m_Layer: 0
+  - component: {fileID: 4662804102370954414}
+  - component: {fileID: 1798219887399076749}
+  m_Layer: 17
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3294,40 +3294,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!54 &7927566782699119138
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4376174971097665515}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!143 &7927566782699119147
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4376174971097665515}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &7927566782699119139
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3357,9 +3323,13 @@ MonoBehaviour:
   pv: {fileID: 7927566782699119151}
   nav: {fileID: 7927566782699119148}
   ani: {fileID: 4376174971104935339}
+  IsMoving: 0
   nickNameText: {fileID: 2103349011}
   lvText: {fileID: 1842011119}
   hpSlider: {fileID: 297657366}
+  mask:
+    serializedVersion: 2
+    m_Bits: 245815
 --- !u!195 &7927566782699119148
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3458,6 +3428,40 @@ MonoBehaviour:
   pv: {fileID: 7927566782699119151}
   pickOb: {fileID: 0}
   pos: {fileID: 959351730395382435}
+--- !u!143 &4662804102370954414
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4376174971097665515}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1798219887399076749
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4376174971097665515}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4376174971097665517
 GameObject:
   m_ObjectHideFlags: 0

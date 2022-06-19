@@ -26,7 +26,7 @@ public class PositionManager : MonoBehaviour
     public Transform[] PickPos;
 
     [Header("Camera Pos")] 
-    public Transform Camera_PickPos;
+    public Transform[] Camera_PickPos;
 
     public Transform[] Camera_Pos;
     public Transform[] Camera_AttackPos;

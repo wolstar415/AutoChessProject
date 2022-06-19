@@ -25,6 +25,10 @@ namespace GameS
             
             HpText.text = hp.ToString();
             HpSlider.value = hp;
+            if (hp<=0)
+            {
+                gameObject.GetComponent<CanvasGroup>().alpha = 0.3f;
+            }
         }
 
         public void NickNameSet(string name)

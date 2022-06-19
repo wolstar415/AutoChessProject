@@ -181,8 +181,8 @@ public class playerinfo
         [PunRPC]
         void CameraMovePick()
         {
-            PlayerInfo.Inst.camer.transform.position = PositionManager.inst.Camera_PickPos.position;
-            PlayerInfo.Inst.camer.transform.rotation = PositionManager.inst.Camera_PickPos.rotation;
+            PlayerInfo.Inst.camer.transform.position = PositionManager.inst.Camera_PickPos[PlayerInfo.Inst.PlayerIdx].localPosition;
+            PlayerInfo.Inst.camer.transform.rotation = PositionManager.inst.Camera_PickPos[PlayerInfo.Inst.PlayerIdx].localRotation;
             UIManager.inst.PickUiSetting();
         }
 
@@ -355,7 +355,9 @@ public class playerinfo
             
             PlayerInfo.Inst.IsBattle = true;
             PlayerInfo.Inst.deadCnt = PlayerInfo.Inst.PlayerCard_Filed.Count;
+            
             UIManager.inst.BattleStartUi();
+            
             for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
             {
                 if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
@@ -363,7 +365,7 @@ public class playerinfo
                     info.BattleReady();
                 }
             }
-
+            
             if (!PlayerInfo.Inst.PVP)
             {
                 for (int i = 0; i < PVEManager.inst.Enemis.Count; i++)

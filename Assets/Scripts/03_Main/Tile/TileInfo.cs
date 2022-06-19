@@ -13,6 +13,7 @@ namespace GameS
         public GameObject tileGameob;
         public int Idx;
         public bool IsFiled;
+        
 
         private void OnMouseEnter()
         {
@@ -81,5 +82,7 @@ namespace GameS
 
             tileGameob = null;
         }
+
+
     }
 }

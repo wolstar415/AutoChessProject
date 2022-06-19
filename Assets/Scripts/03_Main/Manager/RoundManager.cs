@@ -115,8 +115,14 @@ namespace GameS
             int RoundCheck = CsvManager.inst.RoundCheck3[Round];
             PlayerInfo.Inst.RoundIdx = RoundCheck;
             PlayerInfo.Inst.Round = Round;
+            PlayerInfo.Inst.BattleEnd = false;
             int TimeWait = CsvManager.inst.RoundCheck4[Round];
 
+            
+            if (PlayerInfo.Inst.Round==2)
+            {
+                UIManager.inst.BattleUiSetting();
+            }
             if (PlayerInfo.Inst.Round==4)
             {
                 UIManager.inst.RoundChange();
@@ -175,7 +181,22 @@ namespace GameS
         {
             if (PlayerInfo.Inst.Dead == true) return;
             int TimeWait = CsvManager.inst.RoundCheck4[PlayerInfo.Inst.Round];
+            if (PlayerInfo.Inst.IsLock)
+            {
+                UIManager.inst.LockCheck(false);
+            }
+            else
+            {
             CardManager.inst.CardReset();
+                
+            }
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                MasterInfo.inst.MasterBattleRoundReady();
+            }
+            
+            
             
         }
          void Round_PVE_StartFunc()
@@ -185,12 +206,22 @@ namespace GameS
             PlayerInfo.Inst.EnemyIdx = 10;
             if (PlayerInfo.Inst.Round>=2)
             {
-                CardManager.inst.CardReset();
+                if (PlayerInfo.Inst.IsLock)
+                {
+                    UIManager.inst.LockCheck(false);
+
+                }
+                else
+                {
+                    CardManager.inst.CardReset();
+                
+                }
             }
             PVEManager.inst.PVEstart();
             if (PhotonNetwork.IsMasterClient)
             {
                 MasterInfo.inst.MasterPveStart(TimeWait);
+                MasterInfo.inst.MasterBattleRoundReady();
             }
 
         }
@@ -212,9 +243,9 @@ namespace GameS
                 MasterInfo.inst.PickCardCreate(idxcheck);
             }
             //카메라이동
-            PlayerInfo.Inst.camer.transform.SetPositionAndRotation(PositionManager.inst.Camera_PickPos.position,PositionManager.inst.Camera_PickPos.rotation);
+            PlayerInfo.Inst.camer.transform.SetPositionAndRotation(PositionManager.inst.Camera_PickPos[idx].localPosition,PositionManager.inst.Camera_PickPos[idx].localRotation);
             //플레이어이동
-            PlayerInfo.Inst.PlayerOb.transform.position = PositionManager.inst.PickPos[idx].position;
+            PlayerInfo.Inst.PlayerOb.transform.position = PositionManager.inst.PickPos[idx].localPosition;
             //길막기 모두 정상
             PickRoundManager.inst.PickAllClose();
             
@@ -226,14 +257,17 @@ namespace GameS
             if (PlayerInfo.Inst.Dead == true) return;
             PlayerInfo.Inst.IsBattle = false;
             UIManager.inst.BattleUiSetting();
+            UIManager.inst.BattleEndUi();
             MoneyCheck(true);
             RoundNext();
+            
         }
         public void Round_PVE_EndFunc()
         {
             if (PlayerInfo.Inst.Dead == true) return;
             PlayerInfo.Inst.IsBattle = false;
             UIManager.inst.BattleUiSetting();
+            UIManager.inst.BattleEndUi();
             PlayerInfo.Inst.EnemyIdx = -1;
             MoneyCheck(false);
             RoundNext();

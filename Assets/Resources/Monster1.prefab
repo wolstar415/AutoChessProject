@@ -1274,7 +1274,7 @@ GameObject:
   m_Component:
   - component: {fileID: 794620964592794646}
   - component: {fileID: 794620964592794632}
-  - component: {fileID: 794620964592794633}
+  - component: {fileID: 5010486659567127221}
   m_Layer: 0
   m_Name: Collider_Check
   m_TagString: Untagged
@@ -1291,7 +1291,7 @@ Transform:
   m_GameObject: {fileID: 794620964592794647}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6, y: 6, z: 6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 794620965866707055}
@@ -1311,8 +1311,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   info: {fileID: 794620965866707054}
   info_fight: {fileID: 910973219689201242}
---- !u!65 &794620964592794633
-BoxCollider:
+--- !u!135 &5010486659567127221
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1322,7 +1322,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 0, y: 0, z: 0}
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &794620965866707063
 GameObject:
@@ -1607,6 +1607,8 @@ MonoBehaviour:
   - {fileID: 1533280405}
   pickIdx: -1
   IsPick: 0
+  show_fileTileob: {fileID: 0}
+  show_Tileob: {fileID: 0}
 --- !u!114 &910973219689201242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1644,7 +1646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackTime: 0.15
   pv: {fileID: 794620965866707051}
-  collider: {fileID: 794620964592794633}
+  collider: {fileID: 5010486659567127221}
   nav: {fileID: 794620965866707049}
   ani: {fileID: 2620905054335257272}
   IsCard: 0
@@ -1662,6 +1664,8 @@ MonoBehaviour:
   ShiledSlider1: {fileID: 1943425437909673387}
   ShiledSlider2: {fileID: 677942953834748674}
   info: {fileID: 794620965866707054}
+  NoDmg: 0
+  IsCopy: 0
   IsDead: 0
   IsInvin: 0
   IsStun: 0
@@ -1704,6 +1708,7 @@ MonoBehaviour:
   Buff_CriDmg: 0
   Buff_ManaMax: 0
   Buff_NoAttack: 0
+  Checkidx: 0
 --- !u!114 &7376897127240163347
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -101,7 +101,6 @@ namespace GameS
             {
                 target_stat.UnitDead();
                 card_stat.UnitKill();
-                Debug.Log("죽음");
                 return;
             }
             target_stat.currentHp -= damage;

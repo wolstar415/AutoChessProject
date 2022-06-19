@@ -23,9 +23,37 @@ namespace GameS
                 {
                     if (info.IsPick)
                     {
-                PickOb(other.gameObject);
+                        PickOb(other.gameObject);
                         
                     }
+                }
+
+
+            }
+            if (other.transform.CompareTag("Item"))
+            {
+                if (other.transform.TryGetComponent(out iteminfo info))
+                {
+                    if (!info.IsPick) return;
+
+                    if (!Equals(info.pv.Owner, pv.Owner)) return;
+
+                    if (info.IsCoin)
+                    {
+                        PlayerInfo.Inst.Gold++;
+                    }
+                    else if(info.IsItem)
+                    {
+                        if (info.idx>=1000)
+                        {
+                            
+                        }
+                        else
+                        {
+                            ItemManager.inst.ItemAdd(info.idx);
+                        }
+                    }
+                    PhotonNetwork.Destroy(other.gameObject);
                 }
 
 

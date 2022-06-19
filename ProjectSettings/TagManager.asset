@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Cards
   - Enemy
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Ready
   - Tile
   - Enemy
-  - 
+  - Player
   - 
   - 
   - 

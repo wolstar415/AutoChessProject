@@ -11,6 +11,8 @@ namespace GameS
         public static EventManager inst;
         public Subject<int> Sub_CardMove = new Subject<int>();
         public Subject<int> Sub_CardBattleMove = new Subject<int>();
+       //public Subject<int> Sub_CardJobAndTraitShow = new Subject<int>();
+        //public Subject<int> Sub_CardJobAndTraitNoShow = new Subject<int>();
 
         private void Awake()
         {

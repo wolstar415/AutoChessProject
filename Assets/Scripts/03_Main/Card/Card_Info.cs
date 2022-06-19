@@ -55,10 +55,19 @@ namespace GameS
 
         private IDisposable Event_MoveReset;
         private IDisposable Event_BattleMove;
+        private IDisposable Event_TJ1=null;
+        private IDisposable Event_TJ2=null;
+        private IDisposable Event_TJ3=null;
+        private IDisposable Event_TJ4=null;
+
 
         [Header("Pick")] public int pickIdx = -1;
 
         public Boolean IsPick;
+
+        [Header("특성직업 표시")] 
+        [SerializeField] private GameObject show_fileTileob;
+        [SerializeField] private GameObject show_Tileob;
 
         // Start is called before the first frame update
 
@@ -105,6 +114,8 @@ namespace GameS
 
         public void startSetting()
         {
+            show_fileTileob.GetComponent<MeshRenderer>().material.color = show_fileTileob.GetComponent<TileInfo>().colors[2];
+            show_Tileob.GetComponent<MeshRenderer>().material.color = show_Tileob.GetComponent<TileInfo>().colors[2];
             pv.RPC(nameof(NetworkSetting), RpcTarget.All, PlayerInfo.Inst.PlayerIdx);
 
             PlayerInfo.Inst.PlayerCardCntAdd(Idx);
@@ -132,8 +143,14 @@ namespace GameS
 
             Event_MoveReset = EventManager.inst.Sub_CardMove.Subscribe(_ => { MoveReset(); }
             );
-            Event_BattleMove = EventManager.inst.Sub_CardBattleMove.Subscribe(x => { BattleMove(x); }
+            Event_BattleMove = EventManager.inst.Sub_CardBattleMove.Subscribe(BattleMove
             );
+            if (Character_trait1>=1) Event_TJ1=TraitJobManager.inst.Obs[Character_trait1].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
+            if (Character_trait2>=1) Event_TJ2=TraitJobManager.inst.Obs[Character_trait2].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
+            if (Character_Job1>=1) Event_TJ3=TraitJobManager.inst.Obs[Character_Job1].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
+            if (Character_Job2>=1) Event_TJ4=TraitJobManager.inst.Obs[Character_Job2].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
+
+
 
 
         }
@@ -174,17 +191,22 @@ namespace GameS
             }
         }
 
-        public void EnemyStart(float hp,float damage,float Cool,int Checkidx)
+        public void EnemyStart(float hp,float damage,float Cool,int Checkidx,int item=-1)
         {
             IsFiled = true;
             stat.nav.speed = 200 * 0.01f;
             stat.Char_Range = 1.8f;
             stat.RangeSet();
-            pv.RPC(nameof(RPC_EnemyStart),RpcTarget.All,hp,damage,Cool,Checkidx,PlayerInfo.Inst.PlayerIdx);
+            stat.Checkidx = Checkidx;
+            pv.RPC(nameof(RPC_EnemyStart),RpcTarget.All,hp,damage,Cool,PlayerInfo.Inst.PlayerIdx);
+            if (item>=0)
+            {
+                pv.RPC(nameof(itemStatadd), RpcTarget.All, 0, item);
+            }
         }
 
         [PunRPC]
-        void RPC_EnemyStart(float hp,float damage,float Cool,int Checkidx,int playeridx)
+        void RPC_EnemyStart(float hp,float damage,float Cool,int playeridx)
         {
 
 
@@ -233,7 +255,11 @@ namespace GameS
             //이벤트삭제
             Event_MoveReset.Dispose();
             Event_BattleMove.Dispose();
-            //
+            if (Event_TJ1!=null) Event_TJ1.Dispose();
+            if (Event_TJ2!=null) Event_TJ2.Dispose();
+            if (Event_TJ3!=null) Event_TJ3.Dispose();
+            if (Event_TJ4!=null) Event_TJ4.Dispose();
+
             if (TileOb.TryGetComponent(out TileInfo info))
             {
                 info.RemoveTile();
@@ -453,7 +479,7 @@ namespace GameS
         {
             ItemUI[seat].SetActive(false);
             Item[seat] = -1;
-            //스탯내림
+            //스탯내림 
         }
 
         [PunRPC]
@@ -468,7 +494,7 @@ namespace GameS
             }
 
             ItemUI[seat].SetActive(true);
-            //스탯올림 상호작용..
+            //스탯올림 상호작용.. 중립몹은 ㄴ
         }
 
         public void ItemNo(int seat, int idx)
@@ -627,6 +653,20 @@ namespace GameS
             
             stat.currentHp = stat.HpMax();
             stat.currentMana = stat.Mana();
+        }
+
+        public void TileShow(bool b)
+        {
+    
+                if (IsFiled)
+                {
+                    show_fileTileob.SetActive(b);
+                }
+                else
+                {
+                    show_Tileob.SetActive(b);
+                }
+            
         }
 
 

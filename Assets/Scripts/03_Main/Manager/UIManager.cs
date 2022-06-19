@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameS;
+using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +28,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI Selltext2;
     [SerializeField] private GameObject BuyPanelOb;
     [SerializeField] private GameObject JobAndItemOb;
+    
+    [SerializeField] private Image LockImage;
+    
 
     
     [Header("TraitAndJob")]
@@ -51,7 +55,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] 
     private GameObject playerInfoOb_Parent;
     [SerializeField] private GameObject[] playerInfoObs;
-
+    [Header("연승관련")] 
+    [SerializeField] private Sprite[] vicon;
+    [SerializeField] private Image vImage;
+    [SerializeField] private TextMeshProUGUI vText;
     private void Awake()
     {
         inst = this;
@@ -203,7 +210,7 @@ public class UIManager : MonoBehaviour
 
     public void BattleUiSetting()
     {
-        BuyPanelOb.SetActive(false);
+        //BuyPanelOb.SetActive(false);
         InfoPanelOb.SetActive(false);
         TopPancel.SetActive(true);
         if (PlayerInfo.Inst.Round>=2)
@@ -333,11 +340,67 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void DeadUi()
+    {
+        TopPancel.SetActive(false);
+        DownPanel.SetActive(false);
+        BuyPanelOb.SetActive(false);
+        InfoPanelOb.SetActive(false);
+        Foodob.SetActive(false);
+        JobAndItemOb.SetActive(false);
+        PlayerInfoPanelOb.SetActive(true);
+    }
+
+
+
+
+    public void LockButton()
+    {
+        if (PlayerInfo.Inst.IsLock)
+        {
+            LockCheck(false);
+        }
+        else
+        {
+            LockCheck(true);
+        }
+    }
+
+    public void LockCheck(bool b)
+    {
+        if (b)
+        {
+            
+        PlayerInfo.Inst.IsLock = true;
+        LockImage.color = Color.white;
+        }
+        else
+        {
+            PlayerInfo.Inst.IsLock = false;
+            LockImage.color = Color.black;
+        }
+    }
+    
     public void PlayerInfoClear(int idx)
     {
         if (playerInfoObs[idx].TryGetComponent(out PlayerInfoUI p))
         {
             p.Clear();
+        }
+    }
+
+    public void VictorySet()
+    {
+        if (PlayerInfo.Inst.IsVictory)
+        {
+            vImage.sprite = vicon[0];
+            vText.text = PlayerInfo.Inst.victoryCnt.ToString();
+        }
+        else
+        {
+            vImage.sprite = vicon[1];
+            vText.text = PlayerInfo.Inst.defeatCnt.ToString();
+            
         }
     }
 }

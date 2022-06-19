@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using UniRx;
 namespace GameS
 {
     public class TraitJobInfo : MonoBehaviour,IPointerUpHandler,IPointerDownHandler
@@ -25,15 +26,18 @@ namespace GameS
         [SerializeField] TextMeshProUGUI InfoInfo2;
         [SerializeField] GameObject IconPrefab;
         [SerializeField] Transform parent;
+        public Subject<bool> Sub_CardJobAndTraitShow = new Subject<bool>();
         public void OnPointerDown(PointerEventData eventData)
         {
             //UI보임
             InfoOb.SetActive(true);
             Info2Set();
+            Sub_CardJobAndTraitShow.OnNext(true);
         }
         public void OnPointerUp(PointerEventData eventData)
         {
             InfoOb.SetActive(false);
+            Sub_CardJobAndTraitShow.OnNext(false);
             //UI끄기
         }
 

@@ -295,15 +295,20 @@ public class MasterInfo : MonoBehaviourPunCallbacks
         }
     }
 
-     public void MaserGoPveEnd()
+     public void BattelEndFunc1()
      {
-         pv.RPC(nameof(RPC_MaserGoPveEnd),RpcTarget.MasterClient,PlayerInfo.Inst.PlayerIdx);
+         pv.RPC(nameof(RPC_BattelEndFunc1),RpcTarget.All,PlayerInfo.Inst.PlayerIdx);
      }
 
      [PunRPC]
-     void RPC_MaserGoPveEnd(int pidx)
+     void RPC_BattelEndFunc1(int pidx)
      {
+         if (PhotonNetwork.IsMasterClient)
+         {
          NetworkManager.inst.players[pidx].BattleEnd = true;
+             
+         }
+         UIManager.inst.PlayerInfoClear(pidx);
      }
 
      public void MasterPveStart(float t)
@@ -352,6 +357,19 @@ public class MasterInfo : MonoBehaviourPunCallbacks
          }
 
 
+     }
+     
+     public void MasterBattleRoundReady()
+     {
+         if (!PhotonNetwork.IsMasterClient) return;
+
+         for (int i = 0; i < NetworkManager.inst.players.Count; i++)
+         {
+             if (NetworkManager.inst.players[i].State==1&&NetworkManager.inst.players[i].Dead==false)
+             {
+                 NetworkManager.inst.players[i].BattleEnd = false;
+             }
+         }
      }
      
 }

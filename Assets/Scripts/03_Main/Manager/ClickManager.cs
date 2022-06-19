@@ -105,6 +105,10 @@ namespace GameS
 
         void ClickFunc()
         {
+            if (PlayerInfo.Inst.Dead) return;
+            
+                
+            
             if (!GameSystem_AllInfo.inst.IsStart)
             {
                 return;
