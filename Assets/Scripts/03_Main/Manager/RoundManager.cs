@@ -271,7 +271,7 @@ namespace GameS
             PlayerInfo.Inst.XpPlus(2);
             
             if (PhotonNetwork.IsMasterClient) NetworkManager.inst.MasterRoundNextStart();
-            
+            NetworkManager.inst.BattleEnd();
             
         }
 

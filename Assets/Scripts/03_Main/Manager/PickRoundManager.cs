@@ -201,6 +201,7 @@ namespace GameS
         IEnumerator IFirstFunc()
         {
             int TimeWait = 20;
+            
             //3초뒤에 다 염
             
             yield return YieldInstructionCache.WaitForSeconds(3);

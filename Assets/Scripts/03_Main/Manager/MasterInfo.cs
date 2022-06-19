@@ -395,11 +395,11 @@ public class MasterInfo : MonoBehaviourPunCallbacks
      {
          GameSystem_AllInfo.inst.battleinfos=JsonConvert.DeserializeObject<List<BattleInfo>>(s);
 
-         var btinfo = GameSystem_AllInfo.inst.battleinfos[PlayerInfo.Inst.PlayerIdx];
-         PlayerInfo.Inst.EnemyIdx = btinfo.enemyidx;
-         PlayerInfo.Inst.copyEnemyIdx = btinfo.copyidx;
-         PlayerInfo.Inst.BattleMove = btinfo.IsBattleMove;
-         PlayerInfo.Inst.IsCopy = btinfo.IsCopy;
+         
+         PlayerInfo.Inst.EnemyIdx = GameSystem_AllInfo.inst.battleinfos[PlayerInfo.Inst.PlayerIdx].enemyidx;
+         PlayerInfo.Inst.copyEnemyIdx = GameSystem_AllInfo.inst.battleinfos[PlayerInfo.Inst.PlayerIdx].copyidx;
+         PlayerInfo.Inst.BattleMove = GameSystem_AllInfo.inst.battleinfos[PlayerInfo.Inst.PlayerIdx].IsBattleMove;
+         PlayerInfo.Inst.IsCopy = GameSystem_AllInfo.inst.battleinfos[PlayerInfo.Inst.PlayerIdx].IsCopy;
          
          RoundManager.inst.BattleMoveFunc(); //팀 모두 이동
 
@@ -457,7 +457,8 @@ public class MasterInfo : MonoBehaviourPunCallbacks
          }
          
          yield return YieldInstructionCache.WaitForSeconds(1);
-         NetworkManager.inst.BattleEnd();
+         
+         PVPManager.inst.BattleInfoReset();
          yield return YieldInstructionCache.WaitForSeconds(1);
          NetworkManager.inst.RoundFuncGo(1);
 

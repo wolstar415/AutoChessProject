@@ -309,21 +309,28 @@ public class playerinfo
 
         public void NoSelectPickFunc()
         {
+            List<GameObject> check1=new List<GameObject>();
+            for (int i = 0; i < MasterInfo.inst.pickCards.Count; i++)
+            {
+                if (MasterInfo.inst.pickCards[i]!=null)
+                {
+                    check1.Add(MasterInfo.inst.pickCards[i]);
+                }
+            }
             for (int i = 0; i < NetworkManager.inst.players.Count; i++)
             {
                 if (NetworkManager.inst.players[i].State==1)
                 {
                     if (MasterInfo.inst.player_PickCheck[i]==1)
                     {
-                        int ran = Random.Range(0, MasterInfo.inst.pickCards.Count);
+                        int ran = Random.Range(0, check1.Count);
                         int idx = 0;
-                        if (MasterInfo.inst.pickCards[ran].TryGetComponent(out Card_Info info))
+                        if (check1[ran].TryGetComponent(out Card_Info info))
                         {
-                            info.pickIdx = idx;
+                            idx = info.pickIdx;
                         }
-                        MasterInfo.inst.pickCards.RemoveAt(ran);
+                        check1.RemoveAt(ran);
                         pv.RPC(nameof(NetworkNoSelectPickFunc),RpcTarget.All,i,idx);
-                        //너 강제로 선택해.
                     }
                 }
             }

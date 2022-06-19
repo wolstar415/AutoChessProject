@@ -13,7 +13,7 @@ namespace GameS
         public bool IsItem;
         public bool IsPick = false;
         public SphereCollider co;
-
+        
         public void StartFunc(int _idx)
         {
             idx = _idx;
