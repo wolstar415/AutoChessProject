@@ -90,7 +90,7 @@ namespace GameS
                 if (ob.TryGetComponent(out Card_Info cardinfo))
                 {
                     cardinfo.startSetting();
-                    cardinfo.Setting(1);
+                    //cardinfo.Setting(1);
                 }
 
                 if (tile.TryGetComponent(out TileInfo info))
@@ -129,7 +129,7 @@ namespace GameS
                 if (ob.TryGetComponent(out Card_Info cardinfo))
                 {
                     cardinfo.startSetting();
-                    cardinfo.Setting(1);
+                    //cardinfo.Setting(1);
                     idx = cardinfo.Idx;
                     PlayerInfo.Inst.food++;
                     cardinfo.FiledIn();
@@ -153,7 +153,7 @@ namespace GameS
                 if (ob.TryGetComponent(out Card_Info cardinfo))
                 {
                     cardinfo.startSetting();
-                    cardinfo.Setting(1);
+                   //cardinfo.Setting(1);
                     idx = cardinfo.Idx;
                 }
 
@@ -175,9 +175,25 @@ namespace GameS
             List<GameObject> obs = new List<GameObject>();
             for (int i = 0; i < PlayerInfo.Inst.PlayerCardCntLv[idx].Lv1.Count; i++)
             {
-                obs.Add(PlayerInfo.Inst.PlayerCardCntLv[idx].Lv1[i]);
+                if (PlayerInfo.Inst.IsBattle)
+                {
+
+                    var ob = PlayerInfo.Inst.PlayerCardCntLv[idx].Lv1[i];
+                    if (ob.TryGetComponent(out Card_Info ch))
+                    {
+                        if(ch.IsFiled==false) obs.Add(PlayerInfo.Inst.PlayerCardCntLv[idx].Lv1[i]);
+                    }
+                }
+                else
+                {
+                    obs.Add(PlayerInfo.Inst.PlayerCardCntLv[idx].Lv1[i]);
+                }
+                
             }
 
+
+
+            
             GameObject target = obs[0];
             GameObject remove = obs[1];
             if (obs[1].TryGetComponent(out Card_Info info))
@@ -216,7 +232,7 @@ namespace GameS
             {
                 obs.Add(PlayerInfo.Inst.PlayerCardCntLv[idx].Lv(lv)[i]);
             }
-
+            
             if (obs.Count < 3)
             {
                 return;

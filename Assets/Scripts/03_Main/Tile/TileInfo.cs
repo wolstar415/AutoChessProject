@@ -55,7 +55,7 @@ namespace GameS
 
             ClickCardcom.MoveIdx = Idx;
             ClickCardcom.TileOb = gameObject;
-            ClickCardcom.IsFiled = IsFiled;
+            ClickCardcom.TileCheck(IsFiled);
             if (IsFiled)
             {
                 PlayerInfo.Inst.FiledTilestate[Idx] = ClickCardcom.Idx;

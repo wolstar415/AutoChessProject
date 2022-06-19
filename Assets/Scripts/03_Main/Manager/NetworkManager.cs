@@ -6,11 +6,9 @@ using Newtonsoft.Json;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Random = UnityEngine.Random;
 
-[System.Serializable]
+[Serializable]
 public class playerinfo
 {
     public Player player;
@@ -25,7 +23,8 @@ public class playerinfo
     //2 : 관전중
     //3 : 나감
     public bool IsPickBool = false;
-    public bool BattleEnd = false;
+    public bool BattleEnd  = false;
+    //public bool BattleMove = false;
 }
 
     public class NetworkManager : MonoBehaviourPunCallbacks
@@ -158,7 +157,7 @@ public class playerinfo
             yield return YieldInstructionCache.WaitForSeconds(0.5f);
             pv.RPC(nameof(IdxCheck),RpcTarget.All);
             yield return YieldInstructionCache.WaitForSeconds(0.5f);
-            MasterRoundStart(0);
+            MasterRoundFirst();
             
         }
         [PunRPC]
@@ -246,16 +245,46 @@ public class playerinfo
 
         }
 
-        public void MasterRoundStart(int Round)
+        public void MasterRoundFirst()
         {
-            pv.RPC(nameof(NetworkRoundStart),RpcTarget.All,Round);
+            pv.RPC(nameof(NetworkRoundStart),RpcTarget.All,0);
+        }
+
+        public void MasterRoundNextStart()
+        {
+            int cnt = 0;
+            int finalplayer = 0;
+            for (int i = 0; i < players.Count; i++)
+            {
+                if (!players[i].Dead&&players[i].State==1&&players[i].Life>=1)
+                {
+                    cnt++;
+                    finalplayer = i;
+                }
+            }
+            if (cnt==1)
+            {
+                //게임끝남
+                Debug.Log($"승리! 남은플레이어 번호 :{finalplayer}");
+                //return;
+            }
+
+            if (cnt==0)
+            {
+                Debug.Log("아무도없음 버그처리!");
+            }
+
+            int a = PlayerInfo.Inst.Round + 1;
+            pv.RPC(nameof(NetworkRoundStart),RpcTarget.All,a);
         }
 
         [PunRPC]
         void NetworkRoundStart(int Round)
         {
+            PlayerInfo.Inst.Round = Round;
             if (Round==0)
             {
+                
                 GameSystem_AllInfo.inst.StartFunc();
             }
             RoundManager.inst.RoundStart(Round);
@@ -343,6 +372,51 @@ public class playerinfo
             }
         }
 
+        public void BattleFoodCheck()
+        {
+            pv.RPC(nameof(RPC_BattleFoodCheck),RpcTarget.All);
+        }
+
+        [PunRPC]
+        public void RPC_BattleFoodCheck()
+        {
+            int c = PlayerInfo.Inst.foodMax - PlayerInfo.Inst.food;
+            for (int i = 0; i < c; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (PlayerInfo.Inst.PlayerTile[j].TryGetComponent(out TileInfo ti))
+                    {
+                        if (ti.tileGameob!=null)
+                        {
+                            GameObject ob = ti.tileGameob;
+                            ti.RemoveTile();
+                            int CreatePosidx=-1;
+                            GameObject tile = null;
+                            for (int k = 0; k < PlayerInfo.Inst.FiledTile.Count; k++)
+                            {
+                                if (PlayerInfo.Inst.FiledTile[k].TryGetComponent(out TileInfo check))
+                                {
+                                    if (check.tileGameob == null)
+                                    {
+                                        tile = PlayerInfo.Inst.FiledTile[k];
+                                        break;
+                                    }
+                                }
+                            }
+
+                            ClickManager.inst.CharacterTileMoveFunc(ob, tile);
+                            PlayerInfo.Inst.food++;
+                            ob.GetComponent<Card_Info>().FiledIn();
+                            PlayerInfo.Inst.PlayerCard_NoFiled.Remove(ob);
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
+
         public void BattleReady()
         {
             pv.RPC(nameof(RPC_BattleReady),RpcTarget.All);
@@ -350,14 +424,23 @@ public class playerinfo
         }
 
         [PunRPC]
-        void RPC_BattleReady()
+        public void RPC_BattleReady()
         {
             
-            PlayerInfo.Inst.IsBattle = true;
-            PlayerInfo.Inst.deadCnt = PlayerInfo.Inst.PlayerCard_Filed.Count;
+            
             
             UIManager.inst.BattleStartUi();
+            PlayerInfo.Inst.IsBattle = true;
             
+            
+            
+            
+            
+            PlayerInfo.Inst.deadCnt = PlayerInfo.Inst.PlayerCard_Filed.Count;
+            if (PlayerInfo.Inst.IsCopy)
+            {
+                PlayerInfo.Inst.copydeadCnt = PlayerInfo.Inst.deadCnt;
+            }
             for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
             {
                 if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
@@ -376,8 +459,22 @@ public class playerinfo
                     }
                 }
             }
+            
+            else
+            {
+                
+                
+                for (int i = 0; i < PVPManager.inst.copyob.Count; i++)
+                {
+                    if (PVPManager.inst.copyob[i].TryGetComponent(out Card_Info info))
+                    {
+                        info.BattleReady();
+                    }
+                }
+            }
+                UIManager.inst.TimeFunc(2);
             UIManager.inst.PlayerInfoBattleStart();
-            UIManager.inst.TimeFunc(2);
+            
         }
         public void BattleStart()
         {
@@ -398,8 +495,7 @@ public class playerinfo
                 }
             }
 
-            if (!PlayerInfo.Inst.PVP)
-            {
+            
                 for (int i = 0; i < PVEManager.inst.Enemis.Count; i++)
                 {
                     if (PVEManager.inst.Enemis[i].TryGetComponent(out Card_Info info))
@@ -407,8 +503,18 @@ public class playerinfo
                         info.BattleStart();
                     }
                 }
-            }
+            
             UIManager.inst.TimeFunc(60);
+
+            if (PlayerInfo.Inst.deadCnt==0)
+            {
+                PlayerInfo.Inst.deadCnt = 1;
+                PlayerInfo.Inst.DeadCheck();
+                if (PlayerInfo.Inst.IsCopy)
+                {
+                    PlayerInfo.Inst.DeadCheck(true);
+                }
+            }
         }
 
         public void BattleEnd()
@@ -430,7 +536,12 @@ public class playerinfo
             {
                 PhotonNetwork.Destroy(PVEManager.inst.Enemis[i]);
             }
+            for (int i = 0; i < PVPManager.inst.copyob.Count; i++)
+            {
+                PhotonNetwork.Destroy(PVPManager.inst.copyob[i]);
+            }
             PVEManager.inst.Enemis.Clear();
+            PVPManager.inst.copyob.Clear();
 
             
             

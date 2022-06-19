@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace GameS
 {
@@ -36,12 +38,23 @@ namespace GameS
         [SerializeField] protected Slider ManaSlider;
         [SerializeField] protected Slider ShiledSlider1;
         [SerializeField] protected Slider ShiledSlider2;
+        [SerializeField] protected Color[] colors;
+        [SerializeField] protected Image[] fills;
         [Header("카드만")] 
         [SerializeField] public Card_Info info;
 
         private Coroutine HpFunc;
         public bool NoDmg = false;
         public bool IsCopy = false;
+
+        public void ColorChange()
+        {
+
+
+            fills[0].color = colors[0];
+            fills[1].color = colors[1];
+
+        }
 
         public virtual float HpMax()//최대체력
         {

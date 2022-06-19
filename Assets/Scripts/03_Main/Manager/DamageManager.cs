@@ -83,10 +83,12 @@ namespace GameS
             
             
             target_stat.currentMana += getmana;
-
+            
             if (IsCri)
             {
+                
                 NetworkManager.inst.TextUi(damage.ToString("F0")+"!",target.transform.position,1.5f,TextColor);
+
             }
             else
             {

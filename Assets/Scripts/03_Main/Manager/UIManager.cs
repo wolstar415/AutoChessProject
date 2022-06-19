@@ -138,8 +138,12 @@ public class UIManager : MonoBehaviour
 
     public void SellSet(int cost)
     {
+        
         DownPanel.SetActive(false);
+        if (PlayerInfo.Inst.Round>=2)
+        {
         SellPanel.SetActive(true);
+        }
         Selltext1.text = cost.ToString();
         Selltext2.text = cost.ToString();
     }
@@ -308,9 +312,15 @@ public class UIManager : MonoBehaviour
     {
         //공격중이라면 공격중인곳으로가기
         //아니라면 그곳으로 이동
-
-
+        if (GameSystem_AllInfo.inst.battleinfos[idx].IsBattleMove)
+        {
+            NetworkManager.inst.CameraMovePlayer(GameSystem_AllInfo.inst.battleinfos[idx].enemyidx,true);
+        }
+        else
+        {
         NetworkManager.inst.CameraMovePlayer(idx,false);
+            
+        }
 
     }
     public void PlayerInfoBattleStart()

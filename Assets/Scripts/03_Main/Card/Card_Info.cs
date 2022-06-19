@@ -55,6 +55,7 @@ namespace GameS
 
         private IDisposable Event_MoveReset;
         private IDisposable Event_BattleMove;
+        private IDisposable Event_CheckLevelUp=null;
         private IDisposable Event_TJ1=null;
         private IDisposable Event_TJ2=null;
         private IDisposable Event_TJ3=null;
@@ -114,6 +115,7 @@ namespace GameS
 
         public void startSetting()
         {
+            PlayerInfo.Inst.PlayerCard_NoFiled.Add(gameObject);
             show_fileTileob.GetComponent<MeshRenderer>().material.color = show_fileTileob.GetComponent<TileInfo>().colors[2];
             show_Tileob.GetComponent<MeshRenderer>().material.color = show_Tileob.GetComponent<TileInfo>().colors[2];
             pv.RPC(nameof(NetworkSetting), RpcTarget.All, PlayerInfo.Inst.PlayerIdx);
@@ -145,6 +147,11 @@ namespace GameS
             );
             Event_BattleMove = EventManager.inst.Sub_CardBattleMove.Subscribe(BattleMove
             );
+            if (PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv1.Count>=3)
+            {
+                Event_CheckLevelUp = EventManager.inst.Sub_LevelUpCheck.Subscribe(_=>LevelUpCheck()); 
+            }
+            
             if (Character_trait1>=1) Event_TJ1=TraitJobManager.inst.Obs[Character_trait1].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
             if (Character_trait2>=1) Event_TJ2=TraitJobManager.inst.Obs[Character_trait2].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
             if (Character_Job1>=1) Event_TJ3=TraitJobManager.inst.Obs[Character_Job1].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
@@ -189,6 +196,10 @@ namespace GameS
             {
                 stat.RangeSet();
             }
+            else
+            {
+                stat.ColorChange();
+            }
         }
 
         public void EnemyStart(float hp,float damage,float Cool,int Checkidx,int item=-1)
@@ -205,6 +216,8 @@ namespace GameS
             }
         }
 
+        
+
         [PunRPC]
         void RPC_EnemyStart(float hp,float damage,float Cool,int playeridx)
         {
@@ -215,7 +228,7 @@ namespace GameS
             stat.Char_Atk_Cool = Cool;
             stat.Char_Atk_Damage = damage;
             
-
+            stat.ColorChange();
             TeamIdx = 10;
             EnemyTeamIdx = playeridx;
             gameObject.layer = 16;
@@ -223,27 +236,103 @@ namespace GameS
             stat.currentMana = stat.ManaMax();
             stat.HpAndMpSet();
         }
-        public void LevelUp()
+        
+        public void CopyStart(int lv,int[] items)
         {
-            PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level).Remove(gameObject);
-            Level++;
-
-            PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level).Add(gameObject);
-            Setting(Level);
-            if (Level == 2)
+            for (int i = 0; i < items.Length; i++)
             {
-                CreateManager.inst.CheckLevelUp(Idx, Level);
-
-            }
-
-            StarUI[Level - 1].SetActive(true);
-            for (int i = 0; i < CardManager.inst.CardUi.Count; i++)
-            {
-                if (CardManager.inst.CardUi[i].TryGetComponent(out CardUI_Info check))
+                if (items[i]>=0)
                 {
-                    check.CheckEffect();
+                    Itemadd(items[i]);
                 }
             }
+            
+            
+            pv.RPC(nameof(RPC_CopyStart),RpcTarget.All,lv,PlayerInfo.Inst.PlayerIdx);
+        }
+
+        [PunRPC]
+        void RPC_CopyStart(int lv,int PlayerIdx)
+        {
+            stat.IsCopy = true;
+            IsFiled = true;
+            info = CsvManager.inst.characterInfo[Idx];
+            Setting(lv);
+            Tier = info.Tier;
+            Food = info.Food;
+            IsRangeAttack = info.IsRange;
+            Name = info.Name;
+            Icon = info.Icon;
+            Character_Job1 = info.Job1;
+            Character_Job2 = info.Job2;
+            Character_trait1 = info.Trait1;
+            Character_trait2 = info.Trait2;
+            stat.Char_Range = info.Range;
+            stat.Char_Defence = info.Defense;
+            stat.Char_Defence_Magic = info.Defense;
+            stat.Char_Speed = info.Speed;
+            stat.Char_Mana = info.Mana;
+            stat.Char_ManaMax = info.Mana_Max;
+            stat.Char_CriPer = info.CriPer;
+            stat.Char_CriDmg = info.CriDmg;
+            stat.Char_Magic_Damage = 100;
+            TeamIdx = PlayerIdx;
+            gameObject.layer = 6 + PlayerIdx;
+            stat.nav.speed = stat.Speed() * 0.01f;
+            stat.currentHp = stat.HpMax();
+            stat.currentMana = stat.ManaMax();
+            stat.HpAndMpSet();
+            if (pv.IsMine)
+            {
+                stat.RangeSet();
+            }
+            else
+            {
+                stat.ColorChange();
+            }
+        }
+        public void LevelUp()
+        {
+
+            int lv = Level+1;
+            pv.RPC(nameof(RPC_LevelUp),RpcTarget.All,lv);
+
+        }
+
+        [PunRPC]
+        void RPC_LevelUp(int lv)
+        {
+            Level = lv;
+            Setting(Level);
+            if (pv.IsMine)
+            {
+                PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level-1).Remove(gameObject);
+                PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level).Add(gameObject);
+                if (Level == 2)
+                {
+                    CreateManager.inst.CheckLevelUp(Idx, Level);
+                    if (PlayerInfo.Inst.IsBattle)
+                    {
+                        if (PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv2.Count>=3)
+                        {
+                            Event_CheckLevelUp?.Dispose();
+                            Event_CheckLevelUp = EventManager.inst.Sub_LevelUpCheck.Subscribe(_=>LevelUpCheck()); 
+                        }
+                    }
+                }
+                for (int i = 0; i < CardManager.inst.CardUi.Count; i++)
+                {
+                    if (CardManager.inst.CardUi[i].TryGetComponent(out CardUI_Info check))
+                    {
+                        check.CheckEffect();
+                    }
+                }
+                
+            }
+
+
+            StarUI[Level - 1].SetActive(true);
+
         }
 
         public void remove()
@@ -253,12 +342,13 @@ namespace GameS
             PlayerInfo.Inst.PlayerCard_Filed.Remove(gameObject);
             PlayerInfo.Inst.PlayerCard.Remove(gameObject);
             //이벤트삭제
-            Event_MoveReset.Dispose();
-            Event_BattleMove.Dispose();
-            if (Event_TJ1!=null) Event_TJ1.Dispose();
-            if (Event_TJ2!=null) Event_TJ2.Dispose();
-            if (Event_TJ3!=null) Event_TJ3.Dispose();
-            if (Event_TJ4!=null) Event_TJ4.Dispose();
+            Event_MoveReset?.Dispose();
+            Event_BattleMove?.Dispose();
+            Event_CheckLevelUp?.Dispose();
+            Event_TJ1?.Dispose();
+            Event_TJ2?.Dispose();
+            Event_TJ3?.Dispose();
+            Event_TJ4?.Dispose();
 
             if (TileOb.TryGetComponent(out TileInfo info))
             {
@@ -494,7 +584,7 @@ namespace GameS
             }
 
             ItemUI[seat].SetActive(true);
-            //스탯올림 상호작용.. 중립몹은 ㄴ
+            //스탯올림 상호작용.. 중립몹은 ㄴ 카피도 설정안하는거 인구수증가라던가등등.
         }
 
         public void ItemNo(int seat, int idx)
@@ -609,9 +699,17 @@ namespace GameS
 
             if (stat.IsCard)
             {
-                
-            int Eidx = PlayerInfo.Inst.EnemyIdx;
-            EnemyTeamIdx = Eidx;
+
+                if (stat.IsCopy)
+                {
+                    EnemyTeamIdx = PlayerInfo.Inst.copyEnemyIdx;
+                }
+                else
+                {
+                    int Eidx = PlayerInfo.Inst.EnemyIdx;
+                    EnemyTeamIdx = Eidx;
+                }
+            
             }
             else
             {
@@ -633,7 +731,6 @@ namespace GameS
             if (!IsFiled) return;
             
             fsm.fsm.SetState(eCardFight_STATE.None);
-            gameObject.SetActive(true);
             //MoveReset();
             stat.currentHp = stat.HpMax();
             stat.currentMana = stat.Mana();
@@ -641,7 +738,9 @@ namespace GameS
             stat.nav.enabled = false;
             stat.collider.enabled = false;
             
-            stat.IsDead = false;
+            // gameObject.SetActive(true);
+            // stat.IsDead = false;
+            stat.DeadCheck(false);
             stat.IsInvin = false;
             IsFighting = false;
             fsm.Enemies.Clear();
@@ -669,7 +768,22 @@ namespace GameS
             
         }
 
+        public void LevelUpCheck()
+        {
+            CreateManager.inst.CheckLevelUp(Idx, Level);
+            Event_CheckLevelUp.Dispose();
+        }
 
+        public void TileCheck(bool b)
+        {
+            pv.RPC(nameof(RPC_TileCheck),RpcTarget.All,b);
+        }
+
+        [PunRPC]
+        void RPC_TileCheck(bool b)
+        {
+            IsFiled = b;
+        }
 
 
 

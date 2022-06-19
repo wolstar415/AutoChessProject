@@ -19,6 +19,7 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
     private static readonly int Run = Animator.StringToHash("Run");
     private Vector3 movepos;
     public LayerMask mask;
+    [SerializeField] private Image fill;
     
 
     private void Start()
@@ -27,6 +28,7 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
         gameObject.name = pv.Owner.NickName;
         if (!pv.IsMine)
         {
+            fill.color = Color.red;
             return;
         }
         nav.enabled = true;
@@ -115,14 +117,9 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
 
     public void MovePos(Vector3 pos)
     {
-        pv.RPC(nameof(RPC_MovePos),RpcTarget.All,pos);
-    }
-
-    [PunRPC]
-    void RPC_MovePos(Vector3 pos)
-    {
         nav.enabled = false;
         transform.position = pos;
         nav.enabled = true;
     }
+    
 }

@@ -325,7 +325,7 @@ namespace GameS
             CharacterTileMoveFunc(ob, Tile);
         }
 
-        void CharacterTileMoveFunc(GameObject ob, GameObject Tile)
+        public void CharacterTileMoveFunc(GameObject ob, GameObject Tile)
         {
             var ClickCardcom = ob.GetComponent<Card_Info>();
             var tilecom = Tile.GetComponent<TileInfo>();

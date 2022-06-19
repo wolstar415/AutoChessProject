@@ -6,6 +6,17 @@ using UnityEngine.UI;
 
 namespace GameS
 {
+
+    [System.Serializable]
+    public class BattleInfo
+    {
+        public int playeridx;//플레이어번호
+        public int enemyidx;//싸워야할 상대
+        public bool IsBattleMove;//이동해야하는지 체크
+        public bool IsCopy;//내가 복사본을 보내는지 체크
+        public int copyidx;//싸워야할 상대(복사본을 보내는곳)
+        
+    }
     public class GameSystem_AllInfo : MonoBehaviour
     {
         public bool IsStart = false;
@@ -35,6 +46,9 @@ namespace GameS
         [Header("UI정보들")] public Transform ItemCanvs;
         public Transform ItemParent;
         public GridLayoutGroup ItemGridLayout;
+
+        [Header("전투 플레이어")] 
+        public List<BattleInfo> battleinfos;
 
         private void Awake()
         {

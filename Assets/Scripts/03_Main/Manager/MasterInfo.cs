@@ -9,8 +9,9 @@ using Photon.Realtime;
 using Random = System.Random;
 using Newtonsoft.Json;
 
+
 [System.Serializable]
-public struct LifeRank
+public class LifeRank
 {
     public int PlayerIdx;
     public int Life;
@@ -21,10 +22,10 @@ public struct LifeRank
         Life = _Life;
     }
 
-    public void LifeSet(int life)
-    {
-        Life = life;
-    }
+    // public void LifeSet(int life)
+    // {
+    //     Life = life;
+    // }
 }
 public class MasterInfo : MonoBehaviourPunCallbacks
 {
@@ -44,8 +45,6 @@ public class MasterInfo : MonoBehaviourPunCallbacks
     public List<LifeRank> lifeRank2;
     
 
-   
-    //public List<LifeRank> lifeRanks;
     private void Start()
     {
         
@@ -59,7 +58,13 @@ public class MasterInfo : MonoBehaviourPunCallbacks
     public string LifeOrder()
     {
 
-        lifeRank=lifeCheck.OrderBy(o => o.Life).ToList();
+        lifeRank.Clear();
+        for (int i = 0; i < lifeCheck.Count; i++)
+        {
+            lifeRank.Add(new LifeRank(lifeCheck[i].PlayerIdx,lifeCheck[i].Life));
+        }
+
+        lifeRank = lifeRank.OrderBy(o => o.Life).ToList();
         return JsonConvert.SerializeObject(lifeRank);
 
 
@@ -68,7 +73,13 @@ public class MasterInfo : MonoBehaviourPunCallbacks
     {
 
 
-        lifeRank2=lifeCheck.OrderByDescending(o => o.Life).ToList();
+        lifeRank2.Clear();
+        for (int i = 0; i < lifeCheck.Count; i++)
+        {
+            lifeRank2.Add(new LifeRank(lifeCheck[i].PlayerIdx,lifeCheck[i].Life));
+        }
+
+        lifeRank2 = lifeRank2.OrderByDescending(o => o.Life).ToList();
         return JsonConvert.SerializeObject(lifeRank2);
 
     }
@@ -319,6 +330,7 @@ public class MasterInfo : MonoBehaviourPunCallbacks
      {
          yield return YieldInstructionCache.WaitForSeconds(t);
          //전부 실행
+         NetworkManager.inst.BattleFoodCheck();
          NetworkManager.inst.BattleReady();
          yield return YieldInstructionCache.WaitForSeconds(2);
          NetworkManager.inst.BattleStart();
@@ -346,15 +358,9 @@ public class MasterInfo : MonoBehaviourPunCallbacks
          yield return YieldInstructionCache.WaitForSeconds(1);
          NetworkManager.inst.BattleEnd();
          yield return YieldInstructionCache.WaitForSeconds(1);
-         if (PlayerInfo.Inst.PVP)
-         {
-             NetworkManager.inst.RoundFuncGo(1);
-         }
-         else
-         {
-             NetworkManager.inst.RoundFuncGo(2);
+         NetworkManager.inst.RoundFuncGo(2);
                 
-         }
+         
 
 
      }
@@ -370,6 +376,92 @@ public class MasterInfo : MonoBehaviourPunCallbacks
                  NetworkManager.inst.players[i].BattleEnd = false;
              }
          }
+     }
+
+     public void MasterPvPStart(float t) // 마스터가 배틀정보보냄
+     {
+         
+         StartCoroutine(IPVPStart(t));
+     }
+
+     public void BtSent()
+     {
+         string s= JsonConvert.SerializeObject(GameSystem_AllInfo.inst.battleinfos);
+         pv.RPC(nameof(RPC_BtInfoSend),RpcTarget.All,s);
+     }
+
+     [PunRPC]
+     void RPC_BtInfoSend(string s)
+     {
+         GameSystem_AllInfo.inst.battleinfos=JsonConvert.DeserializeObject<List<BattleInfo>>(s);
+
+         var btinfo = GameSystem_AllInfo.inst.battleinfos[PlayerInfo.Inst.PlayerIdx];
+         PlayerInfo.Inst.EnemyIdx = btinfo.enemyidx;
+         PlayerInfo.Inst.copyEnemyIdx = btinfo.copyidx;
+         PlayerInfo.Inst.BattleMove = btinfo.IsBattleMove;
+         PlayerInfo.Inst.IsCopy = btinfo.IsCopy;
+         
+         RoundManager.inst.BattleMoveFunc(); //팀 모두 이동
+
+         if (PlayerInfo.Inst.IsCopy)
+         {
+             //쫙생성하기
+             for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+             {
+                 var oriOb = PlayerInfo.Inst.PlayerCard_Filed[i];
+                 var cinfo = oriOb.GetComponent<Card_Info>();
+                 string name = GameSystem_AllInfo.inst.Cards[cinfo.Idx];
+                 var tile = PositionManager.inst.playerPositioninfo[PlayerInfo.Inst.copyEnemyIdx]
+                     .EnemyFiledTile[cinfo.MoveIdx];
+                  GameObject ob=PhotonNetwork.Instantiate(name, tile.transform.position, Quaternion.Euler(0, -180, 0));
+                 ob.GetComponent<Card_Info>().CopyStart(cinfo.Level,cinfo.Item);
+             }
+         }
+         
+
+         
+
+
+         NetworkManager.inst.RPC_BattleReady();
+     }
+     
+     IEnumerator IPVPStart(float t)
+     {
+         yield return YieldInstructionCache.WaitForSeconds(t);
+         //전부 실행
+         NetworkManager.inst.BattleFoodCheck();
+         PVPManager.inst.MasterBattleReady(); // 다 이동시킴
+         yield return YieldInstructionCache.WaitForSeconds(3);
+         
+         
+         NetworkManager.inst.BattleStart();
+         //배틀시작
+
+         while (true)
+         {
+             bool b = true;
+             for (int i = 0; i < NetworkManager.inst.players.Count; i++)
+             {
+                 if (NetworkManager.inst.players[i].State==1&&NetworkManager.inst.players[i].BattleEnd==false)
+                 {
+                     b = false;
+                     break;
+                 }
+             }
+
+             if (b)
+             {
+                 break;
+             }
+             yield return YieldInstructionCache.WaitForSeconds(1);
+         }
+         
+         yield return YieldInstructionCache.WaitForSeconds(1);
+         NetworkManager.inst.BattleEnd();
+         yield return YieldInstructionCache.WaitForSeconds(1);
+         NetworkManager.inst.RoundFuncGo(1);
+
+
      }
      
 }

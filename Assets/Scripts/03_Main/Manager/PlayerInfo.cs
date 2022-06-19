@@ -37,7 +37,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     public Camera camer;
     [SerializeField]private int gold;
     public int Level;
-    [SerializeField] private int life;
+    [SerializeField] private int life=100;
     public int victoryCnt;
     public int defeatCnt;
     public bool IsVictory;
@@ -59,7 +59,10 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
                 return;
             }
             pv.RPC(nameof(MasterGoLife),RpcTarget.MasterClient,PlayerIdx,life);
-            
+            if (PlayerOb.TryGetComponent(out PlayerMoving pl))
+            {
+                pl.HpSetting(life);
+            }
             
 
         }
@@ -106,6 +109,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     public int EnemyIdx=-1;
     public int copyEnemyIdx=-1;
     public bool IsBattle=false;
+    public bool IsCopy=false;
     public int deadCnt;
     public int copydeadCnt;
     public int pVEdeadCnt;
@@ -124,6 +128,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     public void LifeDamage(int i)
     {
         Life -= i;
+        NetworkManager.inst.TextUi(i.ToString(), PlayerInfo.Inst.PlayerOb.transform.position, 5);
     }
     public void PlayerCardCntAdd(int idx)
     {
@@ -390,7 +395,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     public void CopyDead()
     {
         copydeadCnt--;
-        if (copydeadCnt==0)
+        if (copydeadCnt<=0)
         {
             //상대가이김
             pv.RPC(nameof(Victory),RpcTarget.All,copyEnemyIdx,true);
@@ -456,7 +461,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         {
             //이펙트
             EffectManager.inst.EffectCreate("DeadEffect",PlayerOb.transform.position,Quaternion.identity,1);
-            Life -= dmg;
+            LifeDamage(dmg);
         }
     }
 
@@ -468,7 +473,9 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         NetworkManager.inst.players[pidx].Dead = true;
         NetworkManager.inst.players[pidx].State = 2;
         NetworkManager.inst.players[pidx].Life = 0;
-        MasterInfo.inst.lifeCheck[pidx].LifeSet(0);
+        
+        var lifeRank = MasterInfo.inst.lifeCheck[pidx];
+        lifeRank.Life=0;
     }
 
     void PlayerDead()
@@ -501,7 +508,9 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
             
         }
 
-        MasterInfo.inst.lifeCheck[i].LifeSet(life);
+        
+        var lifeRank = MasterInfo.inst.lifeCheck[i];
+        lifeRank.Life=life;
 
     }
 }

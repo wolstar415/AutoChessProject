@@ -18,7 +18,7 @@ namespace GameS
             }
             else if (Input.GetKeyDown(KeyCode.Keypad3))
             {
-                //NetworkManager.inst.CameraMoveNormal2(1);
+                PlayerInfo.Inst.Life--;
             }
             else if (Input.GetKeyDown(KeyCode.Keypad4))
             {

@@ -22,7 +22,7 @@ namespace GameS
             if (PlayerInfo.Inst.EnemyIdx==-1|| PlayerInfo.Inst.BattleMove==false) return;
 
             int Enemyidx = PlayerInfo.Inst.EnemyIdx;
-            PlayerInfo.Inst.EnemyFiledTile = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyFiledTile;
+            //PlayerInfo.Inst.EnemyFiledTile = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyFiledTile;
             PlayerInfo.Inst.PlayerTileOb = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyPlayerTileob;
             EventManager.inst.Sub_CardBattleMove.OnNext(1);
             GoldSet();
@@ -30,7 +30,7 @@ namespace GameS
 
             PlayerInfo.Inst.PlayerOb.GetComponent<PlayerMoving>().nav.enabled = false;
             PlayerInfo.Inst.PlayerOb.transform.position =
-                PositionManager.inst.playerPositioninfo[Enemyidx].PlayerMovePos.position;
+                PositionManager.inst.playerPositioninfo[Enemyidx].EnemyPlayerMovePos.position;
             PlayerInfo.Inst.PlayerOb.GetComponent<PlayerMoving>().nav.enabled = true;
 
 
@@ -106,8 +106,8 @@ namespace GameS
         public void CameraMoveFunc2()
         {
             int idx = PlayerInfo.Inst.EnemyIdx;
-            PlayerInfo.Inst.camer.transform.position = PositionManager.inst.Camera_AttackPos[idx].position;
-            PlayerInfo.Inst.camer.transform.rotation = PositionManager.inst.Camera_AttackPos[idx].rotation;
+            PlayerInfo.Inst.camer.transform.position = PositionManager.inst.Camera_AttackPos[idx].localPosition;
+            PlayerInfo.Inst.camer.transform.rotation = PositionManager.inst.Camera_AttackPos[idx].localRotation;
         }
 
         public void RoundStart(int Round)
@@ -117,6 +117,10 @@ namespace GameS
             PlayerInfo.Inst.Round = Round;
             PlayerInfo.Inst.BattleEnd = false;
             int TimeWait = CsvManager.inst.RoundCheck4[Round];
+            
+            
+            EventManager.inst.Sub_LevelUpCheck.OnNext(1); // 레벨업할수있는애들 ㄱㄱ
+            
 
             
             if (PlayerInfo.Inst.Round==2)
@@ -191,9 +195,12 @@ namespace GameS
                 
             }
 
+
             if (PhotonNetwork.IsMasterClient)
             {
+                MasterInfo.inst.MasterPvPStart(TimeWait);
                 MasterInfo.inst.MasterBattleRoundReady();
+                
             }
             
             
@@ -220,6 +227,7 @@ namespace GameS
             PVEManager.inst.PVEstart();
             if (PhotonNetwork.IsMasterClient)
             {
+                
                 MasterInfo.inst.MasterPveStart(TimeWait);
                 MasterInfo.inst.MasterBattleRoundReady();
             }
@@ -230,7 +238,7 @@ namespace GameS
             if (PlayerInfo.Inst.Dead == true) return;
             int idxcheck = PlayerInfo.Inst.RoundIdx;
             int idx = PlayerInfo.Inst.PlayerIdx;
-
+            
             
             PlayerInfo.Inst.PickRound = true;
             //UI설정
@@ -255,22 +263,37 @@ namespace GameS
         public void Round_PVP_EndFunc()
         {
             if (PlayerInfo.Inst.Dead == true) return;
-            PlayerInfo.Inst.IsBattle = false;
+            
+            BattleEndC();
             UIManager.inst.BattleUiSetting();
             UIManager.inst.BattleEndUi();
             MoneyCheck(true);
-            RoundNext();
+            PlayerInfo.Inst.XpPlus(2);
+            
+            if (PhotonNetwork.IsMasterClient) NetworkManager.inst.MasterRoundNextStart();
+            
+            
+        }
+
+        void BattleEndC()
+        {
+            PlayerInfo.Inst.IsBattle = false;
+            PlayerInfo.Inst.IsCopy = false;
+            PlayerInfo.Inst.EnemyIdx = -1;
+            PlayerInfo.Inst.copydeadCnt = -1;
             
         }
         public void Round_PVE_EndFunc()
         {
             if (PlayerInfo.Inst.Dead == true) return;
-            PlayerInfo.Inst.IsBattle = false;
+            
+            BattleEndC();
             UIManager.inst.BattleUiSetting();
             UIManager.inst.BattleEndUi();
             PlayerInfo.Inst.EnemyIdx = -1;
             MoneyCheck(false);
-            RoundNext();
+            PlayerInfo.Inst.XpPlus(2);
+            if (PhotonNetwork.IsMasterClient) NetworkManager.inst.MasterRoundNextStart();
         }
 
         public void MoneyCheck(bool PVP)
@@ -385,12 +408,13 @@ namespace GameS
             
             if (PlayerInfo.Inst.PlayerOb.TryGetComponent(out PlayerMoving moving))
             {
-                moving.nav.enabled = false;
-                moving.gameObject.transform.position = PlayerInfo.Inst.PlayerMovePos.position;
-                moving.nav.enabled = true;
-               // moving.MovePos(PlayerInfo.Inst.PlayerMovePos.position);
+                // moving.nav.enabled = false;
+                // moving.gameObject.transform.position = PlayerInfo.Inst.PlayerMovePos.position;
+                // moving.nav.enabled = true;
+                moving.MovePos(PlayerInfo.Inst.PlayerMovePos.position);
             }
-            RoundNext();
+            if (PhotonNetwork.IsMasterClient) NetworkManager.inst.MasterRoundNextStart();
+
         }
 
         void RoundNext()

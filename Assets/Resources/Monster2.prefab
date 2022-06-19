@@ -1607,6 +1607,8 @@ MonoBehaviour:
   - {fileID: 1533280405}
   pickIdx: -1
   IsPick: 0
+  show_fileTileob: {fileID: 0}
+  show_Tileob: {fileID: 0}
 --- !u!114 &910973219689201242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1661,6 +1663,12 @@ MonoBehaviour:
   ManaSlider: {fileID: 82530741}
   ShiledSlider1: {fileID: 1943425437909673387}
   ShiledSlider2: {fileID: 677942953834748674}
+  colors:
+  - {r: 0.4117647, g: 1, b: 0, a: 1}
+  - {r: 1, g: 0.11764706, b: 0, a: 1}
+  fills:
+  - {fileID: 6825616783849936939}
+  - {fileID: 193863533}
   info: {fileID: 794620965866707054}
   NoDmg: 0
   IsCopy: 0

@@ -111,6 +111,12 @@ MonoBehaviour:
   - Victory
   - RPC_EffectCreate
   - RPC_DeadFunc
+  - RPC_BtInfoSend
+  - RPC_LevelUp
+  - RPC_CopyStart
+  - RPC_UnitDead
+  - RPC_TileCheck
+  - RPC_BattleFoodCheck
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

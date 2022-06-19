@@ -630,12 +630,37 @@ namespace GameS
             }
             else
             {
-                    PlayerInfo.Inst.DeadCheck();
+                pv.RPC(nameof(RPC_UnitDead),RpcTarget.All,info.TeamIdx);
                 
             }
+            pv.RPC(nameof(RPC_Dead),RpcTarget.All,true);
+            
+            
+        }
 
- 
-            pv.RPC(nameof(RPC_Dead),RpcTarget.All);
+        [PunRPC]
+        void RPC_UnitDead(int pidx)
+        {
+            if (PlayerInfo.Inst.PlayerIdx==pidx)
+            {
+                PlayerInfo.Inst.DeadCheck();
+            }
+
+
+            
+            
+        }
+
+        public void DeadCheck(bool b)
+        {
+            pv.RPC(nameof(RPC_Dead),RpcTarget.All,b);
+        }
+
+        [PunRPC]
+        void RPC_Dead(bool b)
+        {
+            IsDead = b;
+            gameObject.SetActive(!b);
         }
 
 
@@ -672,12 +697,5 @@ namespace GameS
             
         }
 
-        [PunRPC]
-        void RPC_Dead()
-        {
-            
-            IsDead = true;
-            gameObject.SetActive(false);
-        }
     }
 }
