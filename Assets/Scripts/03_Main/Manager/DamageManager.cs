@@ -24,6 +24,7 @@ namespace GameS
             var card_stat = card.GetComponent<UnitState>();
             var target_stat = target.GetComponent<UnitState>();
             float getmana=damage * 0.01f;
+            float adddamage = 0f;
             bool IsCri;
             bool IsPhy = false;
             bool NoAtk = false;
@@ -44,6 +45,17 @@ namespace GameS
                 IsPhy = true;
                 NoAtk = target_stat.NoAttackCheck(IsPhy);
                 card_stat.BasicFunc(target,NoAtk);
+                int item10=card_stat.info.IsItemHave(10);
+                if (item10>0)
+                {
+                    adddamage = adddamage + (damage * 0.25f);
+                    if (target_stat.HpMax()>2200)
+                    {
+                        adddamage *= 2;
+                    }
+
+                    adddamage*= item10;
+                }
             }
 
  
@@ -73,16 +85,18 @@ namespace GameS
 
             if (IsCri)
             {
-                damage = damage + (damage * (card_stat.CriDmg() * 0.01f));
+                adddamage = adddamage + (damage * (card_stat.CriDmg() * 0.01f));
             }
 
+            
+            damage += adddamage;
             damage = damage * daMi;
-
             getmana = getmana+(damage * 0.07f);
             Mathf.Clamp(getmana, 0, 50);
             
             
             target_stat.currentMana += getmana;
+
             
             if (IsCri)
             {
@@ -94,9 +108,28 @@ namespace GameS
             {
                 NetworkManager.inst.TextUi(damage.ToString("F0"),target.transform.position,1,TextColor);
             }
+                UIManager.inst.DmgGo(TextColor+1, damage, card_stat.DmgIdx);
             
             //데미지체크
             //체력확인
+
+            if (target_stat.shiled>0)
+            {
+
+                if (target_stat.shiled>damage)
+                {
+                    damage = 0;
+                    target_stat.shiled -= damage;
+                }
+                else
+                {
+                    damage -= target_stat.shiled;
+                    target_stat.shiled = 0;
+                }
+            }
+
+            if (damage<=0) return;
+
 
 
             if (target_stat.currentHp<=damage)
@@ -106,7 +139,6 @@ namespace GameS
                 return;
             }
 
-                UIManager.inst.DmgGo(TextColor+1, damage, card_stat.DmgIdx);
 
             target_stat.currentHp -= damage;
             target_stat.currentMana += getmana;

@@ -52,7 +52,7 @@ namespace GameS
         public float Buff_CriDmg;//크리데미지
         public float Buff_ManaMax;//최대마나
         public float Buff_NoAttack;//회피
-        private static readonly int Cool = Animator.StringToHash("Cool");
+        private static readonly int Cool = Animator.StringToHash("Speed");
 
         public int Checkidx = 0; //중립몹전용
 
@@ -108,6 +108,23 @@ namespace GameS
         public override float Atk_Damage() //데미지
         {
             float v = Char_Atk_Damage + Item_Atk_Damage + Buff_Atk_Damage;
+            int i = info.IsItemHave(9);
+            if (i>0)
+            {
+                if (info.Level==2)
+                {
+                    v += 70;
+                }
+                else if (info.Level == 3)
+                {
+                    v += 100;
+                    
+                }
+                else
+                {
+                    v += 50;
+                }
+            }
             Mathf.Clamp(v, 0, 9999999);
             return v;
         }
@@ -334,6 +351,8 @@ namespace GameS
             {
                 HpAndMpSet();
             }
+
+
             
         }
         [PunRPC]
@@ -598,7 +617,12 @@ namespace GameS
             {
                 RangeSet();
             }
+
+        
+
         }
+
+
 
         public void HpAndMpSet()
         {

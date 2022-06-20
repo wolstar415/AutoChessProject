@@ -106,6 +106,8 @@ namespace GameS
             }
             ItemUI[0].SetActive(true);
 
+
+
         }
 
         [PunRPC]
@@ -322,6 +324,7 @@ namespace GameS
             Setting(Level);
             if (pv.IsMine)
             {
+                stat.currentHp = stat.HpMax();
                 PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level-1).Remove(gameObject);
                 PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level).Add(gameObject);
                 if (Level == 2)
@@ -336,6 +339,7 @@ namespace GameS
                         }
                     }
                 }
+
                 for (int i = 0; i < CardManager.inst.CardUi.Count; i++)
                 {
                     if (CardManager.inst.CardUi[i].TryGetComponent(out CardUI_Info check))
@@ -343,11 +347,13 @@ namespace GameS
                         check.CheckEffect();
                     }
                 }
+
                 
             }
 
 
             StarUI[Level - 1].SetActive(true);
+     
 
         }
 

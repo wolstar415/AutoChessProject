@@ -249,7 +249,8 @@ namespace GameS
                 return;
             }
 
-            Debug.Log("드롭");
+
+            outUicard();
         }
 
         void SetUiCreate()

@@ -60,7 +60,7 @@ namespace GameS
                 GameObject card= PhotonNetwork.Instantiate(GameSystem_AllInfo.inst.Cards[result[i]], pos, qu);
                 if (card.TryGetComponent(out Card_Info info))
                 {
-                    info.PickStart(i,resultitem[i]);
+                    info.PickStart(i,Random.Range(0,8));
                 }
                 MasterInfo.inst.pickCards.Add(card);
             }
