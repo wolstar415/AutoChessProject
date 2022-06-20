@@ -749,8 +749,10 @@ namespace GameS
             //
             //버프리셋
 
-            
-            
+
+            stat.PhyDmg = 0;
+            stat.MagicDmg = 0;
+            stat.TrueDmg = 0;
             stat.currentHp = stat.HpMax();
             stat.currentMana = stat.Mana();
         }

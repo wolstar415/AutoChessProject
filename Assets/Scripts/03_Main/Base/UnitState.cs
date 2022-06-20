@@ -47,6 +47,12 @@ namespace GameS
         public bool NoDmg = false;
         public bool IsCopy = false;
 
+        [Header("딜체크")] 
+        public int DmgIdx = -1;
+        public float PhyDmg;
+        public float MagicDmg;
+        public float TrueDmg;
+
         public void ColorChange()
         {
 

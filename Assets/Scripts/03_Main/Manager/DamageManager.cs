@@ -105,6 +105,9 @@ namespace GameS
                 card_stat.UnitKill();
                 return;
             }
+
+                UIManager.inst.DmgGo(TextColor+1, damage, card_stat.DmgIdx);
+
             target_stat.currentHp -= damage;
             target_stat.currentMana += getmana;
 

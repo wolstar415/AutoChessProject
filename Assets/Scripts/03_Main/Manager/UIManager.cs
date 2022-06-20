@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GameS;
 using Photon.Pun;
 using Photon.Realtime;
@@ -59,6 +60,20 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite[] vicon;
     [SerializeField] private Image vImage;
     [SerializeField] private TextMeshProUGUI vText;
+    [Header("딜량체크")] public bool IsDmgShow = false;
+    [SerializeField] private Image DmgButton;
+    [SerializeField] private Image PyInfoButton;
+    public GameObject DmgUiob;
+    [SerializeField] private TextMeshProUGUI DmgName;
+    [SerializeField] private TextMeshProUGUI DmgAll;
+    [SerializeField] private TextMeshProUGUI DmgPhy;
+    [SerializeField] private TextMeshProUGUI DmgMagic;
+    [SerializeField] private TextMeshProUGUI DmgTrue;
+    [SerializeField] private GameObject[] DmgObs;
+    [SerializeField] private GameObject PlayerinfoPanel;
+    [SerializeField] private GameObject DmginfoPanel;
+    [SerializeField] private List<GameObject> DmgOrderList=new List<GameObject>();
+    
     private void Awake()
     {
         inst = this;
@@ -413,4 +428,121 @@ public class UIManager : MonoBehaviour
             
         }
     }
+
+    public void DmgBnt()
+    {
+        DmgButton.color = Color.white;
+        PyInfoButton.color = Color.black;
+        PlayerinfoPanel.SetActive(false);
+        DmginfoPanel.SetActive(true);
+        IsDmgShow = true;
+        if (PlayerInfo.Inst.IsBattle&&PlayerInfo.Inst.roundDamgeMax>0) DmgOrder();
+
+    }
+
+    public void PyBnt()
+    {
+        DmgButton.color = Color.black;
+        PyInfoButton.color = Color.white;
+        PlayerinfoPanel.SetActive(true);
+        DmginfoPanel.SetActive(false);
+        IsDmgShow = false;
+    }
+
+    public void DmgUIShow(Card_Info info,int idx)
+    {
+        if (idx >= 10) return;
+        if (DmgObs[idx].TryGetComponent(out DmgUI ui))
+        {
+            ui.transform.SetSiblingIndex(idx);
+            ui.DmgReset(info);
+        }
+        //초기화
+    }
+    public void DmgUINoShow()
+    {
+        for (int i = 0; i < DmgObs.Length; i++)
+        {
+            if (DmgObs[i].TryGetComponent(out DmgUI ui))
+            {
+                
+                ui.DmgNoShow();
+            }
+            
+        }
+        DmgUiob.SetActive(false);
+    }
+
+    public void DmgOrder()
+    {
+        if (!IsDmgShow) return;
+
+        DmgOrderList.Clear();
+        for (int i = 0; i < DmgObs.Length; i++)
+        {
+            if (DmgObs[i].activeSelf)
+            {
+                DmgOrderList.Add(DmgObs[i]);
+            }
+        }
+
+        if (DmgOrderList.Count==0) return;
+        
+        DmgOrderList = DmgOrderList.OrderByDescending(x =>
+        {
+            if (x.TryGetComponent(out DmgUI ui))
+            {
+                return ui.DmgAll;
+            }
+
+            return 0;
+        }).ToList();
+        for (int i = 0; i < DmgOrderList.Count; i++)
+        {
+            if (DmgObs[i].TryGetComponent(out DmgUI ui))
+            {
+                ui.DmgSet(i);
+            }
+
+
+        }
+        
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dmgtype">0=물리,1=마법,2=고정딜</param>
+    /// <param name="dmg">데미지</param>
+    /// <param name="idx"></param>
+    public void DmgGo(int dmgtype, float dmg, int idx)
+    {
+        if (dmg<=0)return;
+        if (idx is >= 11 or < 0) return;
+        if (dmgtype is >= 3 or < 0) return;
+
+        if (DmgObs[idx].TryGetComponent(out DmgUI ui))
+        {
+            ui.DmgUp(dmgtype,dmg);
+        }
+    }
+
+    public void DmgUIFunc(string name,float all,float phy,float magic,float tr)
+    {
+        
+        
+    DmgUiob.SetActive(true);
+
+    DmgName.text = name;
+    string n1 = CsvManager.inst.GameText(456);
+    string n2 = CsvManager.inst.GameText(457);
+    string n3 = CsvManager.inst.GameText(458);
+    string n4 = CsvManager.inst.GameText(459);
+    DmgAll.text = $"{n1} {all.ToString("F0")}";
+    DmgPhy.text = $"{n1} <color=red>{phy.ToString("F0")}</color>";
+    DmgMagic.text = $"{n1} <color=lightblue>{magic.ToString("F0")}</color>";
+    DmgTrue.text = $"{n1} {tr.ToString("F0")}";
+
+    }
+        
 }

@@ -42,6 +42,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     public int defeatCnt;
     public bool IsVictory;
 
+    public float roundDamgeMax = 0;
     public bool BattleEnd;
 
     public int Life

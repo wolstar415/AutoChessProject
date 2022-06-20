@@ -453,7 +453,10 @@ public class playerinfo
                 if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
                 {
                     info.BattleReady();
+                    info.stat.DmgIdx = i;
+                    UIManager.inst.DmgUIShow(info,i);
                 }
+                
             }
             
             if (!PlayerInfo.Inst.PVP)
@@ -529,6 +532,13 @@ public class playerinfo
                     PlayerInfo.Inst.DeadCheck(true);
                 }
             }
+            
+            
+            
+            
+            
+            
+            
         }
 
         public void BattleEnd()
@@ -539,6 +549,7 @@ public class playerinfo
         [PunRPC]
         void RPC_BattleEnd()
         {
+            PlayerInfo.Inst.roundDamgeMax = 0;
             //죽은애 다시 살리기
             if (PhotonNetwork.IsMasterClient)
             {
@@ -558,13 +569,14 @@ public class playerinfo
             PVPManager.inst.copyob.Clear();
 
             
-            
+            UIManager.inst.DmgUINoShow();
             for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
             {
                 if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
                 {
                     
                     info.BattleEnd();
+                    info.stat.DmgIdx = -1;
                 }
             }
             RoundManager.inst.BattleMoveFunc2();

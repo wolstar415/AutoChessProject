@@ -1674,6 +1674,10 @@ MonoBehaviour:
   info: {fileID: 794620965866707054}
   NoDmg: 0
   IsCopy: 0
+  DmgIdx: -1
+  PhyDmg: 0
+  MagicDmg: 0
+  TrueDmg: 0
   IsDead: 0
   IsInvin: 0
   IsStun: 0
