@@ -183,13 +183,16 @@ namespace GameS
                 int ran = Random.Range(0, result.Count);
                 int createidx = result[ran];
                 result.RemoveAt(ran);
+
+
                 Vector3 pos;
 
                 float angle = (i+1) * 40; 
-                float x = Mathf.Cos(angle*Mathf.Deg2Rad)*1 ;
-                float z = Mathf.Sin(angle*Mathf.Deg2Rad)*1 ;
-                pos = new Vector3(x, z, 0) + GameSystem_AllInfo.inst.PickPos.position;
-                GameObject card= PhotonNetwork.Instantiate(GameSystem_AllInfo.inst.Cards[createidx], pos, Quaternion.identity);
+                float x = Mathf.Cos(angle*Mathf.Deg2Rad)*6 ;
+                float z = Mathf.Sin(angle*Mathf.Deg2Rad)*6 ;
+                pos = new Vector3(x, 1, z) + GameSystem_AllInfo.inst.PickPos.position;
+                Quaternion qu=Quaternion.Euler(0,170-40*i,0);
+                GameObject card= PhotonNetwork.Instantiate(GameSystem_AllInfo.inst.Cards[createidx], pos, qu);
                 if (card.TryGetComponent(out Card_Info info))
                 {
                     info.PickStart(i,resultitem[i]);
@@ -200,7 +203,7 @@ namespace GameS
 
         IEnumerator IFirstFunc()
         {
-            int TimeWait = 20;
+            int TimeWait = 15;
             
             //3초뒤에 다 염
             
@@ -254,7 +257,7 @@ namespace GameS
         }
         IEnumerator IPickFunc()
         {
-            int TimeWait = 20;
+            int TimeWait = 15;
             //3초뒤에 다 염
             
             yield return YieldInstructionCache.WaitForSeconds(3);

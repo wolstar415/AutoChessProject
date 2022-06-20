@@ -22,7 +22,7 @@ namespace GameS
             if (PlayerInfo.Inst.EnemyIdx==-1|| PlayerInfo.Inst.BattleMove==false) return;
 
             int Enemyidx = PlayerInfo.Inst.EnemyIdx;
-            //PlayerInfo.Inst.EnemyFiledTile = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyFiledTile;
+            PlayerInfo.Inst.EnemyFiledTile = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyFiledTile;
             PlayerInfo.Inst.PlayerTileOb = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyPlayerTileob;
             EventManager.inst.Sub_CardBattleMove.OnNext(1);
             GoldSet();
@@ -48,15 +48,17 @@ namespace GameS
             }
             
             int pidx = PlayerInfo.Inst.PlayerIdx;
-            EventManager.inst.Sub_CardBattleMove.OnNext(2);
+            PlayerInfo.Inst.EnemyFiledTile = PositionManager.inst.playerPositioninfo[pidx].EnemyFiledTile;
             PlayerInfo.Inst.PlayerTileOb = PositionManager.inst.playerPositioninfo[pidx].PlayerTileob;
-            CameraMoveFunc1();
+            EventManager.inst.Sub_CardBattleMove.OnNext(2);
             PlayerInfo.Inst.EnemyIdx = -1;
             PlayerInfo.Inst.BattleMove = false;
             PlayerInfo.Inst.PlayerOb.GetComponent<PlayerMoving>().nav.enabled = false;
             PlayerInfo.Inst.PlayerOb.transform.position =
                 PositionManager.inst.playerPositioninfo[pidx].PlayerMovePos.position;
             PlayerInfo.Inst.PlayerOb.GetComponent<PlayerMoving>().nav.enabled = true;
+            CameraMoveFunc1();
+            Debug.Log($"이동완료! 나의 번호는 {PlayerInfo.Inst.PlayerIdx}");
         }
 
         public void GoldSet()
@@ -235,43 +237,59 @@ namespace GameS
         }
          void Round_PICk_StartFunc()
         {
-            if (PlayerInfo.Inst.Dead == true) return;
+
             int idxcheck = PlayerInfo.Inst.RoundIdx;
             int idx = PlayerInfo.Inst.PlayerIdx;
+            if (PlayerInfo.Inst.Dead == false)
+            {
+                
             
             
             PlayerInfo.Inst.PickRound = true;
             //UI설정
             UIManager.inst.PickUiSetting();
-            //마스터에게 액션실행
+            
+
+            //카메라이동
+            PlayerInfo.Inst.camer.transform.SetPositionAndRotation(PositionManager.inst.Camera_PickPos[idx].localPosition,PositionManager.inst.Camera_PickPos[idx].localRotation);
+            //플레이어이동
+            
+            if (PlayerInfo.Inst.PlayerOb.TryGetComponent(out PlayerMoving pl))
+            {
+                pl.MovePos(PositionManager.inst.PickPos[idx].position);
+            }
+            //길막기 모두 정상
+            }
+            PickRoundManager.inst.PickAllClose();
             if (PhotonNetwork.IsMasterClient)
             {
+                //마스터에게 액션실행
                 //카드들 생성
                 MasterInfo.inst.PickPlayerCheck();
                 MasterInfo.inst.PickCardCreate(idxcheck);
             }
-            //카메라이동
-            PlayerInfo.Inst.camer.transform.SetPositionAndRotation(PositionManager.inst.Camera_PickPos[idx].localPosition,PositionManager.inst.Camera_PickPos[idx].localRotation);
-            //플레이어이동
-            PlayerInfo.Inst.PlayerOb.transform.position = PositionManager.inst.PickPos[idx].localPosition;
-            //길막기 모두 정상
-            PickRoundManager.inst.PickAllClose();
             
             
         }
         
         public void Round_PVP_EndFunc()
         {
-            if (PlayerInfo.Inst.Dead == true) return;
+
+            if (PlayerInfo.Inst.Dead == false)
+            {
+                
             
             BattleEndC();
             UIManager.inst.BattleUiSetting();
             UIManager.inst.BattleEndUi();
             MoneyCheck(true);
             PlayerInfo.Inst.XpPlus(2);
-            
-            if (PhotonNetwork.IsMasterClient) NetworkManager.inst.MasterRoundNextStart();
-            NetworkManager.inst.BattleEnd();
+            }
+            if (PhotonNetwork.IsMasterClient)
+            {
+                NetworkManager.inst.MasterRoundNextStart();
+            }
+
             
         }
 
@@ -285,14 +303,18 @@ namespace GameS
         }
         public void Round_PVE_EndFunc()
         {
-            if (PlayerInfo.Inst.Dead == true) return;
             
-            BattleEndC();
+            if (PlayerInfo.Inst.Dead == false)
+            {
+                
+
+                BattleEndC();
             UIManager.inst.BattleUiSetting();
             UIManager.inst.BattleEndUi();
             PlayerInfo.Inst.EnemyIdx = -1;
             MoneyCheck(false);
             PlayerInfo.Inst.XpPlus(2);
+            }
             if (PhotonNetwork.IsMasterClient) NetworkManager.inst.MasterRoundNextStart();
         }
 

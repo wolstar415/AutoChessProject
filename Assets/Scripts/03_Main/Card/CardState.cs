@@ -643,7 +643,8 @@ namespace GameS
         {
             if (PlayerInfo.Inst.PlayerIdx==pidx)
             {
-                PlayerInfo.Inst.DeadCheck();
+                
+                PlayerInfo.Inst.DeadCheck(IsCopy);
             }
 
 

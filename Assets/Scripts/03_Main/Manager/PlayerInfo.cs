@@ -319,9 +319,9 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         }
     }
 
-    public void DeadCheck(bool IsCopy=false)
+    public void DeadCheck(bool isCopy=false)
     {
-        if (IsCopy)
+        if (isCopy)
         {
             CopyDead();
             return;
@@ -367,7 +367,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
             {
                 //상대가이겼다고 말해주기
                 //1패추가
-                pv.RPC(nameof(Victory),RpcTarget.All,EnemyIdx,false);
+                pv.RPC(nameof(Victory),RpcTarget.All,EnemyIdx,PlayerIdx,false);
                 PlayerInfo.Inst.BattleEnd = true;
                 MasterInfo.inst.BattelEndFunc1();
                 
@@ -398,18 +398,40 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         if (copydeadCnt<=0)
         {
             //상대가이김
-            pv.RPC(nameof(Victory),RpcTarget.All,copyEnemyIdx,true);
+            pv.RPC(nameof(Victory),RpcTarget.All,copyEnemyIdx,PlayerIdx,true);
         }
     }
 
     [PunRPC]
-    void Victory(int pidx,bool IsCopy)
+    void Victory(int pidx,int pidx2,bool isCopy)
     {
 
 
         if (PlayerIdx != pidx) return;
+        if (IsCopy&&copyEnemyIdx==pidx2) // 내가보낸카피가 이겼으니 데미지만주자
+        {
+            int dmg2 = CsvManager.inst.RoundDamage[Round];
+                
+            for (int i = 0; i <PVPManager.inst.copyob.Count; i++)
+            {
+                if (PVPManager.inst.copyob[i].TryGetComponent(out CardState stat))
+                {
+                    if (!stat.IsDead)
+                    {
+                        dmg2 += 2;
+                    }
+                }
+            }
+            //유닛모아서 적에게 보내기
+            pv.RPC(nameof(RPC_RoundDamage),RpcTarget.All,dmg2,pidx2);
+            return;
+        }
 
 
+        
+        
+            
+            
         Gold++; //돈추가
         
         //1승추가
@@ -429,7 +451,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         PlayerInfo.Inst.BattleEnd = true;
         MasterInfo.inst.BattelEndFunc1();
 
-        if (IsCopy) return; //현재 대상이 카피라면 안보냄
+        if (isCopy) return; //현재 대상이 카피라면 안보냄
 
         int dmg = CsvManager.inst.RoundDamage[Round];
                 
@@ -444,7 +466,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
             }
         }
         //유닛모아서 적에게 보내기
-        pv.RPC(nameof(RPC_RoundDamage),RpcTarget.All,dmg,EnemyIdx);
+        pv.RPC(nameof(RPC_RoundDamage),RpcTarget.All,dmg,pidx2);
         
         
     }

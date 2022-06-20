@@ -239,6 +239,7 @@ namespace GameS
         
         public void CopyStart(int lv,int[] items)
         {
+            stat.IsCopy = true;
             for (int i = 0; i < items.Length; i++)
             {
                 if (items[i]>=0)

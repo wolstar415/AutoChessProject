@@ -415,6 +415,7 @@ public class MasterInfo : MonoBehaviourPunCallbacks
                      .EnemyFiledTile[cinfo.MoveIdx];
                   GameObject ob=PhotonNetwork.Instantiate(name, tile.transform.position, Quaternion.Euler(0, -180, 0));
                  ob.GetComponent<Card_Info>().CopyStart(cinfo.Level,cinfo.Item);
+                 PVPManager.inst.copyob.Add(ob);
              }
          }
          
@@ -459,6 +460,7 @@ public class MasterInfo : MonoBehaviourPunCallbacks
          yield return YieldInstructionCache.WaitForSeconds(1);
          
          PVPManager.inst.BattleInfoReset();
+         NetworkManager.inst.BattleEnd();
          yield return YieldInstructionCache.WaitForSeconds(1);
          NetworkManager.inst.RoundFuncGo(1);
 

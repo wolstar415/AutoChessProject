@@ -510,6 +510,13 @@ public class playerinfo
                         info.BattleStart();
                     }
                 }
+                for (int i = 0; i < PVPManager.inst.copyob.Count; i++)
+                {
+                    if (PVPManager.inst.copyob[i].TryGetComponent(out Card_Info info))
+                    {
+                        info.BattleStart();
+                    }
+                }
             
             UIManager.inst.TimeFunc(60);
 

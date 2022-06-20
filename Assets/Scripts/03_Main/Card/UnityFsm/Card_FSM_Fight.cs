@@ -145,7 +145,7 @@ namespace GameS
             // Collider[] c = new Collider[] { };
             // var size = Physics.OverlapSphereNonAlloc(transform.position, 30f, c, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
 
-            Collider[] c = Physics.OverlapSphere(transform.position, 20f, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
+            Collider[] c = Physics.OverlapSphere(transform.position, 25f, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
               c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false&&ob.GetComponent<Card_Info>().IsFiled&&
                           ob.GetComponent<UnitState>().IsInvin == false).OrderBy(ob => Vector3.Distance(transform.position, ob.transform.position)).ToArray();
 
@@ -164,7 +164,7 @@ namespace GameS
             // Collider[] c=null;
             // Physics.OverlapSphereNonAlloc(transform.position, 30f, c,
             //     GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
-            Collider[] c = Physics.OverlapSphere(transform.position, 20f, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
+            Collider[] c = Physics.OverlapSphere(transform.position, 25f, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
             c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false &&
                              ob.GetComponent<UnitState>().IsInvin == false&&ob.GetComponent<Card_Info>().IsFiled).OrderByDescending(ob => Vector3.Distance(transform.position, ob.transform.position)).ToArray();
 
