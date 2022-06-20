@@ -328,6 +328,7 @@ public class MasterInfo : MonoBehaviourPunCallbacks
      }
      IEnumerator IPVEStart(float t)
      {
+         int addTime = 60;
          yield return YieldInstructionCache.WaitForSeconds(t);
          //전부 실행
          NetworkManager.inst.BattleFoodCheck();
@@ -352,6 +353,14 @@ public class MasterInfo : MonoBehaviourPunCallbacks
              {
                  break;
              }
+
+             if (addTime==0)
+             {
+                 addAtkSpeed();
+                 
+             }
+
+             addTime--;
              yield return YieldInstructionCache.WaitForSeconds(1);
          }
          
@@ -465,6 +474,23 @@ public class MasterInfo : MonoBehaviourPunCallbacks
          NetworkManager.inst.RoundFuncGo(1);
 
 
+     }
+
+     [PunRPC]
+     void addAtkSpeed()
+     {
+         UIManager.inst.TimeFunc(30);
+         for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+         {
+             if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
+             {
+                 if (!info.IsDead)
+                 {
+                     
+                    info.stat.AtkPlus(0, 0, 500, true);
+                 }
+             }
+         }
      }
      
 }

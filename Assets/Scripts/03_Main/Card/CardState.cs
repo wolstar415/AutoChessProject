@@ -154,6 +154,7 @@ namespace GameS
             Char_Hp += Char;
             Item_Hp += Item;
             Buff_Hp += buff;
+            currentHp = currentHp + Char + Item + buff;
             if (network)
             {
             pv.RPC(nameof(RPC_HpPlus),RpcTarget.All,Char_Hp,Item_Hp,Buff_Hp,hpSet);
@@ -168,6 +169,7 @@ namespace GameS
             float f1 = Char_Mana;
             float f2 = Item_Mana;
             float f3 = Buff_Mana;
+            currentMana = currentMana + Char + Item + buff;
             if (network)
             {
                 pv.RPC(nameof(RPC_ManaPlus),RpcTarget.All,f1,f2,f3,mpSet);
@@ -326,6 +328,8 @@ namespace GameS
             Char_Hp = Char;
             Item_Hp = Item;
             Buff_Hp = buff;
+            
+            
             if (hpset)
             {
                 HpAndMpSet();
@@ -546,17 +550,44 @@ namespace GameS
             Buff_Mana= stat[8];
             Buff_ManaMax= stat[9];
             Buff_CriPer= stat[10];
-            Buff_CriDmg= stat[11];;
+            Buff_CriDmg= stat[11];
             
         }
 
+        public void BattleEndReset()
+        {
+            pv.RPC(nameof(RPC_BattleEndReset),RpcTarget.All);
+        }
+
+        [PunRPC]
+        void RPC_BattleEndReset()
+        {
+            Buff_Hp= 0;
+            Buff_Range= 0;
+            Buff_Atk_Cool= 0;
+            Buff_Atk_Damage= 0;
+            Buff_Magic_Damage= 0;
+            Buff_Defence= 0;
+            Buff_Defence_Magic= 0;
+            Buff_Speed= 0;
+            Buff_Mana= 0;
+            Buff_ManaMax= 0;
+            Buff_CriPer = 0;
+            Buff_CriDmg= 0;
+            if (pv.IsMine)
+            {
+                currentHp = HpMax();
+                currentMana = Mana();
+                ReSetFunc1();
+            }
+        }
         public void ReSetFunc1()
         {
             pv.RPC(nameof(RPC_ReSetFunc1),RpcTarget.All);
             
         }
         [PunRPC]
-        void RPC_ReSetFunc1()
+        public void RPC_ReSetFunc1()
         {
             float c = 100 + Item_Atk_Cool + Buff_Atk_Cool;
             c = c * 0.01f;

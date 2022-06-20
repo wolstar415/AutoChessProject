@@ -69,6 +69,9 @@ namespace GameS
                 info.pv.TransferOwnership(PhotonNetwork.LocalPlayer);
                 NetworkManager.inst.PickSelect();
                 info.PickSelect();
+                
+                
+                
             }
 
             StartCoroutine(CardMove());

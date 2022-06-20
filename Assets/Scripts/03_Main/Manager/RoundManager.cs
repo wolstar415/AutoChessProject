@@ -252,10 +252,11 @@ namespace GameS
 
             //카메라이동
             PlayerInfo.Inst.camer.transform.SetPositionAndRotation(PositionManager.inst.Camera_PickPos[idx].localPosition,PositionManager.inst.Camera_PickPos[idx].localRotation);
-            //플레이어이동
+            
             
             if (PlayerInfo.Inst.PlayerOb.TryGetComponent(out PlayerMoving pl))
             {
+                //플레이어이동
                 pl.MovePos(PositionManager.inst.PickPos[idx].position);
             }
             //길막기 모두 정상

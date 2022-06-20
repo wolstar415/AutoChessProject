@@ -75,18 +75,21 @@ namespace GameS
 
         public void PickStart(int Idx, int ItemIdx)
         {
-            pv.RPC(nameof(itemStatadd), RpcTarget.All, 0, ItemIdx);
-            pv.RPC(nameof(NetworkdPickStart), RpcTarget.All, Idx);
+            pv.RPC(nameof(NetworkdPickStart), RpcTarget.All, Idx,ItemIdx);
         }
 
         public void PickSelect()
         {
             pv.RPC(nameof(NetworkdPickSelect), RpcTarget.All, PlayerInfo.Inst.PlayerIdx);
+            
             MasterInfo.inst.CardRemove(Idx);
+            
         }
 
+
+
         [PunRPC]
-        void NetworkdPickStart(int Idx)
+        void NetworkdPickStart(int Idx,int itemidx)
         {
             transform.parent = GameSystem_AllInfo.inst.PickPos;
 
@@ -94,6 +97,15 @@ namespace GameS
             pickIdx = Idx;
             IsPick = true;
             GameSystem_AllInfo.inst.PickCard[Idx] = gameObject;
+            
+            int itemicon = CsvManager.inst.itemInfo[itemidx].Icon;
+            Item[0] = itemidx;
+            if (ItemUI[0].TryGetComponent(out Image image))
+            {
+                image.sprite = IconManager.inst.icon[itemicon];
+            }
+            ItemUI[0].SetActive(true);
+
         }
 
         [PunRPC]
@@ -158,7 +170,10 @@ namespace GameS
             if (Character_Job2>=1) Event_TJ4=TraitJobManager.inst.Obs[Character_Job2].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
 
 
-
+            if (Item[0]>=0)
+            {
+                pv.RPC(nameof(itemStatadd), RpcTarget.All, 0, Item[0]);
+            }
 
         }
 
@@ -555,6 +570,8 @@ namespace GameS
         void itemStateUp(int seat, int idx)
         {
             //스탯내림
+            ItemStatMinus(Item[seat],false);
+            
             int itemicon = CsvManager.inst.itemInfo[idx].Icon;
             Item[seat] = idx;
             if (ItemUI[seat].TryGetComponent(out Image image))
@@ -563,11 +580,13 @@ namespace GameS
             }
 
             ItemUI[seat].SetActive(true);
+            ItemStatAdd(Item[seat],true);
         }
 
         [PunRPC]
         void itemStatRemove(int seat)
         {
+            ItemStatMinus(Item[seat],true);
             ItemUI[seat].SetActive(false);
             Item[seat] = -1;
             //스탯내림 
@@ -585,7 +604,82 @@ namespace GameS
             }
 
             ItemUI[seat].SetActive(true);
+            ItemStatAdd(idx, true);
             //스탯올림 상호작용.. 중립몹은 ㄴ 카피도 설정안하는거 인구수증가라던가등등.
+        }
+        
+
+        void ItemStatAdd(int idx,bool b)
+        {
+            if (idx is < 0 or > 53) return;
+            var checkIteminfo = CsvManager.inst.itemInfo[idx];
+
+            if (checkIteminfo.Hp > 0)stat.HpPlus(0,checkIteminfo.Hp,0);
+            if (checkIteminfo.Attack > 0)stat.Item_Atk_Damage += checkIteminfo.Attack;
+            if (checkIteminfo.AtkSpeed > 0)stat.Item_Atk_Cool += checkIteminfo.AtkSpeed;
+            if (checkIteminfo.Defense > 0)stat.Item_Defence += checkIteminfo.Defense;
+            if (checkIteminfo.MagicDefense > 0) stat.Item_Defence_Magic += checkIteminfo.MagicDefense;
+            if (checkIteminfo.MagicAtk > 0) stat.Item_Magic_Damage += checkIteminfo.MagicAtk;
+            if (checkIteminfo.Mana > 0) stat.ManaPlus(0, checkIteminfo.Mana, 0);
+            if (checkIteminfo.CriPer > 0) stat.Item_CriPer += checkIteminfo.CriPer;
+            if (checkIteminfo.CriDmg > 0) stat.Item_CriDmg += checkIteminfo.CriDmg;
+            if (checkIteminfo.MissPer > 0) stat.Item_NoAttack += checkIteminfo.MissPer;
+            if (b) stat.RPC_ReSetFunc1();
+            ItemAddFunc(idx);
+
+        }
+        void ItemStatMinus(int idx,bool b)
+        {
+            if (idx is < 0 or > 53) return;
+            
+            var checkIteminfo = CsvManager.inst.itemInfo[idx];
+            if (checkIteminfo.Hp > 0)stat.HpPlus(0,-checkIteminfo.Hp,0);
+            if (checkIteminfo.Attack > 0)stat.Item_Atk_Damage -= checkIteminfo.Attack;
+            if (checkIteminfo.AtkSpeed > 0)stat.Item_Atk_Cool -= checkIteminfo.AtkSpeed;
+            if (checkIteminfo.Defense > 0)stat.Item_Defence -= checkIteminfo.Defense;
+            if (checkIteminfo.MagicDefense > 0) stat.Item_Defence_Magic -= checkIteminfo.MagicDefense;
+            if (checkIteminfo.MagicAtk > 0) stat.Item_Magic_Damage -= checkIteminfo.MagicAtk;
+            if (checkIteminfo.Mana > 0) stat.ManaPlus(0, -checkIteminfo.Mana, 0);
+            if (checkIteminfo.CriPer > 0) stat.Item_CriPer -= checkIteminfo.CriPer;
+            if (checkIteminfo.CriDmg > 0) stat.Item_CriDmg -= checkIteminfo.CriDmg;
+            if (checkIteminfo.MissPer > 0) stat.Item_NoAttack -= checkIteminfo.MissPer;
+
+            if (b) stat.RPC_ReSetFunc1();
+            ItemRemoveFunc(idx);
+        }
+
+        void ItemAddFunc(int idx)
+        {
+            if (!pv.IsMine) return;
+            if (stat.IsCard || stat.IsCopy) return;
+
+            switch (idx)
+            {
+                case 53:
+                    
+                PlayerInfo.Inst.foodMax++;
+                    break;
+                default:
+                    break;
+            }
+
+
+        }
+
+        void ItemRemoveFunc(int idx)
+        {
+            if (!pv.IsMine) return;
+            if (stat.IsCard || stat.IsCopy) return;
+            
+            switch (idx)
+            {
+                case 53:
+                    
+                    PlayerInfo.Inst.foodMax--;
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void ItemNo(int seat, int idx)
@@ -733,8 +827,8 @@ namespace GameS
             
             fsm.fsm.SetState(eCardFight_STATE.None);
             //MoveReset();
-            stat.currentHp = stat.HpMax();
-            stat.currentMana = stat.Mana();
+            //stat.currentHp = stat.HpMax();
+            //stat.currentMana = stat.Mana();
             stat.shiled = 0;
             stat.nav.enabled = false;
             stat.collider.enabled = false;
@@ -745,16 +839,14 @@ namespace GameS
             stat.IsInvin = false;
             IsFighting = false;
             fsm.Enemies.Clear();
-            
-            //
-            //버프리셋
+
+            stat.BattleEndReset();
 
 
             stat.PhyDmg = 0;
             stat.MagicDmg = 0;
             stat.TrueDmg = 0;
-            stat.currentHp = stat.HpMax();
-            stat.currentMana = stat.Mana();
+            
         }
 
         public void TileShow(bool b)
