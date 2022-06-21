@@ -135,7 +135,7 @@ namespace GameS
         {
             GameManager.inst.CharIdx = idx;
             CharImage.sprite = GameManager.inst.charIcons[idx];
-            
+            DataManager.inst.SaveData("CharIdx", idx);
         }
 
         public void PlayBtn()
