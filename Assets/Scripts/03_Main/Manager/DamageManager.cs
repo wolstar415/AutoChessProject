@@ -24,6 +24,7 @@ namespace GameS
         
         public void DamageFunc1(GameObject card, GameObject target,float damage,eDamageType Type=eDamageType.Basic_phy)
         {
+
             if (PlayerInfo.Inst.BattleEnd == true) return;
             var card_stat = card.GetComponent<CardState>();
             var target_stat = target.GetComponent<CardState>();
@@ -92,7 +93,7 @@ namespace GameS
                     
                     if (card_stat.info.IsItemHave(20)>0)
                     {
-                        Item20Fun(card);
+                        Item20Fun(card,target);
                         
                     }
                     if (item21>0)
@@ -301,21 +302,21 @@ namespace GameS
         }
         
 
-        void Item20Fun(GameObject card) // 루난 주변 적 하나에게 탄환을 발사
+        void Item20Fun(GameObject card,GameObject target) // 루난 주변 적 하나에게 탄환을 발사
         {
             Vector3 CreatePos = card.transform.position;
             var stat = card.GetComponent<CardState>();
             GameObject Target = null;
             Listob.Clear();
             
-            Collider[] c = Physics.OverlapSphere(CreatePos, 5f, GameSystem_AllInfo.inst.masks[stat.info.EnemyTeamIdx]);
+            Collider[] c = Physics.OverlapSphere(CreatePos, 7f, GameSystem_AllInfo.inst.masks[stat.info.EnemyTeamIdx]);
 
 
             for (var i = 0; i < c.Length; i++)
             {
                 if (c[i].TryGetComponent(out Card_Info info))
                 {
-                    if (info.IsFiled&&!info.stat.IsDead&&info.stat.IsInvin==0)
+                    if (target!=c[i]&&info.IsFiled&&!info.stat.IsDead&&info.stat.IsInvin==0)
                     {
                         Target = c[i].gameObject;
                         break;
@@ -328,7 +329,7 @@ namespace GameS
             GameObject bullet = PhotonNetwork.Instantiate("Bullet_Item20", CreatePos, Quaternion.identity);
             if (bullet.TryGetComponent(out Buulet_Move1 move))
             {
-                move.StartFUnc(gameObject,Target,stat.Atk_Damage()*0.7f,false);
+                move.StartFUnc(card,Target,stat.Atk_Damage()*0.7f,false);
             }
         }
 

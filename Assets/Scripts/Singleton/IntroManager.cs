@@ -27,9 +27,9 @@ public class IntroManager : MonoBehaviourPunCallbacks
     }
     public override void OnConnectedToMaster()
     {
-        test();
+        //test();
         
-        //SceneManager.LoadScene("01_Loby");
+        SceneManager.LoadScene("01_Loby");
     }
 
     void test()
