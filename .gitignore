@@ -66,6 +66,9 @@ ProjectSettings/RiderScriptEditorPersistedState.asset
 UserSettings/Layouts/default-2021.dwlt
 UserSettings/EditorUserSettings.asset
 UserSettings/Layouts/default-2021.dwlt
-*.bundle
-*.hash
+
 ServerData/*
+/ServerData/**
+\ServerData/**
+/ServerData/
+ServerData/StandaloneWindows64/catalog_2022.06.07.03.44.21.json
