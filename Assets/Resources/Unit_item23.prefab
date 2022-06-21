@@ -1498,7 +1498,7 @@ GameObject:
   - component: {fileID: 5533469372153832835}
   - component: {fileID: 4009239644382235231}
   m_Layer: 0
-  m_Name: Card_1_0
+  m_Name: Unit_item23
   m_TagString: Cards
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1522,7 +1522,6 @@ Transform:
   - {fileID: 3326038195945512677}
   - {fileID: 8778075018684497376}
   - {fileID: 6285655657128492661}
-  - {fileID: 3414840885791280678}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1806,7 +1805,6 @@ MonoBehaviour:
   nav: {fileID: 794620965866707049}
   ani: {fileID: 6922979768061096268}
   IsCard: 1
-  monster: 0
   IsUnit: 0
   StunOb: {fileID: 3324066299501613067}
   _currentHp: 0
@@ -1836,9 +1834,6 @@ MonoBehaviour:
   IsItemFunc11: 0
   IsItemFunc12: 0
   IsItemFunc46: 0
-  IsItemFunc49: 0
-  IsItemFunc29: 0
-  ItemFunc29Scan: {fileID: 4778588549133132389}
   IsDead: 0
   IsInvin: 0
   IsStun: 0
@@ -3390,66 +3385,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &7604694721496018844
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3414840885791280678}
-  - component: {fileID: 5320752099055529854}
-  - component: {fileID: 4778588549133132389}
-  m_Layer: 0
-  m_Name: Item29
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &3414840885791280678
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7604694721496018844}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 794620965866707055}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5320752099055529854
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7604694721496018844}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 3.6
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4778588549133132389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7604694721496018844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f0df8d151aae084998425cf2e318a90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  info: {fileID: 794620965866707054}
-  info_fight: {fileID: 0}
 --- !u!1 &7621643080113566335
 GameObject:
   m_ObjectHideFlags: 0

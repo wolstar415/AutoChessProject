@@ -1727,6 +1727,7 @@ MonoBehaviour:
   nav: {fileID: 794620965866707049}
   ani: {fileID: 2620905054335257272}
   IsCard: 0
+  IsUnit: 0
   StunOb: {fileID: 3324066299501613067}
   _currentHp: 0
   _shiled: 0

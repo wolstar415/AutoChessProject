@@ -17,6 +17,8 @@ namespace GameS
         public NavMeshAgent nav;
         public Animator ani;
         public bool IsCard = true;
+        public bool monster = false;
+        public bool IsUnit = false;
         [SerializeField]protected GameObject StunOb; // 스턴오브젝트
         [SerializeField] protected float _currentHp; //현재체력
 
@@ -40,12 +42,12 @@ namespace GameS
         [SerializeField] protected Color[] colors;
         [SerializeField] protected Image[] fills;
         [Header("카드만")] 
-        [SerializeField] public Card_Info info;
+        public Card_Info info;
 
         private Coroutine HpFunc;
         public bool NoDmg = false;
         public bool IsCopy = false;
-
+        
         [Header("딜체크")] 
         public int DmgIdx = -1;
         public float PhyDmg;
@@ -60,7 +62,15 @@ namespace GameS
         public int IsItemFunc19 { get; protected set; }
         public int IsItemFunc22 { get; protected set; }
         public int IsItemFunc24 { get; protected set; }
+        public bool IsItemFunc26 { get; protected set; } = false;
+        public int IsItemFunc37 { get; protected set; }
 
+        public bool IsItemFunc49= false;
+        
+        [SerializeField] protected int IsItemFunc29;
+        public item29_Scan ItemFunc29Scan;
+        protected Coroutine CorDotDamage=null;
+        public bool NoHeal;
 
         public void ColorChange()
         {
@@ -332,6 +342,10 @@ namespace GameS
             MpHeal((info.IsItemHave(14)*8)+10);
             if (NoAtk)
             {
+                if (target.GetComponent<Card_Info>().IsItemHave(31)>0)
+                {
+                    NetStopFunc(true,1f);
+                }
                 return;
             }
             AttackCnt++;
@@ -459,7 +473,7 @@ namespace GameS
 
         public void HpHeal(float v)
         {
-            if (v <= 0) return;
+            if (v <= 0||NoHeal) return;
             currentHp += v;
         }
 
@@ -469,13 +483,13 @@ namespace GameS
             currentMana += v;
         }
 
-        public void ItemFuncAdd(int idx,bool timeb=false,float time=0f)
+        public void ItemFuncAdd(int idx,bool timeb=false,float time=0f,bool minus=false)
         {
-            pv.RPC(nameof(RPC_ItemFuncAdd),RpcTarget.All,idx);
+            pv.RPC(nameof(RPC_ItemFuncAdd),RpcTarget.All,idx,minus);
         }
 
         [PunRPC]
-        void RPC_ItemFuncAdd(int idx,bool timeb,float time)
+        void RPC_ItemFuncAdd(int idx,bool timeb,float time,bool minus)
         {
             if (timeb && time > 0)
             {
@@ -485,10 +499,24 @@ namespace GameS
             }
             else
             {
-                
+
+                if (minus)
+                {
+                    if(idx==19) IsItemFunc19--;
+                    else if(idx==22) IsItemFunc22--;
+                    else if(idx==24) IsItemFunc24--;
+                    else if(idx==26) IsItemFunc26=false;
+                    else if (idx == 30) NoHeal=false;
+                }
+                else
+                {
+                    
             if(idx==19) IsItemFunc19++;
             else if(idx==22) IsItemFunc22++;
             else if(idx==24) IsItemFunc24++;
+            else if(idx==26) IsItemFunc26=true;
+            else if (idx == 30) NoHeal=true;
+                }
             }
         }
 
@@ -497,11 +525,117 @@ namespace GameS
             if(idx==19) IsItemFunc19++;
             else if(idx==22) IsItemFunc22++;
             else if(idx==24) IsItemFunc24++;
+            else if(idx==26) IsItemFunc26=true;
             yield return YieldInstructionCache.WaitForSeconds(time);
             if(idx==19) IsItemFunc19--;
             else if(idx==22) IsItemFunc22--;
             else if(idx==24) IsItemFunc24--;
+            else if(idx==26) IsItemFunc26=false;
         }
+
+        public void NetStopFunc(bool stun,float t)
+        {
+            if (monster)
+            {
+
+                StopFunc(stun, t);
+            }
+            else
+            {
+                pv.RPC(nameof(RPC_StopFunc), RpcTarget.All, stun, t, info.TeamIdx);
+            }
+
+        }
+
+        [PunRPC]
+        void RPC_StopFunc(bool stun,float t,int pidx)
+        {
+            if (PlayerInfo.Inst.PlayerIdx != pidx) return;
+
+            StopFunc(stun, t);
+
+        }
+
+        void StopFunc(bool stun,float t)
+        {
+            if (IsItemFunc37>0)
+            {
+                Isitem37Check(1, false);
+                //이펙트 제거하기
+                return;
+            }
+            if (stun) StunShow(stun);
+                
+            info.fsm.NoConTime(t);
+        }
+
+        public void Isitem37Check(int i, bool b)
+        {
+            pv.RPC(nameof(RPC_IsItemFunc37),RpcTarget.All,i,b);
+        }
+
+        [PunRPC]
+        void RPC_IsItemFunc37(int i, bool b)
+        {
+            if(b) IsItemFunc37+=i;
+            else IsItemFunc37-=i;
+             
+
+        }
+
+        public void DotDamageGo(GameObject card,GameObject target)
+        {
+            if (CorDotDamage==null)
+            {
+                CorDotDamage = StartCoroutine(DotDamgeFunc(card, target));
+            }
+            else
+            {
+                
+                StopCoroutine(CorDotDamage);
+                CorDotDamage = StartCoroutine(DotDamgeFunc(card, target));
+                
+            }
+        }
+        
+        IEnumerator DotDamgeFunc(GameObject card,GameObject target)
+        {
+            var card_stat = card.GetComponent<CardState>();
+            var target_stat = target.GetComponent<CardState>();
+            int cnt = 0;
+            target_stat.ItemFuncAdd(30,false,0,false);
+            yield return YieldInstructionCache.WaitForSeconds(1);
+            while (cnt<=10)
+            {
+                if (!PlayerInfo.Inst.IsBattle||PlayerInfo.Inst.BattleEnd||card_stat.IsDead||target_stat.IsDead||!target_stat.NoHeal)
+                {
+                    yield break;
+                }
+
+                cnt++;
+                float da = HpMax() * 0.02f;
+                DamageManager.inst.DamageFunc1(card,target,da,eDamageType.True);
+                yield return YieldInstructionCache.WaitForSeconds(1);
+            }
+            
+            target_stat.ItemFuncAdd(30,false,0,true);
+            CorDotDamage = null;
+        }
+
+        public void Item34Func(int targetnum)
+        {
+            float da = 125 * info.IsItemHave(34);
+            pv.RPC(nameof(targetnum),RpcTarget.All,da,info.TeamIdx);
+        }
+
+        [PunRPC]
+        void Item34Func(int targetnum,float d,int pidx)
+        {
+            if (PlayerInfo.Inst.PlayerIdx != pidx) return;
+            
+            DamageManager.inst.DamageFunc1(gameObject,PhotonView.Find(targetnum).gameObject,d,eDamageType.Speel_Magic);
+        }
+
 
     }
 }

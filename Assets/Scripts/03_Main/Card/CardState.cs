@@ -104,6 +104,7 @@ namespace GameS
         {
             float v = Char_Atk_Cool;
             float v2=Item_Range+Buff_Range;
+            if (IsItemFunc29 > 0) v2 -= 30f;
             v = v - (v * (v2 * 0.01f));
             Mathf.Clamp(v, 0.1f, 5f);
             return v;
@@ -267,7 +268,7 @@ namespace GameS
             else
             { 
                 float f = (100+f2 + f3) * 0.01f;
-                ani.SetFloat("Speed",f);
+                ani.SetFloat(Cool,f);
             }
         }
         public void AtkPlus(float Char, float Item, float buff, bool network = false)
@@ -631,6 +632,15 @@ namespace GameS
             IsItemFunc11 = false;
             IsItemFunc12 = false;
             IsItemFunc19 = 0;
+            IsItemFunc22 = 0;
+            IsItemFunc24 = 0;
+            IsItemFunc26 = false;
+            IsItemFunc37 = 0;
+            IsItemFunc49 = false;
+            NoHeal = false;
+            CorDotDamage = null;
+            
+            
             IsItemFunc46 = 0;
             
             if (pv.IsMine)
@@ -717,25 +727,11 @@ namespace GameS
 
         public override void UnitDead()
         {
+            int have23 = info.IsItemHave(23);
             int have45 = info.IsItemHave(45);
 
-            if (have45>0)
-            {
-                //구원이펙트
-                Collider[] c = Physics.OverlapSphere(transform.position, 5f, GameSystem_AllInfo.inst.masks[info.TeamIdx]);
 
 
-                for (var i = 0; i < c.Length; i++)
-                {
-                    if (c[i].TryGetComponent(out Card_Info cc))
-                    {
-                        if (info.IsFiled&&!info.stat.IsDead)
-                        {
-                            cc.stat.HpHeal(800*have45);
-                        }
-                    }
-                }
-            }
             
             
             
@@ -758,9 +754,55 @@ namespace GameS
                 pv.RPC(nameof(RPC_UnitDead),RpcTarget.All,info.TeamIdx);
                 
             }
-            pv.RPC(nameof(RPC_Dead),RpcTarget.All,true);
-            
-            
+            if (have23>0)
+            {
+                
+                int lv = info.Level;
+                float hp=lv*3;
+                float damage=30*lv;
+                float cool=0.5f;
+                float range=1.8f;
+                float speed=200f;
+                for (int i = 0; i < have23; i++)
+                {
+                    
+                    NetworkManager.inst.UnitCreate(IsCopy,"Unit_item23",transform.position,Quaternion.identity,hp,damage,cool,range,speed,info.TeamIdx,info.EnemyTeamIdx);
+                }
+            }
+            if (have45>0)
+            {
+                //구원이펙트
+                Collider[] c = Physics.OverlapSphere(transform.position, 5f, GameSystem_AllInfo.inst.masks[info.TeamIdx]);
+
+
+                for (var i = 0; i < c.Length; i++)
+                {
+                    if (c[i].TryGetComponent(out Card_Info cc))
+                    {
+                        if (cc.IsFiled&&!cc.stat.IsDead)
+                        {
+                            cc.stat.HpHeal(800*have45);
+                        }
+                    }
+                }
+            }
+            //pv.RPC(nameof(RPC_Dead),RpcTarget.All,true);
+            DeadCheck(true);
+            if (info.IsItemHave(29)>0)
+            {
+                if (ItemFunc29Scan.Enemies.Count>0)
+                {
+                    for (int i = 0; i < ItemFunc29Scan.Enemies.Count; i++)
+                    {
+                        if (ItemFunc29Scan.Enemies[i].TryGetComponent(out CardState c))
+                        {
+                            c.Item29Func(false);
+                        }
+                    }   
+                }
+            }
+
+
         }
 
         [PunRPC]
@@ -822,6 +864,43 @@ namespace GameS
             
             
         }
+        
+        public void Item29Func(bool b)
+        {
+            pv.RPC(nameof(RPC_Item29Func),RpcTarget.All,b);
+        }
+
+        [PunRPC]
+        void RPC_Item29Func(bool b)
+        {
+            if (b)
+            {
+                IsItemFunc29++;
+            }
+            else
+            {
+                    
+                IsItemFunc29--;
+            }
+            
+            if (IsItemFunc29==1)
+            {
+                float f2 = Item_Atk_Cool;
+                float f3 = Buff_Atk_Cool;
+                float f = (70+f2 + f3) * 0.01f;
+                ani.SetFloat(Cool,f);
+            }
+            else
+            {
+                float f2 = Item_Atk_Cool;
+                float f3 = Buff_Atk_Cool;
+                float f = (100+f2 + f3) * 0.01f;
+                ani.SetFloat(Cool,f);
+            }
+        }
 
     }
+    
+    
+
 }

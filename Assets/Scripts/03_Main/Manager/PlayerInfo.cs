@@ -322,6 +322,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
 
     public void DeadCheck(bool isCopy=false)
     {
+        
         if (isCopy)
         {
             CopyDead();

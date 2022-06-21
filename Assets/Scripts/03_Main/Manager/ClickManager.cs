@@ -154,6 +154,12 @@ namespace GameS
 
         void ClickCardFunc(GameObject ob)
         {
+            
+            if (ob.GetComponent<CardState>().IsUnit)
+            {
+                ClickCard = null;
+                return;
+            }
             ClickCard = ob;
             if (PlayerInfo.Inst.IsBattle&&ob.GetComponent<Card_Info>().IsFiled)
             {

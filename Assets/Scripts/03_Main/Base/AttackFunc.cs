@@ -51,6 +51,21 @@ namespace GameS
             {
                 stat.MpHeal(have44*20);
             }
+            
+            
+            Collider[] c = Physics.OverlapSphere(transform.position, 5f, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
+
+
+            for (var i = 0; i < c.Length; i++)
+            {
+                if (c[i].TryGetComponent(out Card_Info cc))
+                {
+                    if (cc.IsFiled&&!cc.stat.IsDead&&cc.IsItemHave(34)>0)
+                    {
+                        cc.stat.Item34Func(info.pv.ViewID);
+                    }
+                }
+            }
         }
 
 

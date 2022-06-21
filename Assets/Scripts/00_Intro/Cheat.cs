@@ -196,9 +196,8 @@ namespace GameS
             }
             else if (Input.GetKeyDown(KeyCode.Keypad4))
             {
-                PlayerInfo.Inst.EnemyIdx = 1;
-                PlayerInfo.Inst.BattleMove = true;
-                RoundManager.inst.BattleMoveFunc();
+                NetworkManager.inst.UnitCreate(false,"Unit_item23",PlayerInfo.Inst.PlayerOb.transform.position,Quaternion.identity,1000,100,1,2,200,0,10);
+
             }
             else if (Input.GetKeyDown(KeyCode.Keypad5))
             {

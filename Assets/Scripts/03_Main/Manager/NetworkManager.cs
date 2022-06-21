@@ -31,7 +31,8 @@ public class playerinfo
     {
         public static NetworkManager inst;
         public List<playerinfo> players;
-     
+
+        private Coroutine coTime;
 
         public PhotonView pv;
         public Color[] Dagamecolors;
@@ -532,13 +533,35 @@ public class playerinfo
                     PlayerInfo.Inst.DeadCheck(true);
                 }
             }
-            
-            
-            
-            
-            
-            
-            
+
+
+
+            coTime = StartCoroutine(BattleTimeFunc());
+
+
+
+
+        }
+
+        IEnumerator BattleTimeFunc()
+        {
+            int second = 0;
+            while (true)
+            {
+                if (!PlayerInfo.Inst.IsBattle||PlayerInfo.Inst.BattleEnd)
+                {
+                    coTime = null;
+                    break;
+                }
+
+
+                if (second%5==0)
+                {
+                    EventManager.inst.Sub_Item40Func.OnNext(20);
+                }
+                yield return YieldInstructionCache.WaitForSeconds(1);
+                second++;
+            }
         }
 
         public void BattleEnd()
@@ -580,6 +603,30 @@ public class playerinfo
                 }
             }
             RoundManager.inst.BattleMoveFunc2();
+            if(coTime!=null) StopCoroutine(coTime);
+            coTime = null;
+
+        }
+
+        public void UnitCreate(bool copy,string name,Vector3 pos,Quaternion qu,float hp, float damage, float Cool, float range, float speed, int teami, int enemyi)
+        {
+            if (!PlayerInfo.Inst.IsBattle) return;
+
+            GameObject ob= PhotonNetwork.Instantiate(name, pos, qu);
+            if (copy)
+            {
+                PlayerInfo.Inst.copydeadCnt++;
+            }
+            else
+            {
+                
+            PlayerInfo.Inst.deadCnt++;
+            }
+            if (ob.TryGetComponent(out Card_Info cardinfo))
+            {
+                cardinfo.UnitStart(hp,damage,Cool,range,speed,teami,enemyi);
+            }
+            PVEManager.inst.Enemis.Add(ob);
 
         }
 

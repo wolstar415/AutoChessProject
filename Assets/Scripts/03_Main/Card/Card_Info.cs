@@ -61,6 +61,8 @@ namespace GameS
         private IDisposable Event_TJ2=null;
         private IDisposable Event_TJ3=null;
         private IDisposable Event_TJ4=null;
+        
+        private IDisposable Event_item40=null;
 
 
         [Header("Pick")] public int pickIdx = -1;
@@ -245,6 +247,7 @@ namespace GameS
 
 
 
+            stat.monster = true;
             stat.Char_Hp = hp;
             stat.Char_Atk_Cool = Cool;
             stat.Char_Atk_Damage = damage;
@@ -257,6 +260,41 @@ namespace GameS
             stat.currentMana = stat.ManaMax();
             stat.HpAndMpSet();
         }
+
+        public void UnitStart(float hp, float damage, float Cool, float range, float speed, int teami, int enemyi)
+        {
+            IsFiled = true;
+            stat.nav.speed = speed * 0.01f;
+            stat.Char_Range = range;
+            stat.RangeSet();
+
+            pv.RPC(nameof(RPC_UnitStart), RpcTarget.All, hp, damage, Cool, teami, enemyi);
+
+
+            stat.collider.enabled = true;
+            stat.nav.enabled = true;
+            fsm.BattleStart();
+        }
+
+        [PunRPC]
+        void RPC_UnitStart(float hp, float damage, float Cool,int teami,int enemyi)
+        {
+            stat.IsUnit = true;
+            stat.Char_Hp = hp;
+            stat.Char_Atk_Cool = Cool;
+            stat.Char_Atk_Damage = damage;
+            
+            
+            TeamIdx = teami;
+            EnemyTeamIdx = enemyi;
+            gameObject.layer = 6 + teami;
+            stat.currentHp = stat.HpMax();
+            stat.currentMana = stat.ManaMax();
+            if (!pv.IsMine)stat.ColorChange();
+            stat.HpAndMpSet();
+            
+        }
+        
         
         public void CopyStart(int lv,int[] items)
         {
@@ -377,6 +415,7 @@ namespace GameS
             Event_TJ2?.Dispose();
             Event_TJ3?.Dispose();
             Event_TJ4?.Dispose();
+            Event_item40?.Dispose();
 
             if (TileOb.TryGetComponent(out TileInfo info))
             {
@@ -667,6 +706,15 @@ namespace GameS
 
             switch (idx)
             {
+                case 29:
+                    
+                    stat.ItemFunc29Scan.gameObject.SetActive(true);
+                    break;
+                case 40:
+                    
+                    Event_item40?.Dispose();
+
+                    break;
                 case 53:
                     
                 PlayerInfo.Inst.foodMax++;
@@ -685,6 +733,18 @@ namespace GameS
             
             switch (idx)
             {
+                case 29:
+                    if (IsItemHave(29)<=0)
+                    {
+                        
+                    stat.ItemFunc29Scan.gameObject.SetActive(false);
+                    }
+                    break;
+                case 40:
+                    
+                    Event_item40=EventManager.inst.Sub_Item40Func.Subscribe(_x=>stat.MagicPlus(0,0,_x,true));
+
+                    break;
                 case 53:
                     
                     PlayerInfo.Inst.foodMax--;
@@ -853,7 +913,9 @@ namespace GameS
             int have15 = IsItemHave(15);
             int have28 = IsItemHave(28);
             int have35 = IsItemHave(35);
+            int have37 = IsItemHave(37);
             int have46 = IsItemHave(46);
+            int have49 = IsItemHave(49);
             if (have15>0)
             {
                 if(leftob==null) leftob=BattleTileLeft();
@@ -938,6 +1000,8 @@ namespace GameS
                 
             }
 
+            if (have37 > 0) stat.Isitem37Check(have37, true);
+
             if (have46>0)
             {
                 for (int i = 0; i < have46; i++)
@@ -953,7 +1017,9 @@ namespace GameS
                     }
                 }
             }
-            
+
+            if (have49 > 0) stat.IsItemFunc49 = true;
+
             //지크의전령있을때 좌우로 공속+15%
 
 

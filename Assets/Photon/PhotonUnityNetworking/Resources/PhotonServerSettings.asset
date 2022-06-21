@@ -122,6 +122,9 @@ MonoBehaviour:
   - RPC_InvinSet
   - RPC_Item19Add
   - RPC_ItemFuncAdd
+  - RPC_UnitStart
+  - RPC_IsItemFunc37
+  - RPC_StopFunc
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -12,6 +12,7 @@ namespace GameS
         Basic_Magic,
         Spell_phy,
         Speel_Magic,
+        True,
     }
     public class DamageManager : MonoBehaviour
     {
@@ -20,6 +21,7 @@ namespace GameS
         private void Awake() => inst = this;
         private List<GameObject> Listob = new List<GameObject>();
 
+        
         public void DamageFunc1(GameObject card, GameObject target,float damage,eDamageType Type=eDamageType.Basic_phy)
         {
             if (PlayerInfo.Inst.BattleEnd == true) return;
@@ -34,6 +36,7 @@ namespace GameS
    
             bool IsMagic = false;
             float damageHeal = 0;
+            
 
             
 
@@ -41,124 +44,179 @@ namespace GameS
             {
                 return;
             }
-            if (Type==eDamageType.Basic_phy||Type==eDamageType.Basic_Magic)
+
+            if (Type!=eDamageType.True)
             {
                 
                 
-                IsPhy = true;
-                if (card_stat.info.IsItemHave(18)==0)
-                    NoAtk = target_stat.NoAttackCheck(IsPhy);
                 
                 
-                card_stat.BasicFunc(target,NoAtk);
-                if (NoAtk)
+                if (Type==eDamageType.Basic_phy||Type==eDamageType.Basic_Magic)
                 {
-                    Debug.Log("회피중");
-                    string s = CsvManager.inst.GameText(455);
-                    NetworkManager.inst.TextUi(s,target.transform.position);
-                    return;
-                }
-                int item10=card_stat.info.IsItemHave(10);
-                int item21=card_stat.info.IsItemHave(21);
-                int item22=card_stat.info.IsItemHave(22);
-                
-                if (item10>0)
-                {
-                    adddamage = adddamage + (damage * 0.25f);
-                    if (target_stat.HpMax()>2200)
+                    
+                    
+                    IsPhy = true;
+                    if (card_stat.info.IsItemHave(18)==0)
+                        NoAtk = target_stat.NoAttackCheck(IsPhy);
+                    
+                    
+                    card_stat.BasicFunc(target,NoAtk);
+                    if (NoAtk)
                     {
-                        adddamage *= 2;
+                        Debug.Log("회피중");
+                        string s = CsvManager.inst.GameText(455);
+                        NetworkManager.inst.TextUi(s,target.transform.position);
+                        return;
                     }
 
-                    adddamage*= item10;
+                    if (card_stat.IsItemFunc49)
+                    {
+                        card_stat.IsItemFunc49 = false;
+                        target_stat.NetStopFunc(true,4);
+                    }
+                    int item10=card_stat.info.IsItemHave(10);
+                    int item21=card_stat.info.IsItemHave(21);
+                    int item22=card_stat.info.IsItemHave(22);
+                    int item30=card_stat.info.IsItemHave(30);
+                    
+                    if (item10>0)
+                    {
+                        adddamage = adddamage + (damage * 0.25f);
+                        if (target_stat.HpMax()>2200)
+                        {
+                            adddamage *= 2;
+                        }
+
+                        adddamage*= item10;
+                    }
+                    
+                    if (card_stat.info.IsItemHave(20)>0)
+                    {
+                        Item20Fun(card);
+                        
+                    }
+                    if (item21>0)
+                    {
+                        card_stat.CoolPlus(0,0,item21*6,true);
+                        
+                    }
+
+                    if (card_stat.info.IsItemHave(19)>0)
+                    {
+                        card_stat.ItemFuncAdd(19);
+                        
+                    }
+
+                    if (item22>0&&card_stat.AttackCnt%3==0)
+                    {
+                     //스태틱 이펙트
+                     DamageFunc1(card, target, 60 * item22, eDamageType.Speel_Magic);
+                     
+                        card_stat.ItemFuncAdd(22,true,5,false);
+                    }
+                    if (card_stat.info.IsItemHave(24)>0)
+                    {
+                        card_stat.ItemFuncAdd(24,true,5,false);
+                        
+                    }
+                    if (item30>0)
+                    {
+                        //스태틱 이펙트
+                        target_stat.DotDamageGo(card,target);
+                    }
+
+
+                    
                 }
+
+     
+                if (Type==eDamageType.Speel_Magic||Type==eDamageType.Basic_Magic)
+                {
+                    IsMagic = true;
+                    int item41=card_stat.info.IsItemHave(30);
+                    if (item41>0)
+                    {
+                        //스태틱 이펙트
+                        target_stat.DotDamageGo(card,target);
+                    }
+                }
+
                 
-                if (card_stat.info.IsItemHave(20)>0)
+                float daMi=1;
+                IsCri = card_stat.CriCheck(IsPhy,IsMagic);
+                if (IsPhy)
                 {
-                    Item20Fun(card);
-                    
-                }
-                if (item21>0)
-                {
-                    card_stat.CoolPlus(0,0,item21*6,true);
-                    
-                }
-
-                if (card_stat.info.IsItemHave(19)>0)
-                {
-                    card_stat.ItemFuncAdd(19);
-                    
-                }
-
-                if (item22>0&&card_stat.AttackCnt%3==0)
-                {
-                 //스태틱 이펙트
-                 DamageFunc1(card, target, 60 * item22, eDamageType.Speel_Magic);
-                 
-                    card_stat.ItemFuncAdd(22,true,5);
-                }
-                if (card_stat.info.IsItemHave(24)>0)
-                {
-                    card_stat.ItemFuncAdd(24,true,5);
-                    
-                }
+                    daMi = 100 / (100 + target_stat.Defence());
 
 
-                
-            }
+                }
+                else
+                {
+                    TextColor = 1;
+                    daMi = 100 / (100 + target_stat.Defence_Magic());
+                }
 
- 
-            if (Type==eDamageType.Speel_Magic||Type==eDamageType.Basic_Magic)
-            {
-                IsMagic = true;
-            }
+                if (IsCri)
+                {
+                    adddamage = adddamage + (damage * (card_stat.CriDmg() * 0.01f));
+
+                }
 
             
-            float daMi=1;
-            IsCri = card_stat.CriCheck(IsPhy,IsMagic);
-            if (IsPhy)
-            {
-                daMi = 100 / (100 + target_stat.Defence());
+                damage += adddamage;
+                damage = damage * daMi;
 
+                
+                if (target_stat.info.IsItemHave(27)>0)
+                {
+                    float f = 0.25f * target_stat.info.IsItemHave(27);
+                    damage = damage - (damage * f);
+                }
+                if (IsCri&&target_stat.info.IsItemHave(26)>0)
+                {
+                    damage *= 0.2f;
+                }
+                
+            
+            
+                if (damage <= 0) return;
+            
+            
+            
+                if (IsPhy&&target_stat.IsItemFunc26==false&&target_stat.info.IsItemHave(26)>0)
+                {
+                    float d = 75;
+                    if (target_stat.info.Level == 2) d = 100;
+                    else if (target_stat.info.Level == 3) d = 150;
+                    DamageFunc1(target,card,d,eDamageType.Speel_Magic);
+                    //덤불조끼 반사!
+                    target_stat.ItemFuncAdd(26, true, 2.5f,false);
+                }
+                getmana = getmana+(damage * 0.07f);
+                Mathf.Clamp(getmana, 0, 50);
+                target_stat.MpHeal(getmana);
+            
+            
+            
+                if (IsCri)
+                {
+                    
+                    NetworkManager.inst.TextUi(damage.ToString("F0")+"!",target.transform.position,1.5f,TextColor);
 
+                }
+                else
+                {
+                    NetworkManager.inst.TextUi(damage.ToString("F0"),target.transform.position,1,TextColor);
+                }
+                
             }
             else
             {
-                TextColor = 1;
-                daMi = 100 / (100 + target_stat.Defence_Magic());
-            }
-
-            if (IsCri)
-            {
-                adddamage = adddamage + (damage * (card_stat.CriDmg() * 0.01f));
-            }
-
-            
-            damage += adddamage;
-            damage = damage * daMi;
-
-            if (target_stat.info.IsItemHave(27)>0)
-            {
-                float f = 0.25f * target_stat.info.IsItemHave(27);
-                damage = damage - (damage * f);
-            }
-            
-            
-            if (damage <= 0) return;
-            getmana = getmana+(damage * 0.07f);
-            Mathf.Clamp(getmana, 0, 50);
-            target_stat.MpHeal(getmana);
-
-            if (IsCri)
-            {
-                
-                NetworkManager.inst.TextUi(damage.ToString("F0")+"!",target.transform.position,1.5f,TextColor);
-
-            }
-            else
-            {
+                TextColor = 2;
                 NetworkManager.inst.TextUi(damage.ToString("F0"),target.transform.position,1,TextColor);
+
             }
+            
                 UIManager.inst.DmgGo(TextColor+1, damage, card_stat.DmgIdx);
             
             //데미지체크
@@ -241,6 +299,7 @@ namespace GameS
 
 
         }
+        
 
         void Item20Fun(GameObject card) // 루난 주변 적 하나에게 탄환을 발사
         {
@@ -272,6 +331,8 @@ namespace GameS
                 move.StartFUnc(gameObject,Target,stat.Atk_Damage()*0.7f,false);
             }
         }
+
+
 
     }
 }

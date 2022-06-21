@@ -28,6 +28,7 @@ namespace GameS
             if (CurTime>=Fight.noConTime)
             {
                 CurTime = 0f;
+                Fight.noConTime = 0;
                 Fight.fsm.SetState(eCardFight_STATE.Idle);
                 if (Fight.info.stat.IsStun)
                 {
