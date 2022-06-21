@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI TimeText;
     [SerializeField] private Slider TimeSlider;
     private Coroutine timeCoroutine=null;
-    [Header("PlayerInfo")]
+    [Header("PlayerInfo")] private int ClickIdx=-1;
     [SerializeField] 
     private GameObject playerInfoOb_Parent;
     [SerializeField] private GameObject[] playerInfoObs;
@@ -327,6 +327,25 @@ public class UIManager : MonoBehaviour
     {
         //공격중이라면 공격중인곳으로가기
         //아니라면 그곳으로 이동
+        if (PlayerInfo.Inst.PlayerIdx==idx)
+        {
+            if (ClickIdx>=0)
+            {
+                playerInfoObs[ClickIdx].transform.localScale = new Vector3(1, 1,1);
+                
+            }
+            ClickIdx = -1;
+        }
+        else
+        {
+            if (ClickIdx>=0)
+            {
+                playerInfoObs[ClickIdx].transform.localScale = new Vector3(1, 1,1);
+                
+            }
+                playerInfoObs[idx].transform.localScale = new Vector3(1.5f, 1.5f,1);
+                ClickIdx = idx;
+        }
         if (GameSystem_AllInfo.inst.battleinfos[idx].IsBattleMove)
         {
             NetworkManager.inst.CameraMovePlayer(GameSystem_AllInfo.inst.battleinfos[idx].enemyidx,true);
@@ -499,7 +518,7 @@ public class UIManager : MonoBehaviour
         }).ToList();
         for (int i = 0; i < DmgOrderList.Count; i++)
         {
-            if (DmgObs[i].TryGetComponent(out DmgUI ui))
+            if (DmgOrderList[i].TryGetComponent(out DmgUI ui))
             {
                 ui.DmgSet(i);
             }

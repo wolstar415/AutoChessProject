@@ -109,7 +109,6 @@ namespace GameS
             
             
             
-            
             transform.SetSiblingIndex(idx);
         }
 

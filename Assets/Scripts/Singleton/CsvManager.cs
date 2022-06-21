@@ -127,6 +127,10 @@ public class CsvManager : MonoBehaviour
     public List<String> Text_English;
     public List<String> Text_Japan;
     public List<String> Text_China;
+    public List<String> Text_fra;
+    public List<String> Text_Germany;
+    public List<String> Text_tur;
+    public List<String> Text_rus;
 
     //private string URL ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/gviz/tq?tqx=out:csv&sheet={캐릭터}";
     [SerializeField] private string[] URL;
@@ -367,10 +371,19 @@ public class CsvManager : MonoBehaviour
             Text_English.Add(csvdata[i]["English"].ToString());
             Text_Japan.Add(csvdata[i]["Japan"].ToString());
             Text_China.Add(csvdata[i]["China"].ToString());
+            
+            Text_fra.Add(csvdata[i]["fra"].ToString());
+            Text_Germany.Add(csvdata[i]["Germany"].ToString());
+            Text_tur.Add(csvdata[i]["tur"].ToString());
+            Text_rus.Add(csvdata[i]["rus"].ToString());
             Text_Korea[i] = Text_Korea[i].Replace("`w`", "\n");
             Text_English[i] = Text_English[i].Replace("`w`", "\n");
             Text_Japan[i] = Text_Japan[i].Replace("`w`", "\n");
             Text_China[i] = Text_China[i].Replace("`w`", "\n");
+            Text_fra[i] = Text_fra[i].Replace("`w`", "\n");
+            Text_Germany[i] = Text_Germany[i].Replace("`w`", "\n");
+            Text_tur[i] = Text_tur[i].Replace("`w`", "\n");
+            Text_rus[i] = Text_rus[i].Replace("`w`", "\n");
         }
         
     }
@@ -391,6 +404,22 @@ public class CsvManager : MonoBehaviour
             return Text_Japan[i];
         }
         else if (GameManager.inst.GameLanguage=="China")
+        {
+            return Text_China[i];
+        }
+        else if (GameManager.inst.GameLanguage=="fra")
+        {
+            return Text_China[i];
+        }
+        else if (GameManager.inst.GameLanguage=="Germany")
+        {
+            return Text_China[i];
+        }
+        else if (GameManager.inst.GameLanguage=="tur")
+        {
+            return Text_China[i];
+        }
+        else if (GameManager.inst.GameLanguage=="rus")
         {
             return Text_China[i];
         }

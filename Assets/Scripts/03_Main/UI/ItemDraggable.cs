@@ -289,7 +289,7 @@ namespace GameS
         public void SetUiCard(GameObject ob)
         {
             int check = -1;
-            int cardidx = 0;
+            int cardidx = ob.GetComponent<Card_Info>().Idx;
             bool b = ItemManager.inst.ItemCheck(ob,Idx);
 
             if (ob.TryGetComponent(out Card_Info info))
@@ -312,8 +312,13 @@ namespace GameS
             {
                 setuicard(cardidx);
             }
+            else if(check<=8&&Idx>=9)
+            {
+                setuicard(cardidx);
+            }
             else
             {
+                
                 Setuicardmix(cardidx,check,Idx);
             }
         }

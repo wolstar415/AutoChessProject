@@ -168,7 +168,7 @@ public class playerinfo
 
             int idx = PlayerInfo.Inst.PlayerIdx;
             Vector3 pos =PositionManager.inst.PickPos[idx].position;
-            GameObject ob = PhotonNetwork.Instantiate("Player", pos, Quaternion.identity);
+            GameObject ob = PhotonNetwork.Instantiate("Player"+GameManager.inst.CharIdx, pos, Quaternion.identity);
             PlayerInfo.Inst.PlayerOb = ob;
             PlayerInfo.Inst.PickRound = true;
             PosSetting();
@@ -443,7 +443,7 @@ public class playerinfo
             
             
             
-            
+            UIManager.inst.DmgUINoShow();
             PlayerInfo.Inst.deadCnt = PlayerInfo.Inst.PlayerCard_Filed.Count;
             if (PlayerInfo.Inst.IsCopy)
             {
@@ -453,7 +453,7 @@ public class playerinfo
             {
                 if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
                 {
-                    info.BattleReady();
+                    
                     info.stat.DmgIdx = i;
                     UIManager.inst.DmgUIShow(info,i);
                 }
@@ -501,6 +501,7 @@ public class playerinfo
             {
                 if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
                 {
+                    info.BattleReady();
                     info.BattleStart();
                     
                 }
@@ -594,7 +595,7 @@ public class playerinfo
             PVPManager.inst.copyob.Clear();
 
             
-            UIManager.inst.DmgUINoShow();
+            
             for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
             {
                 if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))

@@ -5,6 +5,7 @@ using Firebase.Auth;
 using UnityEngine.UI;
 using TMPro;
 using Firebase;
+using GameS;
 using Photon.Pun;
 using UnityEngine.AddressableAssets;
 using RobinBird.FirebaseTools.Storage.Addressables;
@@ -30,12 +31,17 @@ public class LoginManager : MonoBehaviour
     public Button LoginButton;
     public Button CreateButton;
 
+    public Transform canvasParent;
     Firebase.Auth.FirebaseAuth auth;
     public static FirebaseApp firebaseApp;
     public static FirebaseAuth firebaseAuth;
     AsyncOperationHandle handle;
     bool LoginSu=false;
     public AssetReferenceT<AudioClip> arf;
+    [SerializeField] private GameObject waitob;
+    private Coroutine corcheck1;
+    public AssetReferenceT<GameObject> developOb;
+    public LobyUiManager loby;
     private  void Start()
     {
        // FirebaseStorage storageInstance = FirebaseStorage.DefaultInstance;
@@ -88,6 +94,8 @@ public class LoginManager : MonoBehaviour
         string[] s = GameManager.inst.OriNickName.Split('@');
         GameManager.inst.NickName = s[0];
         LobyOb.SetActive(false);
+        DataManager.inst.StartFunc();
+        yield return YieldInstructionCache.WaitForSeconds(1);
         PathBtn();
         //PathOb.SetActive(true);
     }
@@ -106,10 +114,9 @@ public class LoginManager : MonoBehaviour
          {
              if (!x.IsCanceled && !x.IsFaulted)
              {
-Debug.Log(IdField.text);
-             Debug.Log("성공");
                  LobyOb.SetActive(true);
                  CreateOb.SetActive(false);
+                 
              }
              else
              {
@@ -122,39 +129,61 @@ Debug.Log(IdField.text);
         FirebaseAddressablesManager.IsFirebaseSetupFinished = true;
 
 
+        Addressables.GetDownloadSizeAsync("GoGo").Completed +=
+            (AsyncOperationHandle<long> SizeHandle) =>
+            {
+                
+                if (SizeHandle.Result>0)
+                {
+                    waitob.SetActive(true);
+                    PathOb.SetActive(true);
+                    handle = Addressables.DownloadDependenciesAsync("GoGo", true);
+                    corcheck1=StartCoroutine(IPathText());
+                    handle.Completed += (AsyncOperationHandle Obj) => {
+                        PathOb.SetActive(false);
+                        StopCoroutine(corcheck1);
+                        handle = Obj;
+
+                        Loaddevelop();
+
+                        Addressables.Release(Obj);
+                        Addressables.Release(handle);
+
+                    };
+                }
+                else
+                {
+
+
+                    Loaddevelop();
+                }
+               
+            
+            };
 
 
 
-
-
-        handle = Addressables.DownloadDependenciesAsync("GoGo", true);
         
-        handle.Completed += (AsyncOperationHandle Obj) => {
-            handle = Obj;
-            //PathText.text = "100%";
-            Loby2Ob.SetActive(true);
-            //PathOb.SetActive(false);
-            //StopCoroutine(IPathText());
-            //arf.LoadAssetAsync().Completed += (AsyncOperationHandle<AudioClip> mu) => { };
-            //music();
-          // Debug.Log("실행중");
-            Addressables.Release(Obj);
-            Addressables.Release(handle);
 
-        };
+        
         //StartCoroutine(IPathText());
     }
-    void music()
+
+    void Loaddevelop()
     {
-        arf.LoadAssetAsync().Completed += (AsyncOperationHandle<AudioClip> mu) => {
-            if (mu.Status == AsyncOperationStatus.Succeeded)
+        waitob.SetActive(false);
+        Loby2Ob.SetActive(true);
+        developOb.LoadAssetAsync().Completed += (AsyncOperationHandle<GameObject> ad) =>
+        {
+            if (ad.Status == AsyncOperationStatus.Succeeded)
             {
-                AudioClip clip = mu.Result;
-                Debug.Log("확인");
-                audios.clip = clip;
-                audios.Play();
+                    
+                Instantiate(ad.Result, canvasParent);
+                loby.RankingSet();
             }
         };
+            
+        //Addressables.Release(developOb);
     }
     IEnumerator IPathText()
     {
@@ -162,9 +191,9 @@ Debug.Log(IdField.text);
         
         while (true)
         {
-            PathText.text = string.Concat((float)handle.PercentComplete * 100, "%");
-
-            Debug.Log("다운 로드 상황 : " + (float)handle.PercentComplete);
+            float f = handle.PercentComplete * 100;
+            PathText.text = f.ToString("f2")+"%";
+            
             yield return null;
         }
     }
