@@ -11,7 +11,7 @@ namespace GameS
         public override void BasicAttack(GameObject target)
         {
             base.BasicAttack(target);
-            fsm.NoConTime(stat.AtkAniTime());
+            fsm.NoConTime(stat.AtkAniTime(),false);
             fsm.CoolStart();
             AttackFunc();
         }

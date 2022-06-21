@@ -196,18 +196,47 @@ namespace GameS
             }
             else if (Input.GetKeyDown(KeyCode.Keypad4))
             {
-                NetworkManager.inst.UnitCreate(false,"Unit_item23",PlayerInfo.Inst.PlayerOb.transform.position,Quaternion.identity,1000,100,1,2,200,0,10);
-
+                ItemManager.inst.ItemAdd(9);
+                ItemManager.inst.ItemAdd(10);
+                ItemManager.inst.ItemAdd(11);
+                ItemManager.inst.ItemAdd(12);
+                ItemManager.inst.ItemAdd(13);
+                ItemManager.inst.ItemAdd(14);
+                ItemManager.inst.ItemAdd(15);
+                ItemManager.inst.ItemAdd(16);
+                ItemManager.inst.ItemAdd(17);
+                ItemManager.inst.ItemAdd(18);
+                ItemManager.inst.ItemAdd(19);
             }
             else if (Input.GetKeyDown(KeyCode.Keypad5))
             {
-                ItemManager.inst.ItemAdd(36);
+                ItemManager.inst.ItemAdd(20);
+                ItemManager.inst.ItemAdd(21);
+                ItemManager.inst.ItemAdd(21);
+                ItemManager.inst.ItemAdd(22);
+                ItemManager.inst.ItemAdd(23);
+                ItemManager.inst.ItemAdd(24);
+                ItemManager.inst.ItemAdd(25);
+                ItemManager.inst.ItemAdd(26);
+                ItemManager.inst.ItemAdd(27);
+                ItemManager.inst.ItemAdd(28);
+                ItemManager.inst.ItemAdd(29);
             }
             else if (Input.GetKeyDown(KeyCode.Keypad6))
             {
                 //PlayerInfo.Inst.EnemyIdx = -1;
                 // PlayerInfo.Inst.BattleMove = false;
                 ItemManager.inst.ItemAdd(Random.Range(0,9));
+            }
+            else if (Input.GetKeyDown(KeyCode.Keypad7))
+            {
+                for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+                {
+                    var a = PlayerInfo.Inst.PlayerCard_Filed[i].GetComponent<CardState>();
+                    Debug.Log("----------------------------------------------");
+                    Debug.Log($"이름 : {a.info.name} ,공속 : {a.Atk_Cool()}");
+                    Debug.Log("----------------------------------------------");
+                }
             }
             else if (Input.GetKeyDown(KeyCode.Keypad9))
             {

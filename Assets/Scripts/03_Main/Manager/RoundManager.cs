@@ -20,12 +20,11 @@ namespace GameS
         public void BattleMoveFunc()
         {
             if (PlayerInfo.Inst.EnemyIdx==-1|| PlayerInfo.Inst.BattleMove==false) return;
-
             int Enemyidx = PlayerInfo.Inst.EnemyIdx;
             PlayerInfo.Inst.EnemyFiledTile = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyFiledTile;
             PlayerInfo.Inst.PlayerTileOb = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyPlayerTileob;
             EventManager.inst.Sub_CardBattleMove.OnNext(1);
-            GoldSet();
+            NetworkManager.inst.GoldSet(PlayerInfo.Inst.EnemyIdx,PlayerInfo.Inst.Gold);
             CameraMoveFunc2();
 
             PlayerInfo.Inst.PlayerOb.GetComponent<PlayerMoving>().nav.enabled = false;
@@ -58,35 +57,9 @@ namespace GameS
                 PositionManager.inst.playerPositioninfo[pidx].PlayerMovePos.position;
             PlayerInfo.Inst.PlayerOb.GetComponent<PlayerMoving>().nav.enabled = true;
             CameraMoveFunc1();
-            Debug.Log($"이동완료! 나의 번호는 {PlayerInfo.Inst.PlayerIdx}");
         }
 
-        public void GoldSet()
-        {
-            int Enemyidx = PlayerInfo.Inst.EnemyIdx;
-            for (int i = 0; i <5; i++)
-            {
-                if (PlayerInfo.Inst.Gold <10*(i+1))
-                {
-                    GameObject ob = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyGoldOb[i];
-                    if (ob.TryGetComponent(out MeshRenderer mesh))
-                    {
-                        mesh.material.color = PlayerInfo.Inst.colors[0];
-                    }
-                
-                }
-                else
-                {
-                    GameObject ob = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyGoldOb[i];
-                    if (ob.TryGetComponent(out MeshRenderer mesh))
-                    {
-                        mesh.material.color = PlayerInfo.Inst.colors[1];
-                    }
-                }
-            
-            
-            }
-        }
+        
 
         public void GoldObReSet()
         {
@@ -96,6 +69,22 @@ namespace GameS
                 {
                     mesh.material.color = PlayerInfo.Inst.colors[0];
                 }
+            }
+            
+            int Enemyidx = PlayerInfo.Inst.EnemyIdx;
+            if (Enemyidx==-1||Enemyidx==10)
+            {
+                return;
+            }
+            for (int i = 0; i <5; i++)
+            {
+
+                    GameObject ob = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyGoldOb[i];
+                    if (ob.TryGetComponent(out MeshRenderer mesh))
+                    {
+                        mesh.material.color = PlayerInfo.Inst.colors[0];
+                    }
+
             }
         }
 

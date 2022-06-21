@@ -107,10 +107,12 @@ namespace GameS
         {
 
 
+
             if (EnemyCheck() == false)
                 return Enemy = null;
 
 
+            
 
             if (Enemy != null)
             {
@@ -228,9 +230,18 @@ namespace GameS
 
         }
         
-        public void NoConTime(float Time)
+        public void NoConTime(float Time,bool b)
         {
+            if (b)
+            {
             noConTime += Time;
+                
+            }
+            else
+            {
+                noConTime = Time;
+
+            }
             fsm.SetState(eCardFight_STATE.NoCon);
         }
 

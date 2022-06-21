@@ -52,12 +52,16 @@ namespace GameS
         {
             if (!IsMoving) return;
 
+
             if (Fight.attackFunc.SkillCheck())
             {
                 return;
             }
+
+
             if (Fight.EnemyCheck() == false) //죽었거나 무적일경우 제거
                 Fight.Enemy = null;
+            
             
                 if (Fight.Enemy == null)
             {
@@ -68,6 +72,7 @@ namespace GameS
             Fight.nav.SetDestination(Fight.Enemy.transform.position); 
             
             //거리체크
+            
             if (Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position) <= Fight.info.stat.Range()+1f)
             {
             // Debug.Log($"거리 :{Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position)}\n 사정거리:{Fight.info.stat.Range()}");

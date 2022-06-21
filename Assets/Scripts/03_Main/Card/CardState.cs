@@ -103,10 +103,11 @@ namespace GameS
         public override float Atk_Cool()//공속
         {
             float v = Char_Atk_Cool;
-            float v2=Item_Range+Buff_Range;
+            float v2=Item_Atk_Cool+Buff_Atk_Cool;
             if (IsItemFunc29 > 0) v2 -= 30f;
             v = v - (v * (v2 * 0.01f));
             Mathf.Clamp(v, 0.1f, 5f);
+           
             return v;
         }
 
@@ -767,7 +768,7 @@ namespace GameS
                 for (int i = 0; i < have23; i++)
                 {
                     
-                    NetworkManager.inst.UnitCreate(IsCopy,"Unit_item23",transform.position,Quaternion.identity,hp,damage,cool,range,speed,info.TeamIdx,info.EnemyTeamIdx);
+                    NetworkManager.inst.UnitCreate(IsCopy,"Unit_item23",transform.position,Quaternion.identity,hp,damage,cool,range,speed,info.TeamIdx,info.EnemyTeamIdx,DmgIdx);
                 }
             }
             if (have45>0)

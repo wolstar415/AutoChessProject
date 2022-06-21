@@ -230,6 +230,7 @@ namespace GameS
         public void EnemyStart(float hp,float damage,float Cool,int Checkidx,int item=-1)
         {
             IsFiled = true;
+            stat.Char_Speed = 200f;
             stat.nav.speed = 200 * 0.01f;
             stat.Char_Range = 1.8f;
             stat.RangeSet();
@@ -263,12 +264,14 @@ namespace GameS
             stat.HpAndMpSet();
         }
 
-        public void UnitStart(float hp, float damage, float Cool, float range, float speed, int teami, int enemyi)
+        public void UnitStart(float hp, float damage, float Cool, float range, float speed, int teami, int enemyi,int uiidx)
         {
             IsFiled = true;
+            stat.Char_Speed = speed;
             stat.nav.speed = speed * 0.01f;
             stat.Char_Range = range;
             stat.RangeSet();
+            stat.DmgIdx = uiidx;
 
             pv.RPC(nameof(RPC_UnitStart), RpcTarget.All, hp, damage, Cool, teami, enemyi);
 
@@ -888,6 +891,9 @@ namespace GameS
 
             stat.collider.enabled = true;
             stat.nav.enabled = true;
+            stat.currentHp = stat.HpMax();
+            stat.currentMana = stat.Mana();
+            stat.ReSetFunc1();
         }
         public void BattleStart()
         {
@@ -920,8 +926,10 @@ namespace GameS
             int have46 = IsItemHave(46);
             int have49 = IsItemHave(49);
             int have51 = IsItemHave(51);
+            //지크의전령있을때 좌우로 공속+15%
             if (have15>0)
             {
+                stat.CoolPlus(0,0,15*have15,true);
                 if(leftob==null) leftob=BattleTileLeft();
                 if(rightob==null) rightob=BattleTileRight();
                 
@@ -949,10 +957,10 @@ namespace GameS
             {
                 if(leftob==null) leftob=BattleTileLeft();
                 if(rightob==null) rightob=BattleTileRight();
-                float sv = 75;
-                if (Level == 2) sv = 100;
-                else if (Level == 3) sv = 150;
-                
+                float sv = 300;
+                if (Level == 2) sv = 400;
+                else if (Level == 3) sv = 500;
+                stat.shiled += sv;
                 if (leftob!=null)
                 {
                     if (leftob.TryGetComponent(out CardState cstat))
@@ -978,17 +986,14 @@ namespace GameS
             {
                 if(leftob==null) leftob=BattleTileLeft();
                 if(rightob==null) rightob=BattleTileRight();
-                float sv = 75;
-                if (Level == 2) sv = 100;
-                else if (Level == 3) sv = 150;
-                
+                stat.MagicPlus(0,0,50*have35,true);
                 if (leftob!=null)
                 {
                     if (leftob.TryGetComponent(out CardState cstat))
                     {
                         
 
-                            cstat.MagicPlus(0,0,50*have28,true);
+                            cstat.MagicPlus(0,0,50*have35,true);
                         
                     }
                 }
@@ -997,7 +1002,7 @@ namespace GameS
                     if (rightob.TryGetComponent(out CardState cstat2))
                     {
                         
-                            cstat2.MagicPlus(0,0,50*have28,true);
+                            cstat2.MagicPlus(0,0,50*have35,true);
                         
                     }
                 }
@@ -1026,19 +1031,17 @@ namespace GameS
 
             if (have36 > 0)
             {
-                Debug.Log("체크");
                 Vector3 pos = PlayerInfo.Inst.EnemyFiledTile[MoveIdx].transform.position;
-                EffectManager.inst.EffectCreate("DeadEffect",pos,Quaternion.identity);
-                Collider[] c = Physics.OverlapSphere(pos, 5f, GameSystem_AllInfo.inst.masks[EnemyTeamIdx]);
+                //EffectManager.inst.EffectCreate("DeadEffect",pos,Quaternion.identity);
+                Collider[] c = Physics.OverlapSphere(pos, 8f, GameSystem_AllInfo.inst.masks[EnemyTeamIdx]);
 
                 dummylist.Clear();
                 
-                if (c.Length>0) dummylist= c.Where(ob => ob.GetComponent<Card_Info>().IsFiled&&ob.GetComponent<CardState>().IsItemFunc36==false).OrderBy(ob => ob.transform.position).ToList();
+                if (c.Length>0) dummylist= c.Where(ob => ob.GetComponent<Card_Info>().IsFiled&&ob.GetComponent<CardState>().IsItemFunc36==false).OrderBy(ob => Vector3.Distance(pos, ob.transform.position)).ToList();
 
 
                 if (dummylist.Count>0)
                 {
-                Debug.Log(dummylist[0].name);
                     if (dummylist[0].TryGetComponent(out CardState ca))
                     {
                         if (ca.info.IsItemHave(37)>0)
@@ -1051,9 +1054,9 @@ namespace GameS
                         ca.IsItemFunc36 = true;
                         Vector3 ad = ca.transform.position;
                         ad.y = 5;
-                        ca.NetStopFunc(false,5);
+                        ca.NetStopFunc(false,5,false);
                         ca.InvinSet(5);
-                        ca.transform.DOJump(ca.transform.position, 10, 1,5);
+                        ca.Jump(ca.transform.position,10,1,5);
                         }
                     }
                 }
@@ -1066,7 +1069,7 @@ namespace GameS
                 PlayerInfo.Inst.Gold += (g * have51);
             }
 
-            //지크의전령있을때 좌우로 공속+15%
+            
 
 
         }

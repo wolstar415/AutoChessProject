@@ -79,13 +79,13 @@ namespace GameS
             ;
             MagicDefense.text = info.stat.Defence_Magic().ToString("F0");
             ;
-            Atspeed.text = info.stat.Atk_Cool().ToString("F0");
+            Atspeed.text = info.stat.Atk_Cool().ToString("F1");
             ;
-            Range.text = info.stat.Range().ToString("F0");
+            Range.text = info.stat.Range().ToString("F1");
             ;
-            CriPer.text = info.stat.CriPer().ToString("F0");
+            CriPer.text = info.stat.CriPer().ToString("F0")+"%";
             ;
-            CriDamge.text = info.stat.CriDmg().ToString("F0");
+            CriDamge.text = info.stat.CriDmg().ToString("F0")+"%";
             ;
             Name.text = CsvManager.inst.GameText(info.Name);
             Icon.sprite = IconManager.inst.icon[info.Icon];

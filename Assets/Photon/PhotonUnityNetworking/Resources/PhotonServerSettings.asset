@@ -127,6 +127,9 @@ MonoBehaviour:
   - RPC_StopFunc
   - RPC_Item29Func
   - Item34Func
+  - RPC_AniStart
+  - RPC_Jump
+  - RPC_GoldSet
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

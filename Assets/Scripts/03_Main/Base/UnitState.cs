@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
@@ -44,7 +45,7 @@ namespace GameS
         [Header("카드만")] 
         public Card_Info info;
 
-        private Coroutine HpFunc;
+        protected Coroutine HpFunc;
         public bool NoDmg = false;
         public bool IsCopy = false;
         
@@ -302,7 +303,7 @@ namespace GameS
             collider.radius =f;
         }
 
-        IEnumerator IHpSlider(float time=0.8f)
+        protected IEnumerator IHpSlider(float time=0.8f)
         {
             float curTime = 0;
             while (curTime<time)
@@ -345,7 +346,7 @@ namespace GameS
             {
                 if (target.GetComponent<Card_Info>().IsItemHave(31)>0)
                 {
-                    NetStopFunc(true,1f);
+                    NetStopFunc(true,1f,false);
                 }
                 return;
             }
@@ -427,7 +428,7 @@ namespace GameS
         }
 
         [PunRPC]
-        void RPC_UnitInvin(int Invin)
+        protected void RPC_UnitInvin(int Invin)
         {
             IsInvin += Invin;
         }
@@ -459,12 +460,12 @@ namespace GameS
         }
 
         [PunRPC]
-        void RPC_InvinSet(float time)
+        protected void RPC_InvinSet(float time)
         {
             StartCoroutine(IInvinSet(time));
         }
         
-        IEnumerator IInvinSet(float time)
+        protected IEnumerator IInvinSet(float time)
         {
             IsInvin++;
             yield return YieldInstructionCache.WaitForSeconds(time);
@@ -486,11 +487,11 @@ namespace GameS
 
         public void ItemFuncAdd(int idx,bool timeb=false,float time=0f,bool minus=false)
         {
-            pv.RPC(nameof(RPC_ItemFuncAdd),RpcTarget.All,idx,minus);
+            pv.RPC(nameof(RPC_ItemFuncAdd),RpcTarget.All,idx,timeb,time,minus);
         }
 
         [PunRPC]
-        void RPC_ItemFuncAdd(int idx,bool timeb,float time,bool minus)
+        protected void RPC_ItemFuncAdd(int idx,bool timeb,float time,bool minus)
         {
             if (timeb && time > 0)
             {
@@ -521,7 +522,7 @@ namespace GameS
             }
         }
 
-        IEnumerator IitemFuncAdd(int idx, bool timeb, float time)
+        protected IEnumerator IitemFuncAdd(int idx, bool timeb, float time)
         {
             if(idx==19) IsItemFunc19++;
             else if(idx==22) IsItemFunc22++;
@@ -534,30 +535,30 @@ namespace GameS
             else if(idx==26) IsItemFunc26=false;
         }
 
-        public void NetStopFunc(bool stun,float t)
+        public void NetStopFunc(bool stun,float t,bool b)
         {
             if (monster)
             {
 
-                StopFunc(stun, t);
+                StopFunc(stun, t,b);
             }
             else
             {
-                pv.RPC(nameof(RPC_StopFunc), RpcTarget.All, stun, t, info.TeamIdx);
+                pv.RPC(nameof(RPC_StopFunc), RpcTarget.All, stun, t, info.TeamIdx,b);
             }
 
         }
 
         [PunRPC]
-        void RPC_StopFunc(bool stun,float t,int pidx)
+        protected void RPC_StopFunc(bool stun,float t,int pidx,bool b)
         {
             if (PlayerInfo.Inst.PlayerIdx != pidx) return;
 
-            StopFunc(stun, t);
+            StopFunc(stun, t, b);
 
         }
 
-        void StopFunc(bool stun,float t)
+        protected void StopFunc(bool stun,float t,bool b)
         {
             if (IsItemFunc37>0)
             {
@@ -566,7 +567,7 @@ namespace GameS
             }
             if (stun) StunShow(stun);
                 
-            info.fsm.NoConTime(t);
+            info.fsm.NoConTime(t,b);
         }
 
         public void Isitem37Check(int i, bool b)
@@ -575,7 +576,7 @@ namespace GameS
         }
 
         [PunRPC]
-        void RPC_IsItemFunc37(int i, bool b)
+        protected void RPC_IsItemFunc37(int i, bool b)
         {
             if (b)
             {
@@ -614,7 +615,7 @@ namespace GameS
             }
         }
         
-        IEnumerator DotDamgeFunc(GameObject card,GameObject target)
+        protected IEnumerator DotDamgeFunc(GameObject card,GameObject target)
         {
             var card_stat = card.GetComponent<CardState>();
             var target_stat = target.GetComponent<CardState>();
@@ -645,13 +646,42 @@ namespace GameS
         }
 
         [PunRPC]
-        void Item34Func(int targetnum,float d,int pidx)
+        protected void Item34Func(int targetnum,float d,int pidx)
         {
             if (PlayerInfo.Inst.PlayerIdx != pidx) return;
             
             DamageManager.inst.DamageFunc1(gameObject,PhotonView.Find(targetnum).gameObject,d,eDamageType.Speel_Magic);
         }
 
+        public void AniStart(string name)
+        {
+            pv.RPC(nameof(RPC_AniStart),RpcTarget.All,name);
+        }
+
+        [PunRPC]
+        protected void RPC_AniStart(string name)
+        {
+            if (gameObject.activeSelf)
+            {
+            ani.Play(name);
+                
+            }
+
+        }
+
+        public void Jump(Vector3 pos,float power,int cnt,float dur)
+        {
+            pv.RPC(nameof(RPC_Jump),RpcTarget.All,pos,power,cnt,dur);
+        }
+
+        [PunRPC]
+        protected void RPC_Jump(Vector3 pos,float power,int cnt,float dur)
+        {
+            if (pv.IsMine)
+            {
+                transform.DOJump(pos,power,cnt,dur);
+            }
+        }
 
     }
 }

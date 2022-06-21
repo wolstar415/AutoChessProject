@@ -72,7 +72,7 @@ namespace GameS
                     if (card_stat.IsItemFunc49)
                     {
                         card_stat.IsItemFunc49 = false;
-                        target_stat.NetStopFunc(true,4);
+                        target_stat.NetStopFunc(true,4,true);
                     }
                     int item10=card_stat.info.IsItemHave(10);
                     int item21=card_stat.info.IsItemHave(21);

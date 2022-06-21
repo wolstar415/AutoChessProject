@@ -610,7 +610,7 @@ public class playerinfo
 
         }
 
-        public void UnitCreate(bool copy,string name,Vector3 pos,Quaternion qu,float hp, float damage, float Cool, float range, float speed, int teami, int enemyi)
+        public void UnitCreate(bool copy,string name,Vector3 pos,Quaternion qu,float hp, float damage, float Cool, float range, float speed, int teami, int enemyi,int uiidx)
         {
             if (!PlayerInfo.Inst.IsBattle) return;
 
@@ -626,10 +626,44 @@ public class playerinfo
             }
             if (ob.TryGetComponent(out Card_Info cardinfo))
             {
-                cardinfo.UnitStart(hp,damage,Cool,range,speed,teami,enemyi);
+                cardinfo.UnitStart(hp,damage,Cool,range,speed,teami,enemyi,uiidx);
             }
             PVEManager.inst.Enemis.Add(ob);
 
+        }
+        
+        public void GoldSet(int eidx,int gold)
+        {
+
+            pv.RPC(nameof(RPC_GoldSet),RpcTarget.All,eidx,gold);
+        }
+
+        [PunRPC]
+        void RPC_GoldSet(int eidx,int gold)
+        {
+            int Enemyidx = eidx;
+            for (int i = 0; i <5; i++)
+            {
+                if (gold <10*(i+1))
+                {
+                    GameObject ob = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyGoldOb[i];
+                    if (ob.TryGetComponent(out MeshRenderer mesh))
+                    {
+                        mesh.material.color = PlayerInfo.Inst.colors[0];
+                    }
+                
+                }
+                else
+                {
+                    GameObject ob = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyGoldOb[i];
+                    if (ob.TryGetComponent(out MeshRenderer mesh))
+                    {
+                        mesh.material.color = PlayerInfo.Inst.colors[1];
+                    }
+                }
+            
+            
+            }
         }
 
     }
