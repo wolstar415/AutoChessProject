@@ -1837,8 +1837,10 @@ MonoBehaviour:
   IsItemFunc12: 0
   IsItemFunc46: 0
   IsItemFunc49: 0
+  IsItemFunc36: 0
   IsItemFunc29: 0
   ItemFunc29Scan: {fileID: 4778588549133132389}
+  NoHeal: 0
   IsDead: 0
   IsInvin: 0
   IsStun: 0
@@ -3449,7 +3451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   info: {fileID: 794620965866707054}
-  info_fight: {fileID: 0}
+  Enemies: []
 --- !u!1 &7621643080113566335
 GameObject:
   m_ObjectHideFlags: 0

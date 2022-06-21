@@ -66,6 +66,7 @@ namespace GameS
         public int IsItemFunc37 { get; protected set; }
 
         public bool IsItemFunc49= false;
+        public bool IsItemFunc36= false;
         
         [SerializeField] protected int IsItemFunc29;
         public item29_Scan ItemFunc29Scan;
@@ -561,7 +562,6 @@ namespace GameS
             if (IsItemFunc37>0)
             {
                 Isitem37Check(1, false);
-                //이펙트 제거하기
                 return;
             }
             if (stun) StunShow(stun);
@@ -577,8 +577,24 @@ namespace GameS
         [PunRPC]
         void RPC_IsItemFunc37(int i, bool b)
         {
-            if(b) IsItemFunc37+=i;
-            else IsItemFunc37-=i;
+            if (b)
+            {
+                IsItemFunc37+=i;
+                if (IsItemFunc37>0)
+                {
+                    //이펙트추가
+                }
+            }
+            else
+            {
+                IsItemFunc37-=i;
+
+            if (IsItemFunc37==0)
+            {
+                //이펙트제거
+            }
+            }
+
              
 
         }

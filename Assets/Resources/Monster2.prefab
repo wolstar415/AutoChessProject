@@ -1651,14 +1651,14 @@ MonoBehaviour:
   nav: {fileID: 794620965866707049}
   ani: {fileID: 6716548868218710969}
   IsCard: 0
+  monster: 0
+  IsUnit: 0
   StunOb: {fileID: 3324066299501613067}
   _currentHp: 0
   _shiled: 0
   _currentMana: 0
   KillCnt: 0
-  AttackCnt: 0
   AttackOb: {fileID: 0}
-  OneAttackCnt: 0
   HpSlider: {fileID: 1611736861}
   HpSliderCheck: {fileID: 1408399569539307863}
   ManaSlider: {fileID: 82530741}
@@ -1678,6 +1678,14 @@ MonoBehaviour:
   MagicDmg: 0
   TrueDmg: 0
   HpLine: {fileID: 1242409505215983901}
+  IsItemFunc11: 0
+  IsItemFunc12: 0
+  IsItemFunc46: 0
+  IsItemFunc49: 0
+  IsItemFunc36: 0
+  IsItemFunc29: 0
+  ItemFunc29Scan: {fileID: 0}
+  NoHeal: 0
   IsDead: 0
   IsInvin: 0
   IsStun: 0

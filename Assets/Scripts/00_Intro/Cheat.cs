@@ -201,9 +201,7 @@ namespace GameS
             }
             else if (Input.GetKeyDown(KeyCode.Keypad5))
             {
-                //PlayerInfo.Inst.EnemyIdx = -1;
-                // PlayerInfo.Inst.BattleMove = false;
-                RoundManager.inst.BattleMoveFunc2();
+                ItemManager.inst.ItemAdd(36);
             }
             else if (Input.GetKeyDown(KeyCode.Keypad6))
             {

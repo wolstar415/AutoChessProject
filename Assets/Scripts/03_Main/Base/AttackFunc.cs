@@ -53,7 +53,7 @@ namespace GameS
             }
             
             
-            Collider[] c = Physics.OverlapSphere(transform.position, 5f, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
+            Collider[] c = Physics.OverlapSphere(transform.position, 6f, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
 
 
             for (var i = 0; i < c.Length; i++)

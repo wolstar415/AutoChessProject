@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Photon.Pun;
 using UnityEngine.EventSystems;
 using UnityEngine;
@@ -73,6 +74,7 @@ namespace GameS
         [SerializeField] private GameObject show_fileTileob;
         [SerializeField] private GameObject show_Tileob;
 
+        private List<Collider> dummylist = new List<Collider>();
         // Start is called before the first frame update
 
 
@@ -913,9 +915,11 @@ namespace GameS
             int have15 = IsItemHave(15);
             int have28 = IsItemHave(28);
             int have35 = IsItemHave(35);
+            int have36 = IsItemHave(36);
             int have37 = IsItemHave(37);
             int have46 = IsItemHave(46);
             int have49 = IsItemHave(49);
+            int have51 = IsItemHave(51);
             if (have15>0)
             {
                 if(leftob==null) leftob=BattleTileLeft();
@@ -970,7 +974,7 @@ namespace GameS
                 }
                 
             }
-            if (have28>0)
+            if (have35>0)
             {
                 if(leftob==null) leftob=BattleTileLeft();
                 if(rightob==null) rightob=BattleTileRight();
@@ -1020,10 +1024,53 @@ namespace GameS
 
             if (have49 > 0) stat.IsItemFunc49 = true;
 
+            if (have36 > 0)
+            {
+                Debug.Log("체크");
+                Vector3 pos = PlayerInfo.Inst.EnemyFiledTile[MoveIdx].transform.position;
+                EffectManager.inst.EffectCreate("DeadEffect",pos,Quaternion.identity);
+                Collider[] c = Physics.OverlapSphere(pos, 5f, GameSystem_AllInfo.inst.masks[EnemyTeamIdx]);
+
+                dummylist.Clear();
+                
+                if (c.Length>0) dummylist= c.Where(ob => ob.GetComponent<Card_Info>().IsFiled&&ob.GetComponent<CardState>().IsItemFunc36==false).OrderBy(ob => ob.transform.position).ToList();
+
+
+                if (dummylist.Count>0)
+                {
+                Debug.Log(dummylist[0].name);
+                    if (dummylist[0].TryGetComponent(out CardState ca))
+                    {
+                        if (ca.info.IsItemHave(37)>0)
+                        {
+                            ca.Isitem37Check(1, false);
+                        }
+                        else
+                        {
+                            
+                        ca.IsItemFunc36 = true;
+                        Vector3 ad = ca.transform.position;
+                        ad.y = 5;
+                        ca.NetStopFunc(false,5);
+                        ca.InvinSet(5);
+                        ca.transform.DOJump(ca.transform.position, 10, 1,5);
+                        }
+                    }
+                }
+
+            }
+
+            if (have51 > 0)
+            {
+                int g = 2*Level;
+                PlayerInfo.Inst.Gold += (g * have51);
+            }
+
             //지크의전령있을때 좌우로 공속+15%
 
 
         }
+  
 
         public void BattleEnd()
         {

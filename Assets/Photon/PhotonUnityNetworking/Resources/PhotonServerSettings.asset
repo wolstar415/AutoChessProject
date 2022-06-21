@@ -125,6 +125,8 @@ MonoBehaviour:
   - RPC_UnitStart
   - RPC_IsItemFunc37
   - RPC_StopFunc
+  - RPC_Item29Func
+  - Item34Func
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

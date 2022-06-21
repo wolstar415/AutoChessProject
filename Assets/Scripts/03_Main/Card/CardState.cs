@@ -635,6 +635,7 @@ namespace GameS
             IsItemFunc22 = 0;
             IsItemFunc24 = 0;
             IsItemFunc26 = false;
+            IsItemFunc36 = false;
             IsItemFunc37 = 0;
             IsItemFunc49 = false;
             NoHeal = false;
@@ -772,7 +773,7 @@ namespace GameS
             if (have45>0)
             {
                 //구원이펙트
-                Collider[] c = Physics.OverlapSphere(transform.position, 5f, GameSystem_AllInfo.inst.masks[info.TeamIdx]);
+                Collider[] c = Physics.OverlapSphere(transform.position, 10f, GameSystem_AllInfo.inst.masks[info.TeamIdx]);
 
 
                 for (var i = 0; i < c.Length; i++)

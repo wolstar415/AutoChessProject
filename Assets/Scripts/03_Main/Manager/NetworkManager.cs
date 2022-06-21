@@ -521,6 +521,8 @@ public class playerinfo
                         info.BattleStart();
                     }
                 }
+
+
             
             UIManager.inst.TimeFunc(60);
 
