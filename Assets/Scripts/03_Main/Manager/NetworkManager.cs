@@ -138,7 +138,7 @@ public class playerinfo
                 players[i].Life = 100;
                 players[i].Idx = i;
                 MasterInfo.inst.lifeCheck.Add(new LifeRank(i,100));
-                pv.RPC(nameof(PlayerSetting),RpcTarget.All,i,players[i].OriNickName);
+                pv.RPC(nameof(PlayerSetting),RpcTarget.All,i,players[i].NickName);
                 //PhotonNetwork.PlayerList[i].CustomProperties.Add("PlayerIdx",i);
 
             }
