@@ -216,7 +216,7 @@ namespace GameS
             float real1 = CsvManager.inst.itemInfo[idx].Real[0];
             float real2 = CsvManager.inst.itemInfo[idx].Real[1];
             float real3 = CsvManager.inst.itemInfo[idx].Real[2];
-            string s = string.Format(CsvManager.inst.GameText(CsvManager.inst.itemInfo[idx].Info), real1, real2, real3);
+            string s = string.Format(CsvManager.inst.GameText(CsvManager.inst.itemInfo[idx].Info), real1, real2, real3,real1.ToString("F0"), real2.ToString("F0"), real3.ToString("F0"));
             ItemInfo_Info.text = s;
             //das
             SkillInfo_ob.SetActive(false);

@@ -81,7 +81,7 @@ namespace GameS
 
             List<GameObject> result = Enemies.
                 Where(ob => ob.GetComponent<UnitState>().IsDead == false &&ob.GetComponent<Card_Info>().IsFiled&&
-                                                          ob.GetComponent<UnitState>().IsInvin == false).
+                                                          ob.GetComponent<UnitState>().IsInvin == 0).
                 OrderBy(obj =>
             {
                 return Vector3.Distance(transform.position, obj.transform.position);
@@ -147,7 +147,7 @@ namespace GameS
 
             Collider[] c = Physics.OverlapSphere(transform.position, 25f, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
               c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false&&ob.GetComponent<Card_Info>().IsFiled&&
-                          ob.GetComponent<UnitState>().IsInvin == false).OrderBy(ob => Vector3.Distance(transform.position, ob.transform.position)).ToArray();
+                          ob.GetComponent<UnitState>().IsInvin == 0).OrderBy(ob => Vector3.Distance(transform.position, ob.transform.position)).ToArray();
 
             
              if (c.Length >0)
@@ -166,7 +166,7 @@ namespace GameS
             //     GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
             Collider[] c = Physics.OverlapSphere(transform.position, 25f, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
             c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false &&
-                             ob.GetComponent<UnitState>().IsInvin == false&&ob.GetComponent<Card_Info>().IsFiled).OrderByDescending(ob => Vector3.Distance(transform.position, ob.transform.position)).ToArray();
+                             ob.GetComponent<UnitState>().IsInvin == 0&&ob.GetComponent<Card_Info>().IsFiled).OrderByDescending(ob => Vector3.Distance(transform.position, ob.transform.position)).ToArray();
 
             
             if (c.Length >0)
@@ -193,7 +193,7 @@ namespace GameS
             }
             if (Enemy.TryGetComponent(out UnitState state))
             {
-                if (state.IsDead||state.IsInvin||state.info.IsFiled==false)
+                if (state.IsDead||state.IsInvin>0||state.info.IsFiled==false)
                 {
                     Enemy = null;
                     return false;

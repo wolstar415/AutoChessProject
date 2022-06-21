@@ -383,9 +383,9 @@ MonoBehaviour:
   m_fontSize: 38
   m_fontSizeBase: 38
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 36
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -1421,9 +1421,9 @@ MonoBehaviour:
   m_fontSize: 38
   m_fontSizeBase: 38
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 36
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -1714,9 +1714,6 @@ MonoBehaviour:
   oriPos: {x: 0, y: 0, z: 0}
   CanvasGroup: {fileID: 8533577441400503165}
   gridLayout: {fileID: 0}
-  laymaskCard:
-    serializedVersion: 2
-    m_Bits: 16320
   Idx: 0
   ItemIcon: {fileID: 8533577440459511896}
   CreateItemInfoOb: {fileID: 8533577440321774961}

@@ -93,7 +93,11 @@ namespace GameS
         public override float Range()//사정거리
         {
             float v = Char_Range + Item_Range + Buff_Range;
-            Mathf.Clamp(v, 0.1f, 10f);
+            if (info.IsItemHave(18)>0)
+            {
+                v += (info.IsItemHave(18) * 1.8f);
+            }
+            Mathf.Clamp(v, 0.1f, 11f);
             return v;
         }
         public override float Atk_Cool()//공속
@@ -109,6 +113,14 @@ namespace GameS
         {
             float v = Char_Atk_Damage + Item_Atk_Damage + Buff_Atk_Damage;
             int i = info.IsItemHave(9);
+            if (IsItemFunc19>=25)
+            {
+                v += 75*info.IsItemHave(19);
+            }
+            else
+            {
+                v += IsItemFunc19 * 2*info.IsItemHave(19);
+            }
             if (i>0)
             {
                 if (info.Level==2)
@@ -131,18 +143,35 @@ namespace GameS
         public override float Magic_Damage()//마법데미지
         {
             float v = Char_Magic_Damage + Item_Magic_Damage + Buff_Magic_Damage;
+            
+            if (IsItemFunc19>=25)
+            {
+                v += 75*info.IsItemHave(19);
+            }
+            else
+            {
+                v += IsItemFunc19 * 2*info.IsItemHave(19);
+            }
             Mathf.Clamp(v, 0, 9999999);
             return v;
         }
         public override float Defence()//방어
         {
             float v = Char_Defence + Item_Defence + Buff_Defence;
+            if (IsItemFunc24>0)
+            {
+                v *= 0.5f;
+            }
             Mathf.Clamp(v, 0, 9999999);
             return v;
         }
         public override float Defence_Magic()//마법방어
         {
             float v = Char_Defence_Magic + Item_Defence_Magic + Buff_Defence_Magic;
+            if (IsItemFunc22>0)
+            {
+                v *= 0.5f;
+            }
             Mathf.Clamp(v, 0, 9999999);
             return v;
         }
@@ -235,9 +264,11 @@ namespace GameS
                 pv.RPC(nameof(RPC_CoolPlus),RpcTarget.All,f1,f2,f3);
                 
             }
-
-            float f = (100+f2 + f3) * 0.01f;
-            ani.SetFloat("Speed",f);
+            else
+            { 
+                float f = (100+f2 + f3) * 0.01f;
+                ani.SetFloat("Speed",f);
+            }
         }
         public void AtkPlus(float Char, float Item, float buff, bool network = false)
         {
@@ -575,6 +606,9 @@ namespace GameS
 
         public void BattleEndReset()
         {
+            AttackCnt = 0;
+            AttackOb = null;
+            OneAttackCnt = 0;
             pv.RPC(nameof(RPC_BattleEndReset),RpcTarget.All);
         }
 
@@ -593,12 +627,23 @@ namespace GameS
             Buff_ManaMax= 0;
             Buff_CriPer = 0;
             Buff_CriDmg= 0;
+            
+            IsItemFunc11 = false;
+            IsItemFunc12 = false;
+            IsItemFunc19 = 0;
+            IsItemFunc46 = 0;
+            
             if (pv.IsMine)
             {
                 currentHp = HpMax();
                 currentMana = Mana();
                 ReSetFunc1();
             }
+            StopAllCoroutines();
+
+            IsInvin = 0;
+            IsDead = false;
+            IsStun = false;
         }
         public void ReSetFunc1()
         {
@@ -651,6 +696,8 @@ namespace GameS
                 HpSlider.value = hper;
                 HpSliderCheck.value = hper;
             }
+
+            HpSize();
         }
 
         public void AllHpAndMp()
@@ -670,6 +717,29 @@ namespace GameS
 
         public override void UnitDead()
         {
+            int have45 = info.IsItemHave(45);
+
+            if (have45>0)
+            {
+                //구원이펙트
+                Collider[] c = Physics.OverlapSphere(transform.position, 5f, GameSystem_AllInfo.inst.masks[info.TeamIdx]);
+
+
+                for (var i = 0; i < c.Length; i++)
+                {
+                    if (c[i].TryGetComponent(out Card_Info cc))
+                    {
+                        if (info.IsFiled&&!info.stat.IsDead)
+                        {
+                            cc.stat.HpHeal(800*have45);
+                        }
+                    }
+                }
+            }
+            
+            
+            
+            
             if (!PlayerInfo.Inst.PVP)
             {
                 if (!IsCard)

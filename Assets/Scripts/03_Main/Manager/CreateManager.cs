@@ -230,7 +230,21 @@ namespace GameS
             List<GameObject> obs = new List<GameObject>();
             for (int i = 0; i < PlayerInfo.Inst.PlayerCardCntLv[idx].Lv(lv).Count; i++)
             {
-                obs.Add(PlayerInfo.Inst.PlayerCardCntLv[idx].Lv(lv)[i]);
+                if (PlayerInfo.Inst.IsBattle)
+                {
+
+                    var ob = PlayerInfo.Inst.PlayerCardCntLv[idx].Lv(lv)[i];
+                    if (ob.TryGetComponent(out Card_Info ch))
+                    {
+                        if(ch.IsFiled==false) obs.Add(PlayerInfo.Inst.PlayerCardCntLv[idx].Lv(lv)[i]);
+                    }
+                }
+                else
+                {
+                    //obs.Add(PlayerInfo.Inst.PlayerCardCntLv[idx].Lv1[i]);
+                    obs.Add(PlayerInfo.Inst.PlayerCardCntLv[idx].Lv(lv)[i]);
+                }
+                //obs.Add(PlayerInfo.Inst.PlayerCardCntLv[idx].Lv(lv)[i]);
             }
             
             if (obs.Count < 3)

@@ -12,17 +12,19 @@ namespace GameS
         public GameObject target;
         public GameObject me;
         public float damage;
+        private bool phy = false;
 
         [SerializeField] private float Speed = 10f;
         // Start is called before the first frame update
 
 
         // Update is called once per frame
-        public void StartFUnc(GameObject _me,GameObject _target,float _damage)
+        public void StartFUnc(GameObject _me,GameObject _target,float _damage,bool _phy=true)
         {
             me = _me;
             target = _target;
             damage = _damage;
+            phy = _phy;
         }
         void Update()
         {
@@ -51,7 +53,16 @@ namespace GameS
             if (!pv.IsMine) return;
             if (other.gameObject==target)
             {
+                if (phy)
+                {
                 DamageManager.inst.DamageFunc1(me,target,damage);
+                    
+                }
+                else
+                {
+                DamageManager.inst.DamageFunc1(me,target,damage,eDamageType.Basic_Magic);
+                    
+                }
                 DestoryFunc();
             }
         }

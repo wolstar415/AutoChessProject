@@ -26,11 +26,10 @@ namespace GameS
          // 최대마나
 
         [SerializeField] protected int KillCnt; //라운드 킬카운트
-        [SerializeField] protected int AttackCnt; //평타횟수
+        [SerializeField] public int AttackCnt { get; protected set; } //평타횟수
         
         [SerializeField] protected GameObject AttackOb; //평타대상
-        [SerializeField] protected int OneAttackCnt; //같은대상 평타횟수
-        
+        [SerializeField] public int OneAttackCnt{ get; protected set; } //같은대상 평타횟수
 
         [Header("UI")] 
         [SerializeField] protected Slider HpSlider;
@@ -52,6 +51,16 @@ namespace GameS
         public float PhyDmg;
         public float MagicDmg;
         public float TrueDmg;
+        [Header("체렷칸")]  public GameObject HpLine;
+
+        [Header("아이템확인")] 
+        public bool IsItemFunc11=false;
+        public bool IsItemFunc12=false;
+        public int IsItemFunc46=0;//본인만있어도함
+        public int IsItemFunc19 { get; protected set; }
+        public int IsItemFunc22 { get; protected set; }
+        public int IsItemFunc24 { get; protected set; }
+
 
         public void ColorChange()
         {
@@ -209,7 +218,7 @@ namespace GameS
         }
         
         public bool IsDead;
-        public bool IsInvin;
+        public int IsInvin;
         public bool IsStun;
 
         [PunRPC]
@@ -312,14 +321,15 @@ namespace GameS
         protected void RPC_StunShow(bool active)
         {
             IsStun = active;
+
             StunOb.SetActive(active);
+
         }
 
         public void BasicFunc(GameObject target,bool NoAtk)
         {
             if (!IsCard) return;
-
-            currentMana += 10;
+            MpHeal((info.IsItemHave(14)*8)+10);
             if (NoAtk)
             {
                 return;
@@ -356,6 +366,10 @@ namespace GameS
                 if (IsMagic)
                 {
                     //아이템낄경우
+                    if (info.IsItemHave(42)>0)
+                    {
+                        IsCri = true;
+                    }
                 }
                 
             }
@@ -392,16 +406,102 @@ namespace GameS
             
         }
 
-        public void UnitInvin(bool Invin)
+        public void UnitInvin(int Invin)
         {
             pv.RPC(nameof(RPC_UnitInvin),RpcTarget.All,Invin);
         }
 
         [PunRPC]
-        void RPC_UnitInvin(bool Invin)
+        void RPC_UnitInvin(int Invin)
         {
-            IsInvin = Invin;
+            IsInvin += Invin;
+        }
+
+        public void HpSize()
+        {
+            //float k = 5 * 400;
+            float f = 2000 / HpMax();
+            //float f = (2000 / currentHp) / (HpMax() / currentHp);
+            var a = HpLine.GetComponent<HorizontalLayoutGroup>();
+            // if (f>=5)
+            // {
+            // }
+
+                a.padding.left = (int)(f*-14);
+            a.gameObject.SetActive(false);
+            foreach (Transform child in HpLine.transform)
+            {
+                child.gameObject.transform.localScale = new Vector3(f, 1, 1);
+            }
+            a.gameObject.SetActive(true);
+        }
+
+        public void InvinSet(float time)
+        {
+            if (time <= 0) return;
+            
+            pv.RPC(nameof(RPC_InvinSet),RpcTarget.All,time);
+        }
+
+        [PunRPC]
+        void RPC_InvinSet(float time)
+        {
+            StartCoroutine(IInvinSet(time));
         }
         
+        IEnumerator IInvinSet(float time)
+        {
+            IsInvin++;
+            yield return YieldInstructionCache.WaitForSeconds(time);
+            IsInvin--;
+
+        }
+
+        public void HpHeal(float v)
+        {
+            if (v <= 0) return;
+            currentHp += v;
+        }
+
+        public void MpHeal(float v)
+        {
+            if (v <= 0) return;
+            currentMana += v;
+        }
+
+        public void ItemFuncAdd(int idx,bool timeb=false,float time=0f)
+        {
+            pv.RPC(nameof(RPC_ItemFuncAdd),RpcTarget.All,idx);
+        }
+
+        [PunRPC]
+        void RPC_ItemFuncAdd(int idx,bool timeb,float time)
+        {
+            if (timeb && time > 0)
+            {
+
+                StartCoroutine(IitemFuncAdd(idx, true, time));
+
+            }
+            else
+            {
+                
+            if(idx==19) IsItemFunc19++;
+            else if(idx==22) IsItemFunc22++;
+            else if(idx==24) IsItemFunc24++;
+            }
+        }
+
+        IEnumerator IitemFuncAdd(int idx, bool timeb, float time)
+        {
+            if(idx==19) IsItemFunc19++;
+            else if(idx==22) IsItemFunc22++;
+            else if(idx==24) IsItemFunc24++;
+            yield return YieldInstructionCache.WaitForSeconds(time);
+            if(idx==19) IsItemFunc19--;
+            else if(idx==22) IsItemFunc22--;
+            else if(idx==24) IsItemFunc24--;
+        }
+
     }
 }

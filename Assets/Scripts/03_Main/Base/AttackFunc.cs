@@ -46,6 +46,11 @@ namespace GameS
         public virtual void SkillFunc()
         {
             stat.currentMana = 0;
+            int have44 = stat.info.IsItemHave(44);
+            if (have44>0)
+            {
+                stat.MpHeal(have44*20);
+            }
         }
 
 

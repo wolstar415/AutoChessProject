@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 namespace GameS
 {
@@ -106,6 +107,7 @@ namespace GameS
             }
             ItemUI[0].SetActive(true);
 
+            
 
 
         }
@@ -129,6 +131,7 @@ namespace GameS
 
         public void startSetting()
         {
+            
             PlayerInfo.Inst.PlayerCard_NoFiled.Add(gameObject);
             show_fileTileob.GetComponent<MeshRenderer>().material.color = show_fileTileob.GetComponent<TileInfo>().colors[2];
             show_Tileob.GetComponent<MeshRenderer>().material.color = show_Tileob.GetComponent<TileInfo>().colors[2];
@@ -182,6 +185,7 @@ namespace GameS
         [PunRPC]
         void NetworkSetting(int PlayerIdx)
         {
+            stat.HpLine.SetActive(true);
             info = CsvManager.inst.characterInfo[Idx];
             Level = 1;
             Setting(Level);
@@ -272,6 +276,7 @@ namespace GameS
         [PunRPC]
         void RPC_CopyStart(int lv,int PlayerIdx)
         {
+            stat.HpLine.SetActive(true);
             stat.IsCopy = true;
             IsFiled = true;
             info = CsvManager.inst.characterInfo[Idx];
@@ -325,6 +330,7 @@ namespace GameS
             if (pv.IsMine)
             {
                 stat.currentHp = stat.HpMax();
+                stat.HpSize();
                 PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level-1).Remove(gameObject);
                 PlayerInfo.Inst.PlayerCardCntLv[Idx].Lv(Level).Add(gameObject);
                 if (Level == 2)
@@ -657,7 +663,7 @@ namespace GameS
         void ItemAddFunc(int idx)
         {
             if (!pv.IsMine) return;
-            if (stat.IsCard || stat.IsCopy) return;
+            if (!stat.IsCard || stat.IsCopy) return;
 
             switch (idx)
             {
@@ -675,7 +681,7 @@ namespace GameS
         void ItemRemoveFunc(int idx)
         {
             if (!pv.IsMine) return;
-            if (stat.IsCard || stat.IsCopy) return;
+            if (!stat.IsCard || stat.IsCopy) return;
             
             switch (idx)
             {
@@ -780,6 +786,7 @@ namespace GameS
 
         public int IsItemHave(int item)
         {
+            if (!stat.IsCard) return 0;
             int check = 0;
             for (int i = 0; i < 3; i++)
             {
@@ -825,6 +832,131 @@ namespace GameS
             if (!IsFiled) return;
 
             fsm.BattleStart();
+
+            
+
+
+
+            ItemFuncCheck();//아이템 액션
+            
+            
+            
+            
+        }
+
+        void ItemFuncCheck()
+        {
+            GameObject leftob = null;
+            GameObject rightob = null;
+            GameObject upob = null;
+            GameObject downob = null;
+            int have15 = IsItemHave(15);
+            int have28 = IsItemHave(28);
+            int have35 = IsItemHave(35);
+            int have46 = IsItemHave(46);
+            if (have15>0)
+            {
+                if(leftob==null) leftob=BattleTileLeft();
+                if(rightob==null) rightob=BattleTileRight();
+                
+                if (leftob!=null)
+                {
+                    if (leftob.TryGetComponent(out CardState cstat))
+                    {
+                        
+                            cstat.CoolPlus(0,0,15*have15,true);
+                        
+                    }
+                }
+                if (rightob!=null)
+                {
+                    if (rightob.TryGetComponent(out CardState cstat2))
+                    {
+                        
+                            cstat2.CoolPlus(0,0,15*have15,true);
+                        
+                    }
+                }
+                
+            }
+            if (have28>0)
+            {
+                if(leftob==null) leftob=BattleTileLeft();
+                if(rightob==null) rightob=BattleTileRight();
+                float sv = 75;
+                if (Level == 2) sv = 100;
+                else if (Level == 3) sv = 150;
+                
+                if (leftob!=null)
+                {
+                    if (leftob.TryGetComponent(out CardState cstat))
+                    {
+                        
+
+                            cstat.shiled += sv;
+                        
+                    }
+                }
+                if (rightob!=null)
+                {
+                    if (rightob.TryGetComponent(out CardState cstat2))
+                    {
+                        
+                            cstat2.shiled += sv;
+                        
+                    }
+                }
+                
+            }
+            if (have28>0)
+            {
+                if(leftob==null) leftob=BattleTileLeft();
+                if(rightob==null) rightob=BattleTileRight();
+                float sv = 75;
+                if (Level == 2) sv = 100;
+                else if (Level == 3) sv = 150;
+                
+                if (leftob!=null)
+                {
+                    if (leftob.TryGetComponent(out CardState cstat))
+                    {
+                        
+
+                            cstat.MagicPlus(0,0,50*have28,true);
+                        
+                    }
+                }
+                if (rightob!=null)
+                {
+                    if (rightob.TryGetComponent(out CardState cstat2))
+                    {
+                        
+                            cstat2.MagicPlus(0,0,50*have28,true);
+                        
+                    }
+                }
+                
+            }
+
+            if (have46>0)
+            {
+                for (int i = 0; i < have46; i++)
+                {
+                    if (Random.Range(0,100)<=50)
+                    {
+                        stat.MagicPlus(0, 0, 40, true);
+                        stat.AtkPlus(0, 0, 40, true);
+                    }
+                    else
+                    {
+                        stat.IsItemFunc46++;
+                    }
+                }
+            }
+            
+            //지크의전령있을때 좌우로 공속+15%
+
+
         }
 
         public void BattleEnd()
@@ -842,7 +974,7 @@ namespace GameS
             // gameObject.SetActive(true);
             // stat.IsDead = false;
             stat.DeadCheck(false);
-            stat.IsInvin = false;
+            stat.IsInvin = 0;
             IsFighting = false;
             fsm.Enemies.Clear();
 
@@ -886,6 +1018,106 @@ namespace GameS
             IsFiled = b;
         }
 
+        #region 타일오브젝트확인
+
+        
+
+
+        public GameObject BattleTileLeft()
+        {
+            if (MoveIdx == 0 || MoveIdx == 7 || MoveIdx == 14 || MoveIdx == 21) return null;
+
+            GameObject tile = PositionManager.inst.playerPositioninfo[PlayerInfo.Inst.PlayerIdx].FiledTile[MoveIdx - 1];
+            if (tile.TryGetComponent(out TileInfo info))
+            {
+                GameObject ob = info.tileGameob;
+                if (ob==null)
+                {
+                    return null;
+                }
+
+                if (PlayerInfo.Inst.PlayerCard_Filed.Contains(ob)==false)
+                {
+                    return null;
+                }
+
+                return ob;
+            }
+
+            return null;
+        }
+        
+        public GameObject BattleTileRight()
+        {
+            if (MoveIdx == 6 || MoveIdx == 13 || MoveIdx == 20 || MoveIdx == 27) return null;
+
+            GameObject tile = PositionManager.inst.playerPositioninfo[PlayerInfo.Inst.PlayerIdx].FiledTile[MoveIdx + 1];
+            if (tile.TryGetComponent(out TileInfo info))
+            {
+                GameObject ob = info.tileGameob;
+                if (ob==null)
+                {
+                    return null;
+                }
+
+                if (PlayerInfo.Inst.PlayerCard_Filed.Contains(ob)==false)
+                {
+                    return null;
+                }
+
+                return ob;
+            }
+
+            return null;
+        }
+        public GameObject BattleTileUp()
+        {
+            if (MoveIdx <= 6) return null;
+
+            GameObject tile = PositionManager.inst.playerPositioninfo[PlayerInfo.Inst.PlayerIdx].FiledTile[MoveIdx -7];
+            if (tile.TryGetComponent(out TileInfo info))
+            {
+                GameObject ob = info.tileGameob;
+                if (ob==null)
+                {
+                    return null;
+                }
+
+                if (PlayerInfo.Inst.PlayerCard_Filed.Contains(ob)==false)
+                {
+                    return null;
+                }
+
+                return ob;
+            }
+
+            return null;
+        }
+        public GameObject BattleTileDown()
+        {
+            if (MoveIdx >=21) return null;
+
+            GameObject tile = PositionManager.inst.playerPositioninfo[PlayerInfo.Inst.PlayerIdx].FiledTile[MoveIdx +7];
+            if (tile.TryGetComponent(out TileInfo info))
+            {
+                GameObject ob = info.tileGameob;
+                if (ob==null)
+                {
+                    return null;
+                }
+
+                if (PlayerInfo.Inst.PlayerCard_Filed.Contains(ob)==false)
+                {
+                    return null;
+                }
+
+                return ob;
+            }
+
+            return null;
+        }
+
+        #endregion
 
 
     }
