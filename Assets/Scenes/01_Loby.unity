@@ -9651,6 +9651,7 @@ MonoBehaviour:
   pv: {fileID: 1347451730}
   PlayerCnt: 0
   readySilder: {fileID: 560174760}
+  maxplayer: 8
   playerdata:
   - {fileID: 1733740426}
   - {fileID: 363211563}
@@ -13504,7 +13505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d62d2c22fc1a64448bd8a9fb2bbc6ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Idx: 0
+  Idx: 522
 --- !u!1 &1816739774
 GameObject:
   m_ObjectHideFlags: 0

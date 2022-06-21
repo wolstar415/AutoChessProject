@@ -31,6 +31,7 @@ namespace GameS
         public PhotonView pv;
         public int PlayerCnt;
         public Slider readySilder;
+        public int maxplayer=8;
 
         [Header("데이터부분")] public TextMeshProUGUI[] playerdata;
 
@@ -39,6 +40,16 @@ namespace GameS
             if (PhotonNetwork.IsMasterClient&&Input.GetKeyDown(KeyCode.Space))
             {
                 GameStart();
+            }
+            else if (PhotonNetwork.IsMasterClient&&Input.GetKeyDown(KeyCode.Keypad4))
+            {
+                maxplayer--;
+                Debug.Log($"현재 최대인원 : {maxplayer}");
+            }
+            else if (PhotonNetwork.IsMasterClient&&Input.GetKeyDown(KeyCode.Keypad6))
+            {
+                maxplayer++;
+                Debug.Log($"현재 최대인원 : {maxplayer}");
             }
         }
 
@@ -164,9 +175,9 @@ namespace GameS
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                if (PhotonNetwork.CurrentRoom.PlayerCount==8)
+                if (PhotonNetwork.CurrentRoom.PlayerCount==maxplayer)
                 {
-                    
+                    pv.RPC(nameof(RPC_PlayReady),RpcTarget.All);
                     return;
                 }
             }
@@ -191,7 +202,7 @@ namespace GameS
         void RPC_PlayOk()
         {
             PlayerCnt++;
-            if (PlayerCnt==8)
+            if (PlayerCnt>=maxplayer)
             {
                 GameStart();
             }
@@ -217,7 +228,7 @@ namespace GameS
             if (IsRoom)
             {
                 
-            pv.RPC(nameof(NoStart),RpcTarget.All);
+            pv.RPC(nameof(RPC_NoStart),RpcTarget.All);
             }
             
         }
@@ -226,7 +237,7 @@ namespace GameS
         {
             float curtime = 0;
             float cooltime = 60f;
-            while (curtime>=cooltime)
+            while (curtime<=cooltime)
             {
                 curtime += Time.deltaTime;
                 float f = curtime / cooltime;
