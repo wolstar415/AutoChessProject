@@ -237,6 +237,13 @@ MonoBehaviour:
   GameLanguage: 
   OriNickName: 
   NickName: 
+  CharIdx: 0
+  audioSource: {fileID: 963194229}
+  charIcons:
+  - {fileID: 21300000, guid: 1ebe9d3ac5ce74f3589c006da297bdc7, type: 3}
+  - {fileID: 21300000, guid: b76446236559e4a7ebfbdc6519fa9d07, type: 3}
+  - {fileID: 21300000, guid: eb22d376b7994415aac9d7a87ff27901, type: 3}
+  - {fileID: 21300000, guid: 7135d585f82ae408d8713917af908381, type: 3}
 --- !u!1 &651558370
 GameObject:
   m_ObjectHideFlags: 0
@@ -1266,6 +1273,10 @@ MonoBehaviour:
   Text_English: []
   Text_Japan: []
   Text_China: []
+  Text_fra: []
+  Text_Germany: []
+  Text_tur: []
+  Text_rus: []
   URL:
   - https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=0
   - https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/export?format=csv&gid=1372654608

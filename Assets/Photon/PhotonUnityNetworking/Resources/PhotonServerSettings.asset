@@ -130,6 +130,7 @@ MonoBehaviour:
   - RPC_AniStart
   - RPC_Jump
   - RPC_GoldSet
+  - ChangePlayerinfo
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
     public string OriNickName;
     public string NickName;
     public int CharIdx = 0;
-    
+    public AudioSource audioSource;
+    public Sprite[] charIcons;
 
     private void Awake()
     {
