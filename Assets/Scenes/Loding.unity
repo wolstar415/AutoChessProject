@@ -737,11 +737,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Icon: {fileID: 523196382}
-  icons:
-  - {fileID: 21300000, guid: 1ebe9d3ac5ce74f3589c006da297bdc7, type: 3}
-  - {fileID: 21300000, guid: b76446236559e4a7ebfbdc6519fa9d07, type: 3}
-  - {fileID: 21300000, guid: eb22d376b7994415aac9d7a87ff27901, type: 3}
-  - {fileID: 21300000, guid: 7135d585f82ae408d8713917af908381, type: 3}
   nickname: {fileID: 16080863}
 --- !u!114 &325567695
 MonoBehaviour:
@@ -791,6 +786,7 @@ GameObject:
   m_Component:
   - component: {fileID: 431672585}
   - component: {fileID: 431672586}
+  - component: {fileID: 431672587}
   m_Layer: 0
   m_Name: LoadingManager
   m_TagString: Untagged
@@ -834,7 +830,29 @@ MonoBehaviour:
   - {fileID: 2119005636}
   - {fileID: 1232608541}
   - {fileID: 1295121318}
-  pv: {fileID: 0}
+  pv: {fileID: 431672587}
+--- !u!114 &431672587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431672584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &523196380
 GameObject:
   m_ObjectHideFlags: 0
@@ -965,11 +983,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Icon: {fileID: 2050054223}
-  icons:
-  - {fileID: 21300000, guid: 1ebe9d3ac5ce74f3589c006da297bdc7, type: 3}
-  - {fileID: 21300000, guid: b76446236559e4a7ebfbdc6519fa9d07, type: 3}
-  - {fileID: 21300000, guid: eb22d376b7994415aac9d7a87ff27901, type: 3}
-  - {fileID: 21300000, guid: 7135d585f82ae408d8713917af908381, type: 3}
   nickname: {fileID: 743305352}
 --- !u!114 &603597821
 MonoBehaviour:
@@ -1368,11 +1381,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Icon: {fileID: 1302496785}
-  icons:
-  - {fileID: 21300000, guid: 1ebe9d3ac5ce74f3589c006da297bdc7, type: 3}
-  - {fileID: 21300000, guid: b76446236559e4a7ebfbdc6519fa9d07, type: 3}
-  - {fileID: 21300000, guid: eb22d376b7994415aac9d7a87ff27901, type: 3}
-  - {fileID: 21300000, guid: 7135d585f82ae408d8713917af908381, type: 3}
   nickname: {fileID: 2010398679}
 --- !u!114 &960196873
 MonoBehaviour:
@@ -1896,11 +1904,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Icon: {fileID: 668322864}
-  icons:
-  - {fileID: 21300000, guid: 1ebe9d3ac5ce74f3589c006da297bdc7, type: 3}
-  - {fileID: 21300000, guid: b76446236559e4a7ebfbdc6519fa9d07, type: 3}
-  - {fileID: 21300000, guid: eb22d376b7994415aac9d7a87ff27901, type: 3}
-  - {fileID: 21300000, guid: 7135d585f82ae408d8713917af908381, type: 3}
   nickname: {fileID: 1292249990}
 --- !u!114 &1232608542
 MonoBehaviour:
@@ -2032,11 +2035,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Icon: {fileID: 1855808414}
-  icons:
-  - {fileID: 21300000, guid: 1ebe9d3ac5ce74f3589c006da297bdc7, type: 3}
-  - {fileID: 21300000, guid: b76446236559e4a7ebfbdc6519fa9d07, type: 3}
-  - {fileID: 21300000, guid: eb22d376b7994415aac9d7a87ff27901, type: 3}
-  - {fileID: 21300000, guid: 7135d585f82ae408d8713917af908381, type: 3}
   nickname: {fileID: 1163943821}
 --- !u!1 &1292249988
 GameObject:
@@ -2227,11 +2225,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Icon: {fileID: 1152732875}
-  icons:
-  - {fileID: 21300000, guid: 1ebe9d3ac5ce74f3589c006da297bdc7, type: 3}
-  - {fileID: 21300000, guid: b76446236559e4a7ebfbdc6519fa9d07, type: 3}
-  - {fileID: 21300000, guid: eb22d376b7994415aac9d7a87ff27901, type: 3}
-  - {fileID: 21300000, guid: 7135d585f82ae408d8713917af908381, type: 3}
   nickname: {fileID: 1942171471}
 --- !u!114 &1295121319
 MonoBehaviour:
@@ -2578,11 +2571,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Icon: {fileID: 44158131}
-  icons:
-  - {fileID: 21300000, guid: 1ebe9d3ac5ce74f3589c006da297bdc7, type: 3}
-  - {fileID: 21300000, guid: b76446236559e4a7ebfbdc6519fa9d07, type: 3}
-  - {fileID: 21300000, guid: eb22d376b7994415aac9d7a87ff27901, type: 3}
-  - {fileID: 21300000, guid: 7135d585f82ae408d8713917af908381, type: 3}
   nickname: {fileID: 1101778372}
 --- !u!114 &1914838939
 MonoBehaviour:
@@ -3234,11 +3222,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Icon: {fileID: 2012242864}
-  icons:
-  - {fileID: 21300000, guid: 1ebe9d3ac5ce74f3589c006da297bdc7, type: 3}
-  - {fileID: 21300000, guid: b76446236559e4a7ebfbdc6519fa9d07, type: 3}
-  - {fileID: 21300000, guid: eb22d376b7994415aac9d7a87ff27901, type: 3}
-  - {fileID: 21300000, guid: 7135d585f82ae408d8713917af908381, type: 3}
   nickname: {fileID: 190198605}
 --- !u!114 &2119005637
 MonoBehaviour:

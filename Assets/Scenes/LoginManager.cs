@@ -5,6 +5,7 @@ using Firebase.Auth;
 using UnityEngine.UI;
 using TMPro;
 using Firebase;
+using GameS;
 using Photon.Pun;
 using UnityEngine.AddressableAssets;
 using RobinBird.FirebaseTools.Storage.Addressables;
@@ -40,6 +41,7 @@ public class LoginManager : MonoBehaviour
     [SerializeField] private GameObject waitob;
     private Coroutine corcheck1;
     public AssetReferenceT<GameObject> developOb;
+    public LobyUiManager loby;
     private  void Start()
     {
        // FirebaseStorage storageInstance = FirebaseStorage.DefaultInstance;
@@ -92,7 +94,7 @@ public class LoginManager : MonoBehaviour
         string[] s = GameManager.inst.OriNickName.Split('@');
         GameManager.inst.NickName = s[0];
         LobyOb.SetActive(false);
-        
+        DataManager.inst.StartFunc();
         yield return YieldInstructionCache.WaitForSeconds(1);
         PathBtn();
         //PathOb.SetActive(true);
@@ -112,10 +114,9 @@ public class LoginManager : MonoBehaviour
          {
              if (!x.IsCanceled && !x.IsFaulted)
              {
-Debug.Log(IdField.text);
-             Debug.Log("성공");
                  LobyOb.SetActive(true);
                  CreateOb.SetActive(false);
+                 
              }
              else
              {
@@ -135,11 +136,11 @@ Debug.Log(IdField.text);
                 if (SizeHandle.Result>0)
                 {
                     waitob.SetActive(true);
-                    
+                    PathOb.SetActive(true);
                     handle = Addressables.DownloadDependenciesAsync("GoGo", true);
                     corcheck1=StartCoroutine(IPathText());
                     handle.Completed += (AsyncOperationHandle Obj) => {
-            
+                        PathOb.SetActive(false);
                         StopCoroutine(corcheck1);
                         handle = Obj;
 
@@ -178,10 +179,11 @@ Debug.Log(IdField.text);
             {
                     
                 Instantiate(ad.Result, canvasParent);
+                loby.RankingSet();
             }
         };
             
-        Addressables.Release(developOb);
+        //Addressables.Release(developOb);
     }
     IEnumerator IPathText()
     {

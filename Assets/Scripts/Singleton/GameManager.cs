@@ -8,10 +8,22 @@ public class GameManager : MonoBehaviour
     public string GameLanguage;
     public static GameManager inst;
     public string OriNickName;
-    public string NickName;
     public int CharIdx = 0;
     public AudioSource audioSource;
     public Sprite[] charIcons;
+    
+    [Header("플레이어 정보")]
+    public string NickName;
+
+    public int Victory1;
+    public int Victory2;
+    public int Victory3;
+    public int Victory4;
+    public int Victory5;
+    public int Victory6;
+    public int Victory7;
+    public int Victory8;
+    public int Score;
 
     private void Awake()
     {

@@ -23,7 +23,7 @@ namespace GameS
                 }
             }
 
-            if (pv.IsMine)
+            if (PhotonNetwork.IsMasterClient)
             {
                 StartCoroutine(LoadingFunc());
             }
@@ -36,6 +36,7 @@ namespace GameS
             
             while (!op.isDone)
             {
+                
                 yield return null;
                 if (op.progress < 0.9f)
                 {
@@ -45,7 +46,7 @@ namespace GameS
                 {
 
                     yield return YieldInstructionCache.WaitForSeconds(1);
-                    //op.allowSceneActivation = true;
+                    op.allowSceneActivation = true;
                     PhotonNetwork.LoadLevel("03_Main");
                         yield break;
                     

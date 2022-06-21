@@ -6,11 +6,18 @@ using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Random = UnityEngine.Random;
 
 namespace GameS
 {
     public class LobyUiManager : MonoBehaviourPunCallbacks
     {
+        public static LobyUiManager inst;
+
+        private void Awake()
+        {
+            inst = this;
+        }
 
         public List<langTextinfo> texts;
         public Slider musicSldier;
@@ -18,10 +25,14 @@ namespace GameS
         public TextMeshProUGUI playText;
         public Image CharImage;
         public GameObject ReadyOb;
+        public GameObject ReadyWait;
         public GameObject ReadyLoding;
         public bool IsRoom = false;
         public PhotonView pv;
         public int PlayerCnt;
+        public Slider readySilder;
+
+        [Header("데이터부분")] public TextMeshProUGUI[] playerdata;
 
         private void Update()
         {
@@ -51,9 +62,13 @@ namespace GameS
 
         public void ExitBtn()
         {
+            if (IsRoom)
+            {
+                
+            PhotonNetwork.LeaveRoom();
             IsRoom = false;
             StopAllCoroutines();
-            PhotonNetwork.LeaveRoom();
+            }
         }
 
         public void MusicSlider()
@@ -114,7 +129,9 @@ namespace GameS
 
         public void PlayBtn()
         {
-            ReadyOb.SetActive(true);
+            if (IsRoom) return;
+            
+            ReadyLoding.SetActive(true);
             PhotonNetwork.JoinRandomRoom();
         }
 
@@ -122,20 +139,101 @@ namespace GameS
         {
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers =8;
-            PhotonNetwork.JoinOrCreateRoom(PhotonNetwork.NickName, roomOptions,null);
+            PhotonNetwork.JoinOrCreateRoom(PhotonNetwork.NickName+Random.Range(0,1000000), roomOptions,null);
+        }
+
+        public override void OnCreateRoomFailed(short returnCode, string message)
+        {
+            RoomOptions roomOptions = new RoomOptions();
+            roomOptions.MaxPlayers =8;
+            PhotonNetwork.JoinOrCreateRoom(PhotonNetwork.NickName+Random.Range(0,1000000), roomOptions,null);
+
         }
 
         public override void OnJoinedRoom()
         {
-            if (!IsRoom)
-            {
-                
+
             IsRoom = true;
-            ReadyOb.SetActive(true);
+            
             ReadyLoding.SetActive(false);
             StartCoroutine(timefunc());
+
+        }
+
+        public override void OnPlayerEnteredRoom(Player newPlayer)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                if (PhotonNetwork.CurrentRoom.PlayerCount==8)
+                {
+                    
+                    return;
+                }
             }
-            Debug.Log("버그확인");
+        }
+
+        [PunRPC]
+        void RPC_PlayReady()
+        {
+            StopAllCoroutines();
+            ReadyOb.SetActive(true);
+            StartCoroutine(ReadyTime());
+        }
+
+        public void PlayOk()
+        {
+            StopAllCoroutines();
+            ReadyOb.SetActive(false);
+            ReadyWait.SetActive(true);
+            pv.RPC(nameof(RPC_PlayOk),RpcTarget.MasterClient);
+        }
+        [PunRPC]
+        void RPC_PlayOk()
+        {
+            PlayerCnt++;
+            if (PlayerCnt==8)
+            {
+                GameStart();
+            }
+        }
+
+        [PunRPC]
+        void RPC_NoStart()
+        {
+            if (IsRoom)
+            {
+                
+            StopAllCoroutines();
+            PhotonNetwork.LeaveRoom();
+            playText.text = CsvManager.inst.GameText(523);
+            IsRoom = false;
+            ReadyOb.SetActive(false);
+            ReadyWait.SetActive(false);
+            }
+        }
+
+        public void NoStart()
+        {
+            if (IsRoom)
+            {
+                
+            pv.RPC(nameof(NoStart),RpcTarget.All);
+            }
+            
+        }
+
+        IEnumerator ReadyTime()
+        {
+            float curtime = 0;
+            float cooltime = 60f;
+            while (curtime>=cooltime)
+            {
+                curtime += Time.deltaTime;
+                float f = curtime / cooltime;
+                readySilder.value = f;
+                yield return null;
+            }
+            NoStart();
         }
 
         public override void OnCreatedRoom()
@@ -159,6 +257,26 @@ namespace GameS
                 playText.text = min.ToString() + ":" + second.ToString("00");
                 yield return YieldInstructionCache.WaitForSeconds(1);
             }
+        }
+
+
+        public void RankingSet()
+        {
+
+            playerdata[0].text = GameManager.inst.NickName;
+            playerdata[1].text = GameManager.inst.Victory1.ToString();
+            playerdata[2].text = GameManager.inst.Victory2.ToString();
+            playerdata[3].text = GameManager.inst.Victory3.ToString();
+            playerdata[4].text = GameManager.inst.Victory4.ToString();
+            playerdata[5].text = GameManager.inst.Victory5.ToString();
+            playerdata[6].text = GameManager.inst.Victory6.ToString();
+            playerdata[7].text = GameManager.inst.Victory7.ToString();
+            playerdata[8].text = GameManager.inst.Victory8.ToString();
+            playerdata[9].text = GameManager.inst.Score.ToString();
+            DataManager.inst.Ranking();
+
+
+
         }
 
     }

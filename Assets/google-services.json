@@ -1,10 +1,10 @@
 {
-    "project_info": {
-        "project_number": "867301402469",
-        "project_id": "unity-autochess",
-        "firebase_url": "https://unity-autochess-default-rtdb.firebaseio.com/",
-        "storage_bucket": "unity-autochess.appspot.com"
-    },
+  "project_info": {
+    "project_number": "867301402469",
+    "firebase_url": "https://unity-autochess-default-rtdb.firebaseio.com",
+    "project_id": "unity-autochess",
+    "storage_bucket": "unity-autochess.appspot.com"
+  },
   "client": [
     {
       "client_info": {
