@@ -64,7 +64,7 @@ namespace GameS
                     card_stat.BasicFunc(target,NoAtk);
                     if (NoAtk)
                     {
-                        Debug.Log("회피중");
+//                        Debug.Log("회피중");
                         string s = CsvManager.inst.GameText(455);
                         NetworkManager.inst.TextUi(s,target.transform.position);
                         return;

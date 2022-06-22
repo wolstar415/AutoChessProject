@@ -39,7 +39,7 @@ namespace GameS
         public static ClickManager inst;
         public LayerMask laymaskTile;
         public LayerMask laymaskCard;
-        [SerializeField] private GameObject ClickCard;
+        public GameObject ClickCard;
         [SerializeField] private Vector3 MousePos;
         public PlayerClickState clickstate;
         public PlayerClickState2 clickstate2;
@@ -53,7 +53,7 @@ namespace GameS
         public GameObject Charinfoui;
         public GameObject ItemDropCard;
         public bool SellCheck = false;
-
+        List<RaycastResult> results = new List<RaycastResult>();
         private void Awake()
         {
             inst = this;
@@ -98,7 +98,7 @@ namespace GameS
         {
             PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
             eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            List<RaycastResult> results = new List<RaycastResult>();
+            results.Clear();
             EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
             return results.Count > 0;
         }
@@ -254,30 +254,66 @@ namespace GameS
 
                 clickstate = PlayerClickState.None;
                 clickstate2 = PlayerClickState2.None;
-                if (TileOb != null)
-                {
-                    if (TileOb.TryGetComponent(out TileInfo info))
+                Vector3 mpos = Input.mousePosition;
+                Ray cast = Camera.main.ScreenPointToRay(mpos);
+                RaycastHit hit;
+
+                bool b = false;
+                    if (Physics.Raycast(cast, out hit, 100, 1 << LayerMask.NameToLayer("Tile")))
                     {
-                        info.SetColor();
-                        if (info.tileGameob == null)
-                        {
-                            CharacterTileMove(ClickCard, TileOb);
-                        }
-                        else
-                        {
-                            CharacterTileChange(ClickCard, info.tileGameob);
-                        }
+                        //ClickCardFunc(hit.collider.gameObject);
+                        TileOb = hit.collider.gameObject;
+                             if (TileOb.TryGetComponent(out TileInfo info))
+                             {
+                                 info.SetColor();
+                                 if (info.tileGameob == null)
+                                 {
+                                     CharacterTileMove(ClickCard, TileOb);
+                                 }
+                                 else
+                                 {
+                                     CharacterTileChange(ClickCard, info.tileGameob);
+                                 }
+
+                                 b = true;
+                             }
+                        //return;
                     }
-                }
-                else
-                {
-                    CharacterTileMoveReset(ClickCard);
-                }
+
+                    if (!b) CharacterTileMoveReset(ClickCard);
+
+                
+                // if (TileOb != null)
+                // {
+                //     if (TileOb.TryGetComponent(out TileInfo info))
+                //     {
+                //         info.SetColor();
+                //         if (info.tileGameob == null)
+                //         {
+                //             CharacterTileMove(ClickCard, TileOb);
+                //         }
+                //         else
+                //         {
+                //             CharacterTileChange(ClickCard, info.tileGameob);
+                //         }
+                //     }
+                // }
+                // else
+                // {
+                //     CharacterTileMoveReset(ClickCard);
+                // }
 
 
 
             }
 
+            resetfunc();
+
+
+        }
+
+        public void resetfunc()
+        {
             MousePos = Vector3.zero;
             PlayerInfo.Inst.PlayerTileOb.SetActive(false);
             PlayerInfo.Inst.FiledTileOb.SetActive(false);

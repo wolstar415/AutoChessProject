@@ -135,6 +135,7 @@ MonoBehaviour:
   - RPC_PlayOk
   - RPC_PlayReady
   - RPC_NoStart
+  - RPC_iconSet
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
