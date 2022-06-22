@@ -299,7 +299,7 @@ namespace GameS
         public void RangeSet()
         {
             float f = Range();
-            Mathf.Clamp(f, 0, 10);
+            f=Mathf.Clamp(f, 0, 10);
             collider.radius =f;
         }
 

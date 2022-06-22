@@ -176,6 +176,9 @@ namespace GameS
 
             HpText.text = Hp.ToString("F0") + " / " + HpMax.ToString("F0");
             MpText.text = Mana.ToString("F0") + " / " + ManaMax.ToString("F0");
+            
+            At.text = info.stat.Atk_Damage().ToString("F0");
+            Atspeed.text = info.stat.Atk_Cool().ToString("F1");
 
         }
 

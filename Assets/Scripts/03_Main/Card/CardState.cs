@@ -67,27 +67,27 @@ namespace GameS
         public override float HpMax()//최대체력
         {
             float hp=Char_Hp+Item_Hp+Buff_Hp;
-            Mathf.Clamp(hp, 0, 99999999);
+            hp=Mathf.Clamp(hp, 0, 99999999);
             return hp;
         }
         public override float Mana()//마나
         {
             
             float mp=Char_Mana+Item_Mana+Buff_Mana;
-            Mathf.Clamp(mp, 0, ManaMax());
+            mp=Mathf.Clamp(mp, 0, ManaMax());
             return mp;
         }
         public override float ManaMax()//최대마나
         {
             float mp=Char_ManaMax+Item_ManaMax+Buff_ManaMax;
-            Mathf.Clamp(mp, 0, 9999999);
+            mp=Mathf.Clamp(mp, 0, 9999999);
             return mp;
         }
         
         public override float NoAttack()//회피
         {
             float v = Char_NoAttack + Item_NoAttack + Buff_NoAttack;
-            Mathf.Clamp(v, 0f, 100);
+            v=Mathf.Clamp(v, 0f, 100);
             return v;
         }
         public override float Range()//사정거리
@@ -97,7 +97,7 @@ namespace GameS
             {
                 v += (info.IsItemHave(18) * 1.8f);
             }
-            Mathf.Clamp(v, 0.1f, 11f);
+            v=Mathf.Clamp(v, 0.1f, 11f);
             return v;
         }
         public override float Atk_Cool()//공속
@@ -106,7 +106,7 @@ namespace GameS
             float v2=Item_Atk_Cool+Buff_Atk_Cool;
             if (IsItemFunc29 > 0) v2 -= 30f;
             v = v - (v * (v2 * 0.01f));
-            Mathf.Clamp(v, 0.1f, 5f);
+            v=Mathf.Clamp(v, 0.2f, 5f);
            
             return v;
         }
@@ -139,7 +139,7 @@ namespace GameS
                     v += 50;
                 }
             }
-            Mathf.Clamp(v, 0, 9999999);
+            v=Mathf.Clamp(v, 0, 9999999);
             return v;
         }
         public override float Magic_Damage()//마법데미지
@@ -154,7 +154,7 @@ namespace GameS
             {
                 v += IsItemFunc19 * 2*info.IsItemHave(19);
             }
-            Mathf.Clamp(v, 0, 9999999);
+            v=Mathf.Clamp(v, 0, 9999999);
             return v;
         }
         public override float Defence()//방어
@@ -164,7 +164,7 @@ namespace GameS
             {
                 v *= 0.5f;
             }
-            Mathf.Clamp(v, 0, 9999999);
+            v=Mathf.Clamp(v, 0, 9999999);
             return v;
         }
         public override float Defence_Magic()//마법방어
@@ -174,26 +174,26 @@ namespace GameS
             {
                 v *= 0.5f;
             }
-            Mathf.Clamp(v, 0, 9999999);
+            v=Mathf.Clamp(v, 0, 9999999);
             return v;
         }
         public override float Speed()//이동속도
         {
             float v = Char_Speed + Item_Speed + Buff_Speed;
-            Mathf.Clamp(v, 10, 522);
+            v=Mathf.Clamp(v, 10, 522);
             return v;
         }
 
         public override float CriPer()//크리
         {
             float v = Char_CriPer + Item_CriPer + Buff_CriPer;
-            Mathf.Clamp(v, 0, 100);
+            v=Mathf.Clamp(v, 0, 100);
             return v;
         }
         public override float CriDmg()//크리데미지
         {
             float v = Char_CriDmg + Item_CriDmg + Buff_CriDmg;
-            Mathf.Clamp(v, 0, 9999999);
+            v=Mathf.Clamp(v, 0, 9999999);
             return v;
         }
 

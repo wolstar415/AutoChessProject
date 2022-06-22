@@ -194,7 +194,7 @@ namespace GameS
                     target_stat.ItemFuncAdd(26, true, 2.5f,false);
                 }
                 getmana = getmana+(damage * 0.07f);
-                Mathf.Clamp(getmana, 0, 50);
+                getmana=Mathf.Clamp(getmana, 0, 50);
                 target_stat.MpHeal(getmana);
             
             
