@@ -5,6 +5,7 @@ using UnityEngine;
 public class UIHpbarMove : MonoBehaviour
 {
     Transform cam;
+
     // Start is called before the first frame update
     void Start()
     {

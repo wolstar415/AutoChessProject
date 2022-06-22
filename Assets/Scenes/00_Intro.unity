@@ -239,10 +239,16 @@ MonoBehaviour:
   CharIdx: 0
   audioSource: {fileID: 963194229}
   charIcons:
-  - {fileID: 21300000, guid: 1ebe9d3ac5ce74f3589c006da297bdc7, type: 3}
-  - {fileID: 21300000, guid: b76446236559e4a7ebfbdc6519fa9d07, type: 3}
-  - {fileID: 21300000, guid: eb22d376b7994415aac9d7a87ff27901, type: 3}
-  - {fileID: 21300000, guid: 7135d585f82ae408d8713917af908381, type: 3}
+  - {fileID: 21300000, guid: d58f16b18d8c2cd4b924f1135a11b08b, type: 3}
+  - {fileID: 21300000, guid: cc2b2e88f4203ae45af0499f47a9e4ba, type: 3}
+  - {fileID: 21300000, guid: 4a4f9e8c19706134ab16f643c42b95b1, type: 3}
+  - {fileID: 21300000, guid: a9ebe457c056832439969d1c1aa4ead5, type: 3}
+  - {fileID: 21300000, guid: 953c046b4cc2e2447a3754301259c455, type: 3}
+  - {fileID: 21300000, guid: 2ebf26e295b1c1c40afea904bb9456e9, type: 3}
+  - {fileID: 21300000, guid: ed5e24fd5bcf4e44eb08536a95c8b1d5, type: 3}
+  - {fileID: 21300000, guid: b4aed0e13cc9c234db54cfda07c286d1, type: 3}
+  - {fileID: 21300000, guid: be86e763e820b1f48bf8170585ec7729, type: 3}
+  - {fileID: 21300000, guid: b2ab31eee372ae843a5faa036588d6af, type: 3}
   NickName: 
   Victory1: 0
   Victory2: 0

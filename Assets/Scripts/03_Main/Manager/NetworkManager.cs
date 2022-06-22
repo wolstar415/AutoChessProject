@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 [Serializable]
@@ -36,6 +37,7 @@ public class playerinfo
 
         public PhotonView pv;
         public Color[] Dagamecolors;
+        public Image[] Playericons;
 
         private void Awake()
         {
@@ -53,6 +55,7 @@ public class playerinfo
                 if (PhotonNetwork.PlayerList[i]==PhotonNetwork.LocalPlayer)
                 {
                     PlayerInfo.Inst.PlayerIdx = i;
+                    pv.RPC(nameof(RPC_iconSet), RpcTarget.All, i, GameManager.inst.CharIdx);
                 }
 
             }
@@ -70,6 +73,12 @@ public class playerinfo
         public void RoundFuncGo(int idx)
         {
             pv.RPC(nameof(NetworkRoundFuncGo),RpcTarget.All,idx);
+        }
+
+        [PunRPC]
+        void RPC_iconSet(int idx,int icon)
+        {
+            Playericons[idx].sprite = GameManager.inst.charIcons[icon];
         }
 
         [PunRPC]
@@ -138,7 +147,7 @@ public class playerinfo
                 players[i].Life = 100;
                 players[i].Idx = i;
                 MasterInfo.inst.lifeCheck.Add(new LifeRank(i,100));
-                pv.RPC(nameof(PlayerSetting),RpcTarget.All,i,players[i].OriNickName);
+                pv.RPC(nameof(PlayerSetting),RpcTarget.All,i,players[i].NickName);
                 //PhotonNetwork.PlayerList[i].CustomProperties.Add("PlayerIdx",i);
 
             }
@@ -388,6 +397,15 @@ public class playerinfo
         [PunRPC]
         public void RPC_BattleFoodCheck()
         {
+            
+            if (ClickManager.inst.ClickCard!=null&&ClickManager.inst.clickstate==PlayerClickState.Card)
+            {
+                ClickManager.inst.ClickCard.GetComponent<Card_Info>().MoveReset();
+                ClickManager.inst.resetfunc();
+            }
+            
+            
+            
             int c = PlayerInfo.Inst.foodMax - PlayerInfo.Inst.food;
             for (int i = 0; i < c; i++)
             {

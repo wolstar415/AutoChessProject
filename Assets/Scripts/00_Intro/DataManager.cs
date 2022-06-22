@@ -50,6 +50,7 @@ namespace GameS
                             databaseReference.Child("users").Child(GameManager.inst.NickName).Child("Victory7").SetValueAsync(0);
                             databaseReference.Child("users").Child(GameManager.inst.NickName).Child("Victory8").SetValueAsync(0);
                             databaseReference.Child("users").Child(GameManager.inst.NickName).Child("Score").SetValueAsync(1000);
+                            databaseReference.Child("users").Child(GameManager.inst.NickName).Child("CharIdx").SetValueAsync(0);
                         }
                         else
                         {
@@ -72,6 +73,8 @@ namespace GameS
                                 .Child("Victory7").Value.ToString());
                             GameManager.inst.Victory8 = int.Parse(snapshot
                                 .Child("Victory8").Value.ToString());
+                            GameManager.inst.CharIdx = int.Parse(snapshot
+                                .Child("CharIdx").Value.ToString());
                             
                             
 
@@ -125,8 +128,8 @@ namespace GameS
 
         public void SaveData(string name, int value)
         {
-            databaseReference.Child("users").Child(GameManager.inst.OriNickName).Child("name").SetValueAsync(value);
-
+            databaseReference.Child("users").Child(GameManager.inst.NickName).Child(name).SetValueAsync(value);
+            
         }
 
 

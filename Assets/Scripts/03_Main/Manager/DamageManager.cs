@@ -64,7 +64,7 @@ namespace GameS
                     card_stat.BasicFunc(target,NoAtk);
                     if (NoAtk)
                     {
-                        Debug.Log("회피중");
+//                        Debug.Log("회피중");
                         string s = CsvManager.inst.GameText(455);
                         NetworkManager.inst.TextUi(s,target.transform.position);
                         return;
@@ -194,7 +194,7 @@ namespace GameS
                     target_stat.ItemFuncAdd(26, true, 2.5f,false);
                 }
                 getmana = getmana+(damage * 0.07f);
-                Mathf.Clamp(getmana, 0, 50);
+                getmana=Mathf.Clamp(getmana, 0, 50);
                 target_stat.MpHeal(getmana);
             
             
