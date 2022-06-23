@@ -210,6 +210,45 @@ namespace GameS
             {
 
                 ClickCard.transform.position = objPosition;
+                
+                Vector3 mpos = Input.mousePosition;
+                Ray cast = Camera.main.ScreenPointToRay(mpos);
+                RaycastHit hit;
+
+                bool b = false;
+                if (Physics.Raycast(cast, out hit, 100, 1 << LayerMask.NameToLayer("Tile")))
+                {
+                    if (TileOb!=null)
+                    {
+                        if (TileOb.TryGetComponent(out TileInfo tileinfo))
+                        {
+                            tileinfo.SetColor(true);
+                        }
+                    }
+                    TileOb = hit.collider.gameObject;
+                    if (TileOb.TryGetComponent(out TileInfo tileinfo2))
+                    {
+                        tileinfo2.SetColor(false);
+                    }
+
+                    b = true;
+                    //return;
+                }
+
+                if (b==false)
+                {
+                    if (TileOb!=null)
+                    {
+                        if (TileOb.TryGetComponent(out TileInfo tileinfo))
+                        {
+                            tileinfo.SetColor(true);
+                        }
+
+                        TileOb = null;
+                    }
+                }
+                
+                
             }
 
 
@@ -217,6 +256,15 @@ namespace GameS
 
         void UpCardFunc()
         {
+            if (TileOb!=null)
+            {
+                if (TileOb.TryGetComponent(out TileInfo tileinfo))
+                {
+                    tileinfo.SetColor(true);
+                }
+
+                TileOb = null;
+            }
 
 
             EnemyClick = false;

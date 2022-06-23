@@ -11,8 +11,15 @@ namespace GameS
         public override void BasicAttack(GameObject target)
         {
             base.BasicAttack(target);
-            fsm.NoConTime(stat.AtkAniTime(),false);
+            StartCoroutine(IAttackFunc());
+        }
+
+        IEnumerator IAttackFunc()
+        {
+            //float f = stat.AtkAniTime();
+            //fsm.NoConTime(stat.Atk_Cool(),false);
             fsm.CoolStart();
+            yield return YieldInstructionCache.WaitForSeconds(0.1f);
             AttackFunc();
         }
 

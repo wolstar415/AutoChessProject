@@ -15,30 +15,32 @@ namespace GameS
         public bool IsFiled;
         
 
-        private void OnMouseEnter()
+        // private void OnMouseEnter()
+        // {
+        //
+        //     if (ClickManager.inst.clickstate2 == PlayerClickState2.cardDraging)
+        //     {
+        //         transform.GetComponent<MeshRenderer>().material.color = colors[1];
+        //         ClickManager.inst.TileOb = gameObject;
+        //     }
+        //
+        // }
+        //
+        // private void OnMouseExit()
+        // {
+        //
+        //     if (ClickManager.inst.clickstate2 == PlayerClickState2.cardDraging)
+        //     {
+        //         transform.GetComponent<MeshRenderer>().material.color = colors[0];
+        //         ClickManager.inst.TileOb = null;
+        //     }
+        // }
+
+        public void SetColor(bool b=true)
         {
-
-            if (ClickManager.inst.clickstate2 == PlayerClickState2.cardDraging)
-            {
-                transform.GetComponent<MeshRenderer>().material.color = colors[1];
-                ClickManager.inst.TileOb = gameObject;
-            }
-
-        }
-
-        private void OnMouseExit()
-        {
-
-            if (ClickManager.inst.clickstate2 == PlayerClickState2.cardDraging)
-            {
-                transform.GetComponent<MeshRenderer>().material.color = colors[0];
-                ClickManager.inst.TileOb = null;
-            }
-        }
-
-        public void SetColor()
-        {
-            transform.GetComponent<MeshRenderer>().material.color = colors[0];
+            if (b)transform.GetComponent<MeshRenderer>().material.color = colors[0];
+            else transform.GetComponent<MeshRenderer>().material.color = colors[1];
+            
         }
 
         public void AddTile(GameObject ob)

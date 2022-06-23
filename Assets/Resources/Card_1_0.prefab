@@ -1692,6 +1692,7 @@ MonoBehaviour:
   TileOb: {fileID: 0}
   IsDead: 0
   GoldCost: 0
+  IsAni: 0
   info:
     Idx: 0
     Tier: 0
@@ -1746,7 +1747,7 @@ MonoBehaviour:
   Level: 0
   Tier: 0
   Food: 0
-  IsRangeAttack: 0
+  IsRangeAttack: 1
   Item: ffffffffffffffffffffffff
   stat: {fileID: 5533469372153832835}
   Character_Job1: 0
@@ -1800,11 +1801,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c01d28e37a36d4694f60f9a6cc2492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTime: 0.15
   pv: {fileID: 794620965866707051}
   collider: {fileID: 8509926675263366635}
   nav: {fileID: 794620965866707049}
   ani: {fileID: 6922979768061096268}
+  gani: {fileID: 0}
   IsCard: 1
   monster: 0
   IsUnit: 0
@@ -4069,6 +4070,10 @@ PrefabInstance:
     - target: {fileID: 1762018173025169313, guid: 5811f4236f7f88b41b2a1da538566706, type: 3}
       propertyPath: m_CullingMode
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1762018173025169313, guid: 5811f4236f7f88b41b2a1da538566706, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1762018173025169342, guid: 5811f4236f7f88b41b2a1da538566706, type: 3}
       propertyPath: m_RootOrder

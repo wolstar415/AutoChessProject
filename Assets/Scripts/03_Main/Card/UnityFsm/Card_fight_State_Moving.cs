@@ -45,7 +45,14 @@ namespace GameS
         {
             IsMoving = true;
             Fight.nav.isStopped = false;
-            Fight.info.stat.ani.SetBool(Run,true);
+            if (Fight.info.IsAni)
+            {
+                Fight.info.stat.gani.Play("Run");
+            }
+            else
+            {
+                Fight.info.stat.ani.SetBool(Run,true);
+            }
         }
 
         public override void Update()
@@ -89,7 +96,14 @@ namespace GameS
 
         public override void Finally()
         {
-            Fight.info.stat.ani.SetBool(Run,false);
+            if (Fight.info.IsAni)
+            {
+                Fight.info.stat.gani.Play("Idle");
+            }
+            else
+            {
+                Fight.info.stat.ani.SetBool(Run,false);
+            }
             //base.Finally();
             //Fight.info.MoveIdx = 1;
             IsMoving = false;

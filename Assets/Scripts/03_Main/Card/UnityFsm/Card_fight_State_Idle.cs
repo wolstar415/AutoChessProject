@@ -22,6 +22,14 @@ namespace GameS
             NextFind();
 
 
+            if (Fight.info.IsAni)
+            {
+                Fight.info.stat.gani.Play("Idle");
+            }
+            else
+            {
+                Fight.info.stat.ani.Play("Idle");
+            }
 
         }
 

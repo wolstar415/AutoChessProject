@@ -52,18 +52,19 @@ namespace GameS
         public float Buff_CriDmg;//크리데미지
         public float Buff_ManaMax;//최대마나
         public float Buff_NoAttack;//회피
-        private static readonly int Cool = Animator.StringToHash("Speed");
+        //private static readonly int Cool = Animator.StringToHash("Speed");
 
         public int Checkidx = 0; //중립몹전용
 
 
 
-        public override float AtkAniTime()
-        {
-            float f = Item_Atk_Cool + Buff_Atk_Cool;
-            f = attackTime * (1 - (f * 0.01f));
-            return f;
-        }
+        // public override float AtkAniTime()
+        // {
+        //     float f = Item_Atk_Cool + Buff_Atk_Cool;
+        //     f = attackTime * (1 - (f * 0.01f));
+        //     f = Mathf.Clamp(f,0.03f, 5f);
+        //     return f;
+        // }
         public override float HpMax()//최대체력
         {
             float hp=Char_Hp+Item_Hp+Buff_Hp;
@@ -268,8 +269,8 @@ namespace GameS
             }
             else
             { 
-                float f = (100+f2 + f3) * 0.01f;
-                ani.SetFloat(Cool,f);
+                //float f = (100+f2 + f3) * 0.01f;
+                //ani.SetFloat(Cool,f);
             }
         }
         public void AtkPlus(float Char, float Item, float buff, bool network = false)
@@ -425,9 +426,9 @@ namespace GameS
             Char_Atk_Cool = Char;
             Item_Atk_Cool = Item;
             Buff_Atk_Cool = buff;
-            float c = 100 + Item_Atk_Cool + Buff_Atk_Cool;
-            c = c * 0.01f;
-            ani.SetFloat(Cool,c);
+            //float c = 100 + Item_Atk_Cool + Buff_Atk_Cool;
+            //c = c * 0.01f;
+            //ani.SetFloat(Cool,c);
         }
         [PunRPC]
         void RPC_AtkPlus(float Char, float Item, float buff)
@@ -665,9 +666,10 @@ namespace GameS
         [PunRPC]
         public void RPC_ReSetFunc1()
         {
-            float c = 100 + Item_Atk_Cool + Buff_Atk_Cool;
-            c = c * 0.01f;
-            ani.SetFloat(Cool,c);
+            //float c = 100 + Item_Atk_Cool + Buff_Atk_Cool;
+           // c = c * 0.01f;
+            //c = Mathf.Clamp(c, 0.1f, 5);
+            //ani.SetFloat(Cool,c);
             nav.speed = Speed()*0.01f;
             HpAndMpSet();
             if (pv.IsMine)
@@ -890,14 +892,14 @@ namespace GameS
                 float f2 = Item_Atk_Cool;
                 float f3 = Buff_Atk_Cool;
                 float f = (70+f2 + f3) * 0.01f;
-                ani.SetFloat(Cool,f);
+                //ani.SetFloat(Cool,f);
             }
             else
             {
                 float f2 = Item_Atk_Cool;
                 float f3 = Buff_Atk_Cool;
                 float f = (100+f2 + f3) * 0.01f;
-                ani.SetFloat(Cool,f);
+                //ani.SetFloat(Cool,f);
             }
         }
 

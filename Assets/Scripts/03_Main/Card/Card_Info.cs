@@ -37,6 +37,7 @@ namespace GameS
         public bool IsDead = false;
         public int GoldCost; //가격
 
+        public bool IsAni;
         public CharacterInfo info;
         public int Name; //이름
         public int Icon; //이름

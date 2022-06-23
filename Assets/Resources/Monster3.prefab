@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &82530740
 RectTransform:
   m_ObjectHideFlags: 0
@@ -412,7 +412,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &392637015
 RectTransform:
   m_ObjectHideFlags: 0
@@ -716,7 +716,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1537,6 +1537,7 @@ MonoBehaviour:
   TileOb: {fileID: 0}
   IsDead: 0
   GoldCost: 0
+  IsAni: 0
   info:
     Idx: 0
     Tier: 0
@@ -1645,11 +1646,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c01d28e37a36d4694f60f9a6cc2492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTime: 0.15
   pv: {fileID: 794620965866707051}
   collider: {fileID: 3453628620714929207}
   nav: {fileID: 794620965866707049}
   ani: {fileID: 2672334501823621353}
+  gani: {fileID: 0}
   IsCard: 0
   monster: 0
   IsUnit: 0

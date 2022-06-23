@@ -12,11 +12,12 @@ namespace GameS
 {
     public class UnitState : MonoBehaviourPunCallbacks
     {
-        public float attackTime=1f;
+        //public float attackTime=1f;
         public PhotonView pv;
         public SphereCollider collider;
         public NavMeshAgent nav;
         public Animator ani;
+        public Animation gani;
         public bool IsCard = true;
         public bool monster = false;
         public bool IsUnit = false;
@@ -143,10 +144,10 @@ namespace GameS
             return 1;
         }
 
-        public virtual float AtkAniTime()
-        {
-            return attackTime;
-        }
+        // public virtual float AtkAniTime()
+        // {
+        //     return attackTime;
+        // }
 
 
         public float currentHp
@@ -663,9 +664,17 @@ namespace GameS
         {
             if (gameObject.activeSelf)
             {
-            ani.Play(name);
-                
+
+                if (info.IsAni)
+                {
+                    gani.Play(name);
+                }
+                else
+                {
+                    ani.Play(name);
+                }
             }
+
 
         }
 

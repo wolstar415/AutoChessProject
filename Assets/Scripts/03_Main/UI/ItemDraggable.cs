@@ -41,6 +41,7 @@ namespace GameS
         [SerializeField] private bool ShowInfo = false;
         GameObject targetcard = null;
         private bool ShowCard=false;
+        private int CheckIdx;
 
         private void Start()
         {
@@ -99,6 +100,8 @@ namespace GameS
             {
                 CreateItemInfoOb.SetActive(false);
                 ShowInfo = true;
+                //CheckIdx = transform.GetSiblingIndex();
+                //transform.SetAsLastSibling();
             }
 
             if (ShowInfo)
@@ -173,6 +176,10 @@ namespace GameS
                     Destroy(gameObject);
                 }
             }
+            else
+            {
+                //transform.SetSiblingIndex(CheckIdx);
+            }
 
 
             ClickManager.inst.ItemDropCard = null;
@@ -221,6 +228,8 @@ namespace GameS
                     SetUiCreate2(idx1,idx2);
                 CreateItemInfoOb.SetActive(true);
                 CreateItemOb.SetActive(true);
+                CheckIdx = transform.GetSiblingIndex();
+                transform.SetAsLastSibling();
                 }
                 
             }
@@ -239,6 +248,8 @@ namespace GameS
                 CreateItemInfoOb.SetActive(false);
                 CreateItemOb.SetActive(false);
                 
+                transform.SetSiblingIndex(CheckIdx);
+                
             }
         }
 
@@ -250,6 +261,7 @@ namespace GameS
             }
 
 
+            transform.SetSiblingIndex(CheckIdx);
             outUicard();
         }
 

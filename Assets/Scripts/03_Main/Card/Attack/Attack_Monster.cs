@@ -11,14 +11,14 @@ namespace GameS
         public override void BasicAttack(GameObject target)
         {
             base.BasicAttack(target);
-            fsm.NoConTime(stat.AtkAniTime(),false);
+           //fsm.NoConTime(stat.Atk_Cool(),false);
             fsm.CoolStart();
             StartCoroutine(IAttackFunc());
         }
 
         IEnumerator IAttackFunc()
         {
-            yield return YieldInstructionCache.WaitForSeconds(stat.AtkAniTime());
+            yield return YieldInstructionCache.WaitForSeconds(0.1f);
             DamageManager.inst.DamageFunc1(gameObject,Target,stat.Atk_Damage());
 
         }
