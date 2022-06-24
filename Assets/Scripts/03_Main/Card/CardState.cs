@@ -223,7 +223,7 @@ namespace GameS
         public override float Speed()//이동속도
         {
             float v = Char_Speed + Item_Speed + Buff_Speed;
-            v=Mathf.Clamp(v, 10, 522);
+            v=Mathf.Clamp(v, 10, 1100);
             return v;
         }
 
@@ -834,7 +834,7 @@ namespace GameS
                 float damage=30*lv;
                 float cool=0.5f;
                 float range=1.8f;
-                float speed=200f;
+                float speed=350f;
                 for (int i = 0; i < have23; i++)
                 {
                     

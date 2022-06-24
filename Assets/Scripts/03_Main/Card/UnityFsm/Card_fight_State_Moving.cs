@@ -21,6 +21,7 @@ namespace GameS
             if (Fight.Enemy==null)
             {
                 Fight.fsm.SetState(eCardFight_STATE.Idle);
+                Fight.info.stat.ani.Play("Idle");
                 return;
             }
             
@@ -36,6 +37,7 @@ namespace GameS
             if (Fight.Enemy==null)
             {
                 Fight.fsm.SetState(eCardFight_STATE.Idle);
+                Fight.info.stat.ani.Play("Idle");
                 return;
             }
             MoveFunc();
@@ -73,6 +75,7 @@ namespace GameS
                 if (Fight.Enemy == null)
             {
                 Fight.fsm.SetState(eCardFight_STATE.Idle);
+                Fight.info.stat.ani.Play("Idle");
                 return;
             }
             //이동
@@ -96,14 +99,9 @@ namespace GameS
 
         public override void Finally()
         {
-            if (Fight.info.IsAni)
-            {
-                Fight.info.stat.gani.Play("Idle");
-            }
-            else
-            {
+            
                 Fight.info.stat.ani.SetBool(Run,false);
-            }
+            
             //base.Finally();
             //Fight.info.MoveIdx = 1;
             IsMoving = false;

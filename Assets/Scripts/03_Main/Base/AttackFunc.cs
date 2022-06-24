@@ -24,7 +24,7 @@ namespace GameS
             
 
                 stat.AniStart("Attack");
-            
+            stat.NetStopFunc(false,0.2f,false);
             //여기서 평타대신 스킬나간다면 처리여기서하기.
             
         }

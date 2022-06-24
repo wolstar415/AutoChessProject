@@ -590,7 +590,7 @@ namespace GameS
 
         protected void StopFunc(bool stun,float t,bool b)
         {
-            if (IsItemFunc37>0)
+            if (stun&&IsItemFunc37>0)
             {
                 Isitem37Check(1, false);
                 return;

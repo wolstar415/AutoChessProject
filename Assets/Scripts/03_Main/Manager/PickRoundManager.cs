@@ -45,7 +45,7 @@ namespace GameS
 
         void FirstCardCreate()
         {
-            List<int> result = GameSystem_AllInfo.inst.CardPickCnt(1, 9);
+            List<int> result = GameSystem_AllInfo.inst.CardPickCnt(2, 9);
             List<int> resultitem = ItemRandom(0);
 
             for (int i = 0; i < 9; i++)
@@ -101,8 +101,8 @@ namespace GameS
             List<int> resultcheck5=null;
             if (PlayerInfo.Inst.RoundIdx==1001)
             {
-                resultcheck1 = GameSystem_AllInfo.inst.CardPickCnt(1, 0);
-                resultcheck2 = GameSystem_AllInfo.inst.CardPickCnt(2, 9);
+                resultcheck1 = GameSystem_AllInfo.inst.CardPickCnt(1, 3);
+                resultcheck2 = GameSystem_AllInfo.inst.CardPickCnt(2, 6);
                 resultcheck3 = GameSystem_AllInfo.inst.CardPickCnt(3, 0);
                 resultcheck4 = GameSystem_AllInfo.inst.CardPickCnt(4, 0);
                 resultcheck5 = GameSystem_AllInfo.inst.CardPickCnt(5, 0);
@@ -110,8 +110,8 @@ namespace GameS
             }
             else if (PlayerInfo.Inst.RoundIdx==1002)
             {
-                resultcheck1 = GameSystem_AllInfo.inst.CardPickCnt(1, 0);
-                resultcheck2 = GameSystem_AllInfo.inst.CardPickCnt(2, 7);
+                resultcheck1 = GameSystem_AllInfo.inst.CardPickCnt(1, 2);
+                resultcheck2 = GameSystem_AllInfo.inst.CardPickCnt(2, 5);
                 resultcheck3 = GameSystem_AllInfo.inst.CardPickCnt(3, 2);
                 resultcheck4 = GameSystem_AllInfo.inst.CardPickCnt(4, 0);
                 resultcheck5 = GameSystem_AllInfo.inst.CardPickCnt(5, 0);
@@ -119,9 +119,9 @@ namespace GameS
             }
             else if (PlayerInfo.Inst.RoundIdx==1003)
             {
-                resultcheck1 = GameSystem_AllInfo.inst.CardPickCnt(1, 0);
-                resultcheck2 = GameSystem_AllInfo.inst.CardPickCnt(2, 5);
-                resultcheck3 = GameSystem_AllInfo.inst.CardPickCnt(3, 4);
+                resultcheck1 = GameSystem_AllInfo.inst.CardPickCnt(1, 2);
+                resultcheck2 = GameSystem_AllInfo.inst.CardPickCnt(2, 4);
+                resultcheck3 = GameSystem_AllInfo.inst.CardPickCnt(3, 3);
                 resultcheck4 = GameSystem_AllInfo.inst.CardPickCnt(4, 0);
                 resultcheck5 = GameSystem_AllInfo.inst.CardPickCnt(5, 0);
                 resultitem = ItemRandom(1);

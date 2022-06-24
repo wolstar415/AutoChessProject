@@ -76,12 +76,15 @@ namespace GameS
         [SerializeField] private GameObject show_Tileob;
 
         private List<Collider> dummylist = new List<Collider>();
+        
+        private static readonly int Run = Animator.StringToHash("Run");
         // Start is called before the first frame update
 
 
         public void PickStart(int Idx, int ItemIdx)
         {
             pv.RPC(nameof(NetworkdPickStart), RpcTarget.All, Idx,ItemIdx);
+            stat.ani.SetBool(Run,true);
         }
 
         public void PickSelect()
@@ -89,7 +92,7 @@ namespace GameS
             pv.RPC(nameof(NetworkdPickSelect), RpcTarget.All, PlayerInfo.Inst.PlayerIdx);
             
             MasterInfo.inst.CardRemove(Idx);
-            
+            stat.ani.SetBool(Run,false);
         }
 
 
@@ -231,7 +234,7 @@ namespace GameS
         public void EnemyStart(float hp,float damage,float Cool,int Checkidx,int item=-1)
         {
             IsFiled = true;
-            stat.Char_Speed = 200f;
+            stat.Char_Speed = 350f;
             stat.nav.speed = 200 * 0.01f;
             stat.Char_Range = 1.8f;
             stat.RangeSet();
@@ -1020,8 +1023,7 @@ namespace GameS
                 EnemyTeamIdx = PlayerInfo.Inst.PlayerIdx;
             }
 
-            stat.collider.enabled = true;
-            stat.nav.enabled = true;
+            
             stat.currentHp = stat.HpMax();
             stat.currentMana = stat.Mana();
             stat.ReSetFunc1();
@@ -1066,12 +1068,34 @@ namespace GameS
             {
                 stat.Job31 = true;
             }
+
+            if (stat.IsCard && IsFiled && IsHaveJob(25))
+            {
+                float f = 18;
+                    if (MoveIdx <= 7) f = 10.5f;
+                    else if (MoveIdx<=14) f = 13f;
+                    else if (MoveIdx<=21) f = 15.5f;
+                Vector3 pos;
+                if (PlayerInfo.Inst.BattleMove)
+                {
+                pos = transform.position + new Vector3(0, 0, -1*f);
+                    
+                }
+                else
+                {
+                pos = transform.position + new Vector3(0, 0, f);
+                    
+                }
+
+                transform.DOJump(pos, 3, 1, 0.5f);
+            }
             
         }
         public void BattleStart()
         {
             if (!IsFiled) return;
-
+            stat.collider.enabled = true;
+            stat.nav.enabled = true;
             fsm.BattleStart();
 
             

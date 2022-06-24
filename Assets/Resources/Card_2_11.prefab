@@ -1641,7 +1641,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.1
   m_Speed: 2
-  m_Acceleration: 20
+  m_Acceleration: 500
   avoidancePriority: 50
   m_AngularSpeed: 500
   m_StoppingDistance: 0
@@ -1801,7 +1801,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c01d28e37a36d4694f60f9a6cc2492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTime: 0.1
   pv: {fileID: 794620965866707051}
   collider: {fileID: 8509926675263366635}
   nav: {fileID: 794620965866707049}
@@ -1843,6 +1842,15 @@ MonoBehaviour:
   IsItemFunc29: 0
   ItemFunc29Scan: {fileID: 4778588549133132389}
   NoHeal: 0
+  Job3: 0
+  Job4: 0
+  Job7: 0
+  Job9: 0
+  Job29: 0
+  Job10: 0
+  Job27: 0
+  Job31: 0
+  Job31_2: 0
   IsDead: 0
   IsInvin: 0
   IsStun: 0

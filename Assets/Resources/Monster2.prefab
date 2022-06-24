@@ -1687,6 +1687,15 @@ MonoBehaviour:
   IsItemFunc29: 0
   ItemFunc29Scan: {fileID: 0}
   NoHeal: 0
+  Job3: 0
+  Job4: 0
+  Job7: 0
+  Job9: 0
+  Job29: 0
+  Job10: 0
+  Job27: 0
+  Job31: 0
+  Job31_2: 0
   IsDead: 0
   IsInvin: 0
   IsStun: 0

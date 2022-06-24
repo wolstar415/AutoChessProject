@@ -646,11 +646,11 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         {
             TraitandJobCnt[idx]--;
         }
-        pv.RPC(nameof(RPC_TraitandJobFunc),RpcTarget.All,idx,pidx);
+        pv.RPC(nameof(RPC_TraitandJobFunc),RpcTarget.All,Plus,idx,pidx);
     }
 
     [PunRPC]
-    void RPC_TraitandJobFunc(bool Plus, int idx,int pidx)
+    public void RPC_TraitandJobFunc(bool Plus, int idx,int pidx)
     {
         if (Plus)
         {

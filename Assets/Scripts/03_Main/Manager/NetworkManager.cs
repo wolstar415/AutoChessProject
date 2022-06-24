@@ -479,27 +479,26 @@ public class playerinfo
                 
             }
             
-            if (!PlayerInfo.Inst.PVP)
+
+            for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
             {
-                for (int i = 0; i < PVEManager.inst.Enemis.Count; i++)
+                if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
                 {
-                    if (PVEManager.inst.Enemis[i].TryGetComponent(out Card_Info info))
-                    {
-                        info.BattleReady();
-                    }
+                    info.BattleReady();
                 }
             }
-            
-            else
+            for (int i = 0; i < PVEManager.inst.Enemis.Count; i++)
             {
-                
-                
-                for (int i = 0; i < PVPManager.inst.copyob.Count; i++)
+                if (PVEManager.inst.Enemis[i].TryGetComponent(out Card_Info info))
                 {
-                    if (PVPManager.inst.copyob[i].TryGetComponent(out Card_Info info))
-                    {
-                        info.BattleReady();
-                    }
+                    info.BattleReady();
+                }
+            }
+            for (int i = 0; i < PVPManager.inst.copyob.Count; i++)
+            {
+                if (PVPManager.inst.copyob[i].TryGetComponent(out Card_Info info))
+                {
+                    info.BattleReady();
                 }
             }
                 UIManager.inst.TimeFunc(2);
@@ -520,7 +519,7 @@ public class playerinfo
             {
                 if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
                 {
-                    info.BattleReady();
+                    //info.BattleReady();
                     info.BattleStart();
                     
                 }
@@ -777,7 +776,7 @@ public class playerinfo
                 int ran = Random.Range(0, dummyInfo.Count);
                     var cainfo = dummyInfo[ran].GetComponent<Card_Info>();
                     //소환
-                    UnitCreate(false,"Unit_Job30",cainfo.transform.position,Quaternion.identity,3000,100,1,2,300,cainfo.TeamIdx,cainfo.EnemyTeamIdx,cainfo.stat.DmgIdx);
+                    UnitCreate(false,"Unit_Job30",cainfo.transform.position,Quaternion.identity,3000,100,1,2,350,cainfo.TeamIdx,cainfo.EnemyTeamIdx,cainfo.stat.DmgIdx);
 
                     if (PlayerInfo.Inst.IsCopy)
                     {
@@ -794,7 +793,7 @@ public class playerinfo
                          ran = Random.Range(0, dummyInfo.Count);
                          cainfo = dummyInfo[ran].GetComponent<Card_Info>();
                         //소환
-                        UnitCreate(true,"Unit_Job30",cainfo.transform.position,Quaternion.identity,3000,100,1,2,300,cainfo.TeamIdx,cainfo.EnemyTeamIdx,cainfo.stat.DmgIdx);
+                        UnitCreate(true,"Unit_Job30",cainfo.transform.position,Quaternion.identity,3000,100,1,2,350,cainfo.TeamIdx,cainfo.EnemyTeamIdx,cainfo.stat.DmgIdx);
 
                     }
                     
