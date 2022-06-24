@@ -468,7 +468,7 @@ public class MasterInfo : MonoBehaviourPunCallbacks
          
          yield return YieldInstructionCache.WaitForSeconds(1);
          
-         PVPManager.inst.BattleInfoReset();
+         NetworkManager.inst.BattleInfoReset();
          NetworkManager.inst.BattleEnd();
          yield return YieldInstructionCache.WaitForSeconds(1);
          NetworkManager.inst.RoundFuncGo(1);

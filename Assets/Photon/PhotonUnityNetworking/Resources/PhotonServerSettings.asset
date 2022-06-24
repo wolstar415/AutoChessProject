@@ -142,6 +142,7 @@ MonoBehaviour:
   - RPC_Job27Func
   - RPC_Job3Func
   - RPC_TraitandJobFunc
+  - RPC_BattleInfoReset
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

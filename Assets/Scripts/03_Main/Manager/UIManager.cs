@@ -346,7 +346,12 @@ public class UIManager : MonoBehaviour
                 playerInfoObs[idx].transform.localScale = new Vector3(1.5f, 1.5f,1);
                 ClickIdx = idx;
         }
-        if (GameSystem_AllInfo.inst.battleinfos[idx].IsBattleMove)
+
+        if (!PlayerInfo.Inst.IsBattle)
+        {
+            NetworkManager.inst.CameraMovePlayer(idx,false);
+        }
+        else if (GameSystem_AllInfo.inst.battleinfos[idx].IsBattleMove)
         {
             NetworkManager.inst.CameraMovePlayer(GameSystem_AllInfo.inst.battleinfos[idx].enemyidx,true);
         }

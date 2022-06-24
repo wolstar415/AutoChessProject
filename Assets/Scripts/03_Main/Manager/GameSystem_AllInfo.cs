@@ -53,7 +53,7 @@ namespace GameS
         public Transform ItemParent;
         public GridLayoutGroup ItemGridLayout;
 
-        [Header("전투 플레이어")] 
+        [Header("전투 플레이어")]
         public List<BattleInfo> battleinfos;
 
         [Header("플레이어 특성계열")] 

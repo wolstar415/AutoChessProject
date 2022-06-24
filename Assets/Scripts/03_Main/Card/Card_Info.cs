@@ -1003,7 +1003,7 @@ namespace GameS
         public void BattleReady()
         {
             if (!IsFiled) return;
-
+            fsm.Enemies.Clear();
             if (stat.IsCard)
             {
 
@@ -1289,7 +1289,7 @@ namespace GameS
             stat.DeadCheck(false);
             stat.IsInvin = 0;
             IsFighting = false;
-            fsm.Enemies.Clear();
+            
 
             stat.BattleEndReset();
 

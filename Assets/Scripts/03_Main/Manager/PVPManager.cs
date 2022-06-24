@@ -15,18 +15,7 @@ namespace GameS
         }
         
 
-        public void BattleInfoReset()
-        {
-            for (int i = 0; i < GameSystem_AllInfo.inst.battleinfos.Count; i++)
-            {
-                
-                GameSystem_AllInfo.inst.battleinfos[i].playeridx = i;
-                GameSystem_AllInfo.inst.battleinfos[i].enemyidx = -1;
-                GameSystem_AllInfo.inst.battleinfos[i].IsBattleMove = false;
-                GameSystem_AllInfo.inst.battleinfos[i].IsCopy = false;
-                GameSystem_AllInfo.inst.battleinfos[i].copyidx = -1;
-            }
-        }
+
 
         public void MasterBattleReady()
         {
