@@ -74,6 +74,17 @@ namespace GameS
         public item29_Scan ItemFunc29Scan;
         protected Coroutine CorDotDamage=null;
         public bool NoHeal;
+        [Header("특성계열 확인")] 
+        
+        public bool Job3=false;
+        public bool Job4=false;
+        public int Job7;
+        public bool Job9;
+        public bool Job29;
+        public int Job10;
+        public int Job27;
+        public bool Job31;
+        public int Job31_2;
 
         public void ColorChange()
         {
@@ -342,7 +353,9 @@ namespace GameS
         public void BasicFunc(GameObject target,bool NoAtk)
         {
             if (!IsCard) return;
-            MpHeal((info.IsItemHave(14)*8)+10);
+            float mph = 10f;
+            if (info.IsHaveJob(28)) mph = 20;
+            MpHeal((info.IsItemHave(14)*8)+mph);
             if (NoAtk)
             {
                 if (target.GetComponent<Card_Info>().IsItemHave(31)>0)
@@ -351,6 +364,20 @@ namespace GameS
                 }
                 return;
             }
+
+            if (Job31)
+            {
+                Job31_2++;
+            }
+            if (PlayerInfo.Inst.TraitandJobCnt[24]>=3&&info.IsHaveJob(24))
+            {
+                int per = 30;
+                if (PlayerInfo.Inst.TraitandJobCnt[24] >= 9) per = 90;
+                else if (PlayerInfo.Inst.TraitandJobCnt[24] >= 6) per = 60;
+                
+                if (Random.Range(0,100f)<=per) NetStopFunc(true,1,false);
+            }
+            
             AttackCnt++;
             if (AttackOb==target)
             {
@@ -369,6 +396,8 @@ namespace GameS
             {
                 return false;
             }
+
+
             float p = Random.Range(0.01f, 100f);
             bool IsCri = false;
 
@@ -690,6 +719,96 @@ namespace GameS
             {
                 transform.DOJump(pos,power,cnt,dur);
             }
+        }
+
+        public void Job3Func()
+        {
+            pv.RPC(nameof(RPC_Job3Func),RpcTarget.All);
+            //이펙트
+        }
+
+        [PunRPC]
+        protected void RPC_Job3Func()
+        {
+            Job3 = true;
+        }
+        public void Job4Func()
+        {
+            Job4 = true;
+            //이펙트
+        }
+        public void Job29Func()
+        {
+            Job29 = true;
+            //이펙트
+        }
+        public void Job7Func()
+        {
+            int cnt = PlayerInfo.Inst.TraitandJobCnt[7];
+            pv.RPC(nameof(RPC_Job7),RpcTarget.All,cnt);
+        }
+
+        public void Job7Func2()
+        {
+            int cnt = Job7;
+            Job7 = 0;
+            StartCoroutine(IJob7Func(cnt));
+        }
+
+        protected IEnumerator IJob7Func(int lv)
+        {
+            int cnt = 66;
+            float va = ((currentHp / HpMax()) * 0.3f) / cnt;
+            if (lv >= 6) va *= 3;
+            else if (lv >= 4) va *= 2;
+            while (cnt>=0)
+            {
+
+                HpHeal(va);
+                yield return null;
+            }
+        }
+        
+        public void Job9Func()
+        {
+            Job9 = false;
+            pv.RPC(nameof(RPC_Job9),RpcTarget.All);
+        }
+
+        public void Job9Func2()
+        {
+            StartCoroutine(IJob9Func());
+        }
+
+        protected IEnumerator IJob9Func()
+        {
+            UnitInvin(1);
+            yield return YieldInstructionCache.WaitForSeconds(2);
+            UnitInvin(-1);
+        }
+
+        [PunRPC]
+        protected void RPC_Job7(int cnt)
+        {
+            Job7 = cnt;
+        }
+        
+        [PunRPC]
+        protected void RPC_Job9()
+        {
+            Job9 = false;
+        }
+        
+        public void Job10Func()
+        {
+            int cnt = PlayerInfo.Inst.TraitandJobCnt[10];
+            pv.RPC(nameof(RPC_Job10),RpcTarget.All,cnt);
+        }
+        
+        [PunRPC]
+        protected void RPC_Job10(int cnt)
+        {
+            Job10 = cnt;
         }
 
     }

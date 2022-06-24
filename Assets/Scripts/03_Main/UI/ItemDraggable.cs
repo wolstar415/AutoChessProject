@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using PlasticPipe.PlasticProtocol.Messages.Serialization;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -41,7 +42,8 @@ namespace GameS
         [SerializeField] private bool ShowInfo = false;
         GameObject targetcard = null;
         private bool ShowCard=false;
-        private int CheckIdx;
+        public int CheckIdx;
+
 
         private void Start()
         {
@@ -54,6 +56,8 @@ namespace GameS
             
             
         }
+
+
 
         public void Startfunc(int idx)
         {
@@ -71,24 +75,48 @@ namespace GameS
             
             CreateItemInfoOb.SetActive(true);
             CardItemInfoOb.SetActive(false);
+            CheckIdx = transform.GetSiblingIndex();
+            transform.SetAsLastSibling();
+            CanvasGroup.blocksRaycasts = false;
+            gridLayout.enabled = false;
+
+            
+            //UIManager.inst.ItemOrderCheck();
+
 
         }
         public void OnPointerUp(PointerEventData eventData)
         {
             CreateItemInfoOb.SetActive(false);
             CardItemInfoOb.SetActive(false);
+
+            //UIManager.inst.ItemOrder();
+            
+
+  
+            
+
+            StartCoroutine(IBugCheck());
+        }
+
+        IEnumerator IBugCheck()
+        {
+            yield return null;
+            CanvasGroup.blocksRaycasts = true;
+            gridLayout.enabled = true;
+            transform.SetSiblingIndex(CheckIdx);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            gridLayout.enabled = false;
+            //gridLayout.enabled = false;
             ShowInfo = false;
             ShowCard = false;
             targetcard = null;
             // = transform.parent;
             //transform.SetParent(canvas);
             //transform.SetAsLastSibling();
-            CanvasGroup.blocksRaycasts = false;
+            //CanvasGroup.blocksRaycasts = false;
             ClickManager.inst.clickstate = PlayerClickState.item;
             ClickManager.inst.ClickItem = gameObject;
             
@@ -99,9 +127,9 @@ namespace GameS
             if (Vector3.Distance(eventData.position, oriPos) >= 50 && !ShowInfo)
             {
                 CreateItemInfoOb.SetActive(false);
+                transform.SetSiblingIndex(CheckIdx);
                 ShowInfo = true;
-                //CheckIdx = transform.GetSiblingIndex();
-                //transform.SetAsLastSibling();
+
             }
 
             if (ShowInfo)
@@ -153,7 +181,7 @@ namespace GameS
         public void OnEndDrag(PointerEventData eventData)
         {
             GameObject ob = gob(eventData.position);
-            CanvasGroup.blocksRaycasts = true;
+            //CanvasGroup.blocksRaycasts = true;
             if (ClickManager.inst.ItemDropCard != null)
             {
                 if (ItemManager.inst.ItemCheck(ClickManager.inst.ItemDropCard,Idx))
@@ -176,16 +204,13 @@ namespace GameS
                     Destroy(gameObject);
                 }
             }
-            else
-            {
-                //transform.SetSiblingIndex(CheckIdx);
-            }
+
 
 
             ClickManager.inst.ItemDropCard = null;
             ClickManager.inst.ClickItem = null;
             ClickManager.inst.clickstate = PlayerClickState.None;
-            gridLayout.enabled = true;
+            //gridLayout.enabled = true;
             ShowInfo = false;
             CreateItemInfoOb.SetActive(false);
             CardItemInfoOb.SetActive(false);
@@ -230,6 +255,7 @@ namespace GameS
                 CreateItemOb.SetActive(true);
                 CheckIdx = transform.GetSiblingIndex();
                 transform.SetAsLastSibling();
+                
                 }
                 
             }
@@ -247,9 +273,9 @@ namespace GameS
                 
                 CreateItemInfoOb.SetActive(false);
                 CreateItemOb.SetActive(false);
-                
                 transform.SetSiblingIndex(CheckIdx);
                 
+
             }
         }
 
@@ -260,8 +286,9 @@ namespace GameS
                 return;
             }
 
+ 
+                transform.SetSiblingIndex(CheckIdx);
 
-            transform.SetSiblingIndex(CheckIdx);
             outUicard();
         }
 

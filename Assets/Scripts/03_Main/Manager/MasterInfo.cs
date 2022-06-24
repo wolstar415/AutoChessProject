@@ -475,6 +475,8 @@ public class MasterInfo : MonoBehaviourPunCallbacks
 
 
      }
+     
+     
 
      [PunRPC]
      void addAtkSpeed()
@@ -490,6 +492,28 @@ public class MasterInfo : MonoBehaviourPunCallbacks
                     info.stat.AtkPlus(0, 0, 500, true);
                  }
              }
+         }
+     }
+     
+     
+     
+     
+     public override void OnPlayerEnteredRoom(Player newPlayer)
+     {
+         if (PhotonNetwork.IsMasterClient)
+         {
+             string name = newPlayer.NickName;
+             for (int i = 0; i < NetworkManager.inst.players.Count; i++)
+             {
+                 if (NetworkManager.inst.players[i].OriNickName==name)
+                 {
+                     NetworkManager.inst.players[i].State = 3;
+                     NetworkManager.inst.players[i].Dead = true;
+                     NetworkManager.inst.players[i].Life = 0;
+                     break;
+                 }
+             }
+
          }
      }
      

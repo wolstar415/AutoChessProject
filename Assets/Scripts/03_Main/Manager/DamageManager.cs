@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GameS
 {
@@ -37,9 +38,15 @@ namespace GameS
    
             bool IsMagic = false;
             float damageHeal = 0;
+            bool Istruedamage = card_stat.Job4;
             
+            if (target_stat.Job27>=2)
+            {
+                if (target_stat.Job27 >= 6) damage-=60;
+                else if (target_stat.Job27 >= 4) damage-=30;
+                else  damage-=15;
+            }
 
-            
 
             if (card_stat.IsDead||target_stat.IsDead||!PlayerInfo.Inst.IsBattle||target_stat.IsInvin>0)
             {
@@ -57,8 +64,12 @@ namespace GameS
                     
                     
                     IsPhy = true;
+                    if (!card_stat.Job31)
+                    {
+                        
                     if (card_stat.info.IsItemHave(18)==0)
                         NoAtk = target_stat.NoAttackCheck(IsPhy);
+                    }
                     
                     
                     card_stat.BasicFunc(target,NoAtk);
@@ -91,6 +102,39 @@ namespace GameS
                         adddamage*= item10;
                     }
                     
+                    if (PlayerInfo.Inst.TraitandJobCnt[26]>=3&&card_stat.info.IsHaveJob(26))
+                    {
+                        float per = 30;
+                        if (PlayerInfo.Inst.TraitandJobCnt[26] >= 9) per = 90;
+                        else if (PlayerInfo.Inst.TraitandJobCnt[26] >= 6) per = 60;
+
+                        if (Random.Range(0,100f)<=per) adddamage += damage;
+                    }
+
+
+                    if (PlayerInfo.Inst.TraitandJobCnt[5]>=2&&card_stat.info.IsHaveJob(5))
+                    {
+                        float dp = 8;
+                        if (PlayerInfo.Inst.TraitandJobCnt[5] >= 3) dp *= 2;
+                        float dis = Vector3.Distance(card_stat.transform.position, target_stat.transform.position);
+                        if (dis>=16.2f) dp *= 6;
+                        else if (dis>=13.5f) dp *= 5;
+                        else if (dis>=10.8f) dp *= 4;
+                        else if (dis>=8.1f) dp *= 3;
+                        else if (dis>=5.4f) dp *= 2;
+                        else if (dis>=2.7f) dp *= 1;
+                        else dp = 0;
+
+                        if (dp > 0)
+                        {
+                            adddamage = adddamage + (damage * dp); 
+                        }
+
+
+                    }
+                    
+                    if (card_stat.Job3) damageHeal+=30;
+                    
                     if (card_stat.info.IsItemHave(20)>0)
                     {
                         Item20Fun(card,target);
@@ -110,8 +154,8 @@ namespace GameS
 
                     if (item22>0&&card_stat.AttackCnt%3==0)
                     {
-                     //스태틱 이펙트
-                     DamageFunc1(card, target, 60 * item22, eDamageType.Speel_Magic);
+                        //스태틱 이펙트
+                        DamageFunc1(card, target, 60 * item22, eDamageType.Speel_Magic);
                      
                         card_stat.ItemFuncAdd(22,true,5,false);
                     }
@@ -144,17 +188,27 @@ namespace GameS
 
                 
                 float daMi=1;
-                IsCri = card_stat.CriCheck(IsPhy,IsMagic);
-                if (IsPhy)
+                if (PlayerInfo.Inst.TraitandJobCnt[6] >= 2 && card_stat.info.IsHaveJob(6))
+                {
+                    float hp_per = target_stat.currentHp / target_stat.HpMax();
+                    if (hp_per <= 0.4) IsCri = true;
+                    else IsCri = card_stat.CriCheck(IsPhy, IsMagic);
+                }else IsCri = card_stat.CriCheck(IsPhy,IsMagic);
+
+                if (IsPhy&&!Istruedamage)
                 {
                     daMi = 100 / (100 + target_stat.Defence());
 
 
                 }
-                else
+                else if(IsMagic&&!Istruedamage)
                 {
                     TextColor = 1;
                     daMi = 100 / (100 + target_stat.Defence_Magic());
+                }
+                else if (Istruedamage)
+                {
+                    TextColor = 2;
                 }
 
                 if (IsCri)
@@ -168,6 +222,7 @@ namespace GameS
                 damage = damage * daMi;
 
                 
+                
                 if (target_stat.info.IsItemHave(27)>0)
                 {
                     float f = 0.25f * target_stat.info.IsItemHave(27);
@@ -177,9 +232,13 @@ namespace GameS
                 {
                     damage *= 0.2f;
                 }
-                
-            
-            
+
+                if (target_stat.Job10 >= 4) damage *= 0.7f;
+                else if (target_stat.Job10 >= 3) damage *= 0.75f;
+                else if (target_stat.Job10 >= 2) damage *= 0.8f;
+
+
+
                 if (damage <= 0) return;
             
             
@@ -218,7 +277,7 @@ namespace GameS
 
             }
             
-                UIManager.inst.DmgGo(TextColor+1, damage, card_stat.DmgIdx);
+            UIManager.inst.DmgGo(TextColor+1, damage, card_stat.DmgIdx);
             
             //데미지체크
             //체력확인
@@ -291,10 +350,21 @@ namespace GameS
                 damageHeal += (damage * card_stat.IsItemFunc46*0.4f);
             }
             #endregion
-            
-            
 
 
+
+            #region 특성체크
+
+            if (target_stat.Job7>0&&(target_stat.currentHp / target_stat.HpMax())<=0.5f)
+            {
+                target_stat.Job7Func2();
+            }
+            if (target_stat.Job9&&(target_stat.currentHp / target_stat.HpMax())<=0.5f)
+            {
+                target_stat.Job9Func2();
+            }
+
+            #endregion
             
             if (damageHeal>0) card_stat.HpHeal(damageHeal);
 

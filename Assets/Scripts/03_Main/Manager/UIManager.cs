@@ -563,5 +563,21 @@ public class UIManager : MonoBehaviour
     DmgTrue.text = $"{n1} {tr.ToString("F0")}";
 
     }
+
+    // public void ItemOrderCheck()
+    // {
+    //     for (int i = 0; i < ItemPanelOb.transform.childCount; i++)
+    //     {
+    //         ItemPanelOb.transform.GetChild(i).GetComponent<ItemDraggable>().CheckIdx = i;
+    //     }
+    // }
+
+    // public void ItemOrder()
+    // {
+    //     for (int i = 0; i < ItemPanelOb.transform.childCount; i++)
+    //     {
+    //         ItemPanelOb.transform.GetChild(i).GetComponent<ItemDraggable>().Check();
+    //     }
+    // }
         
 }

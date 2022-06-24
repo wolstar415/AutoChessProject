@@ -68,6 +68,17 @@ namespace GameS
         public override float HpMax()//최대체력
         {
             float hp=Char_Hp+Item_Hp+Buff_Hp;
+
+            if (IsCard&&info.IsFiled&&GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[1]>=2)
+            {
+                if (info.IsHaveJob(1))
+                {
+                    if (GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[1] >= 6) hp += 900;
+                    else if (GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[1] >= 4) hp += 500;
+                    else if (GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[1] >= 2) hp += 250;
+                }
+            }
+            
             hp=Mathf.Clamp(hp, 0, 99999999);
             return hp;
         }
@@ -88,7 +99,14 @@ namespace GameS
         public override float NoAttack()//회피
         {
             float v = Char_NoAttack + Item_NoAttack + Buff_NoAttack;
-            v=Mathf.Clamp(v, 0f, 100);
+            
+            if (IsCard&&info.IsFiled&&GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[23]>=3&&info.IsHaveJob(23))
+            {
+                if (GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[23] >= 9) v += 90;
+                else if (GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[23] >= 6) v += 60;
+                else v += 30;
+            }
+            v=Mathf.Clamp(v, 0f, 90);
             return v;
         }
         public override float Range()//사정거리
@@ -107,6 +125,12 @@ namespace GameS
             float v2=Item_Atk_Cool+Buff_Atk_Cool;
             if (IsItemFunc29 > 0) v2 -= 30f;
             v = v - (v * (v2 * 0.01f));
+            if (Job31_2 >= 5) v += 50;
+            else if (Job31_2 >= 4) v += 40;
+            else if (Job31_2 >= 3) v += 30;
+            else if (Job31_2 >= 2) v += 20;
+            else if (Job31_2 >= 1) v += 10;
+            
             v=Mathf.Clamp(v, 0.2f, 5f);
            
             return v;
@@ -146,7 +170,12 @@ namespace GameS
         public override float Magic_Damage()//마법데미지
         {
             float v = Char_Magic_Damage + Item_Magic_Damage + Buff_Magic_Damage;
-            
+            if (IsCard&&info.IsFiled&&GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[28]>=3)
+            {
+                if (GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[28] >= 9) v += 200;
+                else if (GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[28] >= 6) v += 120;
+                else v += 40;
+            }
             if (IsItemFunc19>=25)
             {
                 v += 75*info.IsItemHave(19);
@@ -161,16 +190,29 @@ namespace GameS
         public override float Defence()//방어
         {
             float v = Char_Defence + Item_Defence + Buff_Defence;
+            if (Job3) v += 50;
             if (IsItemFunc24>0)
             {
                 v *= 0.5f;
             }
+
+
+                
+            
             v=Mathf.Clamp(v, 0, 9999999);
             return v;
         }
         public override float Defence_Magic()//마법방어
         {
             float v = Char_Defence_Magic + Item_Defence_Magic + Buff_Defence_Magic;
+            if (Job3) v += 50;
+
+            if (IsCard&&info.IsFiled&&GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[8]>=2)
+            {
+                if (GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[8] >= 4) v += 100;
+                else if (GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[8] >= 3) v += 60;
+                else v += 40;
+            }
             if (IsItemFunc22>0)
             {
                 v *= 0.5f;
@@ -188,13 +230,25 @@ namespace GameS
         public override float CriPer()//크리
         {
             float v = Char_CriPer + Item_CriPer + Buff_CriPer;
+            if (IsCard&&info.IsFiled&&GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[25]>=3&&info.IsHaveJob(25))
+            {
+                if (GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[25] >= 9) v += 30;
+                else if (GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[25] >= 6) v += 20;
+                else v += 5;
+            }
             v=Mathf.Clamp(v, 0, 100);
             return v;
         }
         public override float CriDmg()//크리데미지
         {
             float v = Char_CriDmg + Item_CriDmg + Buff_CriDmg;
-            v=Mathf.Clamp(v, 0, 9999999);
+            if (IsCard&&info.IsFiled&&GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[25]>=3&&info.IsHaveJob(25))
+            {
+                if (GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[25] >= 9) v += 225;
+                else if (GameSystem_AllInfo.inst.playerJobcnt[info.TeamIdx].JobAndTrait[25] >= 6) v += 150;
+                else v += 75;
+            }
+            v=Mathf.Clamp(v, 0, 5000);
             return v;
         }
 
@@ -640,6 +694,20 @@ namespace GameS
             IsItemFunc36 = false;
             IsItemFunc37 = 0;
             IsItemFunc49 = false;
+
+
+            Job3 = false;
+            Job4 = false;
+            Job7 = 0;
+            Job9 = false;
+            Job10 = 0;
+            Job27 = 0;
+            Job29 = false;
+            Job31 = false;
+            Job31_2 = 0;
+
+
+
             NoHeal = false;
             CorDotDamage = null;
             
@@ -901,6 +969,44 @@ namespace GameS
                 float f = (100+f2 + f3) * 0.01f;
                 //ani.SetFloat(Cool,f);
             }
+        }
+
+        public void Job22Func()
+        {
+            if (IsDead) return;
+
+            StartCoroutine(IJob22Func());
+        }
+
+        IEnumerator IJob22Func()
+        {
+            float v = 75;
+            if (PlayerInfo.Inst.TraitandJobCnt[22] >= 4) v = 150;
+            yield return YieldInstructionCache.WaitForSeconds(5);
+            while (true)
+            {
+                if (IsDead||PlayerInfo.Inst.BattleEnd||PlayerInfo.Inst.IsBattle==false)
+                {
+                    break;
+                }
+                CoolPlus(0,0,v);
+            yield return YieldInstructionCache.WaitForSeconds(4);
+            CoolPlus(0,0,-v);
+            yield return YieldInstructionCache.WaitForSeconds(4);
+            }
+        }
+        
+        public void Job27Func()
+        {
+            int cnt = PlayerInfo.Inst.TraitandJobCnt[27];
+            pv.RPC(nameof(RPC_Job27Func),RpcTarget.All,cnt);
+
+        }
+        
+        [PunRPC]
+        void RPC_Job27Func(int cnt)
+        {
+            Job27 = cnt;
         }
 
     }

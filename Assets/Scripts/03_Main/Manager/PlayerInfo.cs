@@ -139,31 +139,127 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     {
         PlayerCardCnt[idx]--;
     }
-    public void PlayerFiledCardCntAdd(int trait1,int trait2,int job1,int job2,int idx)
+    public void PlayerFiledCardCntAdd(Card_Info info)
     {
-        if (PlayerFiledCardCnt[idx]==0)
+        
+        
+        bool b = false;
+        
+        if (PlayerFiledCardCnt[info.Idx]==0)
         {
-            TraitJobManager.inst.TraitJobAdd(trait1);
-            TraitJobManager.inst.TraitJobAdd(trait2);
-            TraitJobManager.inst.TraitJobAdd(job1);
-            TraitJobManager.inst.TraitJobAdd(job2);
-            TraitJobManager.inst.OrderList();
+            TraitJobManager.inst.TraitJobAdd(info.Character_trait1);
+            TraitJobManager.inst.TraitJobAdd(info.Character_trait2);
+            TraitJobManager.inst.TraitJobAdd(info.Character_Job1);
+            TraitJobManager.inst.TraitJobAdd(info.Character_Job2);
+            b = true;
+            
 
         }
 
-        PlayerFiledCardCnt[idx]++;
+
+        if (info.IsHaveJob(3,false)==false&&info.IsItemHave(17)>0)
+        {
+            TraitJobManager.inst.TraitJobAdd(3);
+            b = true;
+        }
+        if (info.IsHaveJob(26,false)==false&&info.IsItemHave(25)>0)
+        {
+            TraitJobManager.inst.TraitJobAdd(26);
+            b = true;
+        }
+        if (info.IsHaveJob(27,false)==false&&info.IsItemHave(32)>0)
+        {
+            TraitJobManager.inst.TraitJobAdd(27);
+            b = true;
+        }
+        if (info.IsHaveJob(8,false)==false&&info.IsItemHave(38)>0)
+        {
+            TraitJobManager.inst.TraitJobAdd(8);
+            b = true;
+        }
+        if (info.IsHaveJob(28,false)==false&&info.IsItemHave(43)>0)
+        {
+            TraitJobManager.inst.TraitJobAdd(28);
+            b = true;
+        }
+        if (info.IsHaveJob(24,false)==false&&info.IsItemHave(47)>0)
+        {
+            TraitJobManager.inst.TraitJobAdd(24);
+            b = true;
+        }
+        if (info.IsHaveJob(23,false)==false&&info.IsItemHave(50)>0)
+        {
+            TraitJobManager.inst.TraitJobAdd(23);
+            b = true;
+        }
+        if (info.IsHaveJob(25,false)==false&&info.IsItemHave(52)>0)
+        {
+            TraitJobManager.inst.TraitJobAdd(25);
+            b = true;
+        }
+
+        if(b) TraitJobManager.inst.OrderList();
+        PlayerFiledCardCnt[info.Idx]++;
     }
-    public void PlayerFiledCardCntRemove(int trait1,int trait2,int job1,int job2,int idx)
+    public void PlayerFiledCardCntRemove(Card_Info info)
     {
-        if (PlayerFiledCardCnt[idx]==1)
+        bool b = false;
+        if (PlayerFiledCardCnt[info.Idx]==1)
         {
-            TraitJobManager.inst.TraitJobRemove(trait1);
-            TraitJobManager.inst.TraitJobRemove(trait2);
-            TraitJobManager.inst.TraitJobRemove(job1);
-            TraitJobManager.inst.TraitJobRemove(job2);
-            TraitJobManager.inst.OrderList();
+            TraitJobManager.inst.TraitJobRemove(info.Character_trait1);
+            TraitJobManager.inst.TraitJobRemove(info.Character_trait2);
+            TraitJobManager.inst.TraitJobRemove(info.Character_Job1);
+            TraitJobManager.inst.TraitJobRemove(info.Character_Job2);
+            b = true;
         }
-        PlayerFiledCardCnt[idx]--;
+        
+        
+        
+        
+        
+        if (info.IsHaveJob(3,false)==false&&info.IsItemHave(17)>0)
+        {
+            TraitJobManager.inst.TraitJobRemove(3);
+            b = true;
+        }
+        if (info.IsHaveJob(26,false)==false&&info.IsItemHave(25)>0)
+        {
+            TraitJobManager.inst.TraitJobRemove(26);
+            b = true;
+        }
+        if (info.IsHaveJob(27,false)==false&&info.IsItemHave(32)>0)
+        {
+            TraitJobManager.inst.TraitJobRemove(27);
+            b = true;
+        }
+        if (info.IsHaveJob(8,false)==false&&info.IsItemHave(38)>0)
+        {
+            TraitJobManager.inst.TraitJobRemove(8);
+            b = true;
+        }
+        if (info.IsHaveJob(28,false)==false&&info.IsItemHave(43)>0)
+        {
+            TraitJobManager.inst.TraitJobRemove(28);
+            b = true;
+        }
+        if (info.IsHaveJob(24,false)==false&&info.IsItemHave(47)>0)
+        {
+            TraitJobManager.inst.TraitJobRemove(24);
+            b = true;
+        }
+        if (info.IsHaveJob(23,false)==false&&info.IsItemHave(50)>0)
+        {
+            TraitJobManager.inst.TraitJobRemove(23);
+            b = true;
+        }
+        if (info.IsHaveJob(25,false)==false&&info.IsItemHave(52)>0)
+        {
+            TraitJobManager.inst.TraitJobRemove(25);
+            b = true;
+        }
+        
+        if(b) TraitJobManager.inst.OrderList();
+        PlayerFiledCardCnt[info.Idx]--;
     }
     private void Awake()
     {
@@ -536,5 +632,35 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         var lifeRank = MasterInfo.inst.lifeCheck[i];
         lifeRank.Life=life;
 
+    }
+
+    public void TraitandJobFunc(bool Plus,int idx)
+    {
+        int pidx = PlayerIdx;
+        if (Plus)
+        {
+            TraitandJobCnt[idx]++;
+
+        }
+        else
+        {
+            TraitandJobCnt[idx]--;
+        }
+        pv.RPC(nameof(RPC_TraitandJobFunc),RpcTarget.All,idx,pidx);
+    }
+
+    [PunRPC]
+    void RPC_TraitandJobFunc(bool Plus, int idx,int pidx)
+    {
+        if (Plus)
+        {
+            
+        GameSystem_AllInfo.inst.playerJobcnt[pidx].JobAndTrait[idx]++;
+        }
+        else
+        {
+            
+        GameSystem_AllInfo.inst.playerJobcnt[pidx].JobAndTrait[idx]--;
+        }
     }
 }

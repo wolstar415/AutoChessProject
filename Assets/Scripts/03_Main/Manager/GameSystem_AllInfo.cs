@@ -17,6 +17,12 @@ namespace GameS
         public int copyidx;//싸워야할 상대(복사본을 보내는곳)
         
     }
+
+    [System.Serializable]
+    public struct PlayerJobCheck
+    {
+        public int[] JobAndTrait;
+    }
     public class GameSystem_AllInfo : MonoBehaviour
     {
         public bool IsStart = false;
@@ -49,6 +55,9 @@ namespace GameS
 
         [Header("전투 플레이어")] 
         public List<BattleInfo> battleinfos;
+
+        [Header("플레이어 특성계열")] 
+        public List<PlayerJobCheck> playerJobcnt;
 
         private void Awake()
         {

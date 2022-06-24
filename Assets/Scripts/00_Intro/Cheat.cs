@@ -149,6 +149,8 @@ namespace GameS
 
     }
 #endif
+        
+       
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Keypad1))
@@ -194,7 +196,7 @@ namespace GameS
                 }
 
             }
-            else if (Input.GetKeyDown(KeyCode.Keypad4))
+            else if (Input.GetKeyDown(KeyCode.C))
             {
                 ItemManager.inst.ItemAdd(9);
                 ItemManager.inst.ItemAdd(10);
@@ -208,7 +210,7 @@ namespace GameS
                 ItemManager.inst.ItemAdd(18);
                 ItemManager.inst.ItemAdd(19);
             }
-            else if (Input.GetKeyDown(KeyCode.Keypad5))
+            else if (Input.GetKeyDown(KeyCode.V))
             {
                 ItemManager.inst.ItemAdd(20);
                 ItemManager.inst.ItemAdd(21);
@@ -221,6 +223,47 @@ namespace GameS
                 ItemManager.inst.ItemAdd(27);
                 ItemManager.inst.ItemAdd(28);
                 ItemManager.inst.ItemAdd(29);
+            }
+            else if (Input.GetKeyDown(KeyCode.B))
+            {
+                ItemManager.inst.ItemAdd(30);
+                ItemManager.inst.ItemAdd(31);
+                ItemManager.inst.ItemAdd(32);
+                ItemManager.inst.ItemAdd(33);
+                ItemManager.inst.ItemAdd(34);
+                ItemManager.inst.ItemAdd(35);
+                ItemManager.inst.ItemAdd(36);
+                ItemManager.inst.ItemAdd(37);
+                ItemManager.inst.ItemAdd(38);
+                ItemManager.inst.ItemAdd(39);
+                ItemManager.inst.ItemAdd(40);
+            }
+            else if (Input.GetKeyDown(KeyCode.N))
+            {
+                ItemManager.inst.ItemAdd(41);
+                ItemManager.inst.ItemAdd(42);
+                ItemManager.inst.ItemAdd(43);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(45);
+                ItemManager.inst.ItemAdd(46);
+                ItemManager.inst.ItemAdd(47);
+                ItemManager.inst.ItemAdd(48);
+                ItemManager.inst.ItemAdd(49);
+                ItemManager.inst.ItemAdd(50);
+                ItemManager.inst.ItemAdd(51);
+                ItemManager.inst.ItemAdd(52);
+                ItemManager.inst.ItemAdd(53);
+            }
+            else if (Input.GetKeyDown(KeyCode.Keypad4))
+            {
+                ItemManager.inst.ItemAdd(17);
+                ItemManager.inst.ItemAdd(25);
+                ItemManager.inst.ItemAdd(32);
+                ItemManager.inst.ItemAdd(38);
+                ItemManager.inst.ItemAdd(43);
+                ItemManager.inst.ItemAdd(47);
+                ItemManager.inst.ItemAdd(50);
+                ItemManager.inst.ItemAdd(52);
             }
             else if (Input.GetKeyDown(KeyCode.Keypad6))
             {

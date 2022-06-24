@@ -50,7 +50,8 @@ namespace GameS
                 return;
             }
 
-            PlayerInfo.Inst.TraitandJobCnt[idx]++;
+            //PlayerInfo.Inst.TraitandJobCnt[idx]++;
+            PlayerInfo.Inst.TraitandJobFunc(true, idx);
             if (Obs[idx].TryGetComponent(out TraitJobInfo info))
             {
                 info.CntAdd();
@@ -63,7 +64,8 @@ namespace GameS
             {
                 return;
             }
-            PlayerInfo.Inst.TraitandJobCnt[idx]--;
+            //PlayerInfo.Inst.TraitandJobCnt[idx]--;
+            PlayerInfo.Inst.TraitandJobFunc(false, idx);
             if (Obs[idx].TryGetComponent(out TraitJobInfo info))
             {
                 info.CntRemove();
@@ -81,7 +83,7 @@ namespace GameS
                 }
 
                 return i > 0;
-            }).OrderBy(n =>
+            }).OrderByDescending(n =>
             {
                 int i=0;
                 if (n.TryGetComponent(out TraitJobInfo info))

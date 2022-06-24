@@ -438,10 +438,7 @@ namespace GameS
                 FiledOut(true);
             }
 
-            for (int i = 0; i < 3; i++)
-            {
-                ItemNo(i, Item[i]);
-            }
+
 
             for (int i = 0; i < CardManager.inst.CardUi.Count; i++)
             {
@@ -451,6 +448,11 @@ namespace GameS
                 }
             }
 
+            IsFiled = false;
+            for (int i = 0; i < 3; i++)
+            {
+                ItemNo(i, Item[i]);
+            }
             PhotonNetwork.Destroy(gameObject);
         }
 
@@ -712,15 +714,81 @@ namespace GameS
 
             switch (idx)
             {
+                case 17:
+                    //파수꾼의 상징
+                    if (IsFiled&&IsHaveJob(3,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobAdd(3);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
+                case 25:
+                    //전사의 상징
+                    if (IsFiled&&IsHaveJob(26,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobAdd(26);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
                 case 29:
                     
                     stat.ItemFunc29Scan.gameObject.SetActive(true);
+                    break;
+                case 32:
+                    //기사의 상징
+                    if (IsFiled&&IsHaveJob(27,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobAdd(27);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
+                case 38:
+                    //보호자의 상징
+                    if (IsFiled&&IsHaveJob(8,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobAdd(8);
+                        TraitJobManager.inst.OrderList();
+                    }
                     break;
                 case 40:
                     
                     Event_item40?.Dispose();
 
                     break;
+                case 43:
+                    //마법사의 상징
+                    if (IsFiled&&IsHaveJob(28,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobAdd(28);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
+                case 47:
+                    //왕국의 상징
+                    if (IsFiled&&IsHaveJob(24,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobAdd(24);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
+                case 50:
+                    //유령의상징
+                    if (IsFiled&&IsHaveJob(23,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobAdd(23);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
+                case 52:
+                    //암살자의 상징
+                    if (IsFiled&&IsHaveJob(25,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobAdd(25);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
+
+
                 case 53:
                     
                 PlayerInfo.Inst.foodMax++;
@@ -739,6 +807,22 @@ namespace GameS
             
             switch (idx)
             {
+                case 17:
+                    //파수꾼의 상징
+                    if (IsFiled&&IsHaveJob(3,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobRemove(3);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
+                case 25:
+                    //전사의 상징
+                    if (IsFiled&&IsHaveJob(26,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobRemove(26);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
                 case 29:
                     if (IsItemHave(29)<=0)
                     {
@@ -746,10 +830,58 @@ namespace GameS
                     stat.ItemFunc29Scan.gameObject.SetActive(false);
                     }
                     break;
+                case 32:
+                    //기사의 상징
+                    if (IsFiled&&IsHaveJob(27,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobRemove(27);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
+                case 38:
+                    //보호자의 상징
+                    if (IsFiled&&IsHaveJob(8,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobRemove(8);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
                 case 40:
                     
                     Event_item40=EventManager.inst.Sub_Item40Func.Subscribe(_x=>stat.MagicPlus(0,0,_x,true));
 
+                    break;
+                case 43:
+                    //마법사의 상징
+                    if (IsFiled&&IsHaveJob(28,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobRemove(28);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
+                case 47:
+                    //왕국의 상징
+                    if (IsFiled&&IsHaveJob(24,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobRemove(24);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
+                case 50:
+                    //유령의상징
+                    if (IsFiled&&IsHaveJob(23,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobRemove(23);
+                        TraitJobManager.inst.OrderList();
+                    }
+                    break;
+                case 52:
+                    //암살자의 상징
+                    if (IsFiled&&IsHaveJob(25,false)==false)
+                    {
+                        TraitJobManager.inst.TraitJobRemove(25);
+                        TraitJobManager.inst.OrderList();
+                    }
                     break;
                 case 53:
                     
@@ -832,8 +964,7 @@ namespace GameS
             }
             
             PlayerInfo.Inst.PlayerCard_NoFiled.Remove(gameObject);
-            PlayerInfo.Inst.PlayerFiledCardCntAdd(Character_trait1, Character_trait2, Character_Job1, Character_Job2,
-                Idx);
+            PlayerInfo.Inst.PlayerFiledCardCntAdd(this);
 
         }
 
@@ -845,8 +976,7 @@ namespace GameS
                 
             }
             PlayerInfo.Inst.PlayerCard_Filed.Remove(gameObject);
-            PlayerInfo.Inst.PlayerFiledCardCntRemove(Character_trait1, Character_trait2, Character_Job1, Character_Job2,
-                Idx);
+            PlayerInfo.Inst.PlayerFiledCardCntRemove(this);
 
         }
 
@@ -895,6 +1025,48 @@ namespace GameS
             stat.currentHp = stat.HpMax();
             stat.currentMana = stat.Mana();
             stat.ReSetFunc1();
+            
+            
+            
+            //배틀시작전
+            if (stat.IsCard&&IsFiled&&PlayerInfo.Inst.TraitandJobCnt[2]>=2)
+            {
+                if (IsHaveJob(2))
+                {
+                    if (PlayerInfo.Inst.TraitandJobCnt[2] >= 4) stat.shiled += 400;
+                    else if (PlayerInfo.Inst.TraitandJobCnt[2] >= 2) stat.shiled += 150;
+
+                }
+            }
+            if (stat.IsCard&&IsFiled&&PlayerInfo.Inst.TraitandJobCnt[7]>=2&&IsHaveJob(7))
+            {
+                stat.Job7Func();
+            }
+            if (stat.IsCard&&IsFiled&&PlayerInfo.Inst.TraitandJobCnt[9]>=2&&IsHaveJob(9))
+            {
+                stat.Job9Func();
+            }
+            if (stat.IsCard&&IsFiled&&PlayerInfo.Inst.TraitandJobCnt[10]>=2&&IsHaveJob(10))
+            {
+                stat.Job10Func();
+            }
+            if (stat.IsCard&&IsFiled&&PlayerInfo.Inst.TraitandJobCnt[22]>=2&&IsHaveJob(22))
+            {
+                stat.Job22Func();
+            }
+            if (stat.IsCard&&IsFiled&&PlayerInfo.Inst.TraitandJobCnt[27]>=2)
+            {
+                stat.Job27Func();
+            }
+            if (stat.IsCard&&IsFiled&&PlayerInfo.Inst.TraitandJobCnt[31]>=2&&PlayerInfo.Inst.TraitandJobCnt[31]<4&&IsHaveJob(31))
+            {
+                stat.Job31 = true;
+            }
+            if (stat.IsCard&&IsFiled&&PlayerInfo.Inst.TraitandJobCnt[31]>=4)
+            {
+                stat.Job31 = true;
+            }
+            
         }
         public void BattleStart()
         {
@@ -1232,6 +1404,55 @@ namespace GameS
             }
 
             return null;
+        }
+
+        public bool IsHaveJob(int idx,bool ItemCheck=true)
+        {
+            if (!stat.IsCard) return false;
+            if (Character_Job1==idx||Character_Job2==idx||Character_trait1==idx||Character_trait2==idx)
+            {
+                return true;
+            }
+
+            if (ItemCheck)
+            {
+                if (idx == 3 && IsItemHave(17) > 0)
+                {
+                    return true;
+                }
+                if (idx == 26 && IsItemHave(25) > 0)
+                {
+                    return true;
+                }
+                if (idx == 27 && IsItemHave(32) > 0)
+                {
+                    return true;
+                }
+                if (idx == 8 && IsItemHave(38) > 0)
+                {
+                    return true;
+                }
+                if (idx == 28 && IsItemHave(43) > 0)
+                {
+                    return true;
+                }
+                if (idx == 24 && IsItemHave(47) > 0)
+                {
+                    return true;
+                }
+                if (idx == 23 && IsItemHave(50) > 0)
+                {
+                    return true;
+                }
+                if (idx == 25 && IsItemHave(52) > 0)
+                {
+                    return true;
+                }
+                
+                
+            }
+
+            return false;
         }
 
         #endregion

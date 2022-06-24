@@ -38,6 +38,7 @@ public class playerinfo
         public PhotonView pv;
         public Color[] Dagamecolors;
         public Image[] Playericons;
+        public List<Card_Info> dummyInfo=new List<Card_Info>();
 
         private void Awake()
         {
@@ -554,8 +555,253 @@ public class playerinfo
                     PlayerInfo.Inst.DeadCheck(true);
                 }
             }
+            
+            
+            
+            
+            // 특성 계열 추가 트리거
 
+            if (PlayerInfo.Inst.TraitandJobCnt[3]>=3)
+            {
+                if (PlayerInfo.Inst.TraitandJobCnt[3]>=6)
+                {
+                    for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+                    {
+                        var cainfo = PlayerInfo.Inst.PlayerCard_Filed[i].GetComponent<Card_Info>();
 
+                        cainfo.stat.Job3Func();
+                    }
+
+                    if (PlayerInfo.Inst.IsCopy)
+                    {
+                        for (int i = 0; i < PVPManager.inst.copyob.Count; i++)
+                        {
+                            var cainfo = PVPManager.inst.copyob[i].GetComponent<Card_Info>();
+
+                            cainfo.stat.Job3Func();
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    int ran = Random.Range(0, PlayerInfo.Inst.PlayerCard_Filed.Count);
+                    var cainfo = PlayerInfo.Inst.PlayerCard_Filed[ran].GetComponent<Card_Info>();
+                    cainfo.stat.Job3Func();
+  
+                        if (PlayerInfo.Inst.IsCopy)
+                        {
+                            ran = Random.Range(0, PVPManager.inst.copyob.Count);
+                            cainfo = PVPManager.inst.copyob[ran].GetComponent<Card_Info>();
+                            cainfo.stat.Job3Func();
+                        }
+                }
+                
+                
+                
+                
+                
+                
+            }
+
+            
+            if (PlayerInfo.Inst.TraitandJobCnt[4]>=2)
+            {
+                if (PlayerInfo.Inst.TraitandJobCnt[4]>=4)
+                {
+                    dummyInfo.Clear();
+                    for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+                    {
+                        var check = PlayerInfo.Inst.PlayerCard_Filed[i].GetComponent<Card_Info>();
+                        if (check.IsHaveJob(4))
+                        {
+                            dummyInfo.Add(check);
+                        }
+                    }
+                    for (int i = 0; i < dummyInfo.Count; i++)
+                    {
+                        var cainfo = dummyInfo[i].GetComponent<Card_Info>();
+
+                        cainfo.stat.Job4Func();
+                    }
+
+                    if (PlayerInfo.Inst.IsCopy)
+                    {
+                        dummyInfo.Clear();
+                        for (int i = 0; i < PVPManager.inst.copyob.Count; i++)
+                        {
+                            var check = PVPManager.inst.copyob[i].GetComponent<Card_Info>();
+                            if (check.IsHaveJob(4))
+                            {
+                                dummyInfo.Add(check);
+                            }
+                        }
+                        for (int i = 0; i < dummyInfo.Count; i++)
+                        {
+                            var cainfo = dummyInfo[i].GetComponent<Card_Info>();
+
+                            cainfo.stat.Job4Func();
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    dummyInfo.Clear();
+                    for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+                    {
+                        var check = PlayerInfo.Inst.PlayerCard_Filed[i].GetComponent<Card_Info>();
+                        if (check.IsHaveJob(4))
+                        {
+                            dummyInfo.Add(check);
+                        }
+                    }
+                    int ran = Random.Range(0, dummyInfo.Count);
+                    var cainfo = dummyInfo[ran].GetComponent<Card_Info>();
+                    cainfo.stat.Job4Func();
+  
+                    if (PlayerInfo.Inst.IsCopy)
+                    {
+                        dummyInfo.Clear();
+                        for (int i = 0; i < PVPManager.inst.copyob.Count; i++)
+                        {
+                            var check = PVPManager.inst.copyob[i].GetComponent<Card_Info>();
+                            if (check.IsHaveJob(4))
+                            {
+                                dummyInfo.Add(check);
+                            }
+                        }
+                        ran = Random.Range(0, dummyInfo.Count);
+                        cainfo = dummyInfo[ran].GetComponent<Card_Info>();
+                        cainfo.stat.Job4Func();
+                    }
+                }
+                
+                
+                
+                
+                
+                
+            }
+            
+            if (PlayerInfo.Inst.TraitandJobCnt[29]>=2)
+            {
+                if (PlayerInfo.Inst.TraitandJobCnt[29]>=4)
+                {
+                    dummyInfo.Clear();
+                    for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+                    {
+                        var check = PlayerInfo.Inst.PlayerCard_Filed[i].GetComponent<Card_Info>();
+                        if (check.IsHaveJob(29))
+                        {
+                            dummyInfo.Add(check);
+                        }
+                    }
+                    for (int i = 0; i < dummyInfo.Count; i++)
+                    {
+                        var cainfo = dummyInfo[i].GetComponent<Card_Info>();
+
+                        cainfo.stat.Job29Func();
+                    }
+
+                    if (PlayerInfo.Inst.IsCopy)
+                    {
+                        dummyInfo.Clear();
+                        for (int i = 0; i < PVPManager.inst.copyob.Count; i++)
+                        {
+                            var check = PVPManager.inst.copyob[i].GetComponent<Card_Info>();
+                            if (check.IsHaveJob(29))
+                            {
+                                dummyInfo.Add(check);
+                            }
+                        }
+                        for (int i = 0; i < dummyInfo.Count; i++)
+                        {
+                            var cainfo = dummyInfo[i].GetComponent<Card_Info>();
+
+                            cainfo.stat.Job29Func();
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    dummyInfo.Clear();
+                    for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+                    {
+                        var check = PlayerInfo.Inst.PlayerCard_Filed[i].GetComponent<Card_Info>();
+                        if (check.IsHaveJob(29))
+                        {
+                            dummyInfo.Add(check);
+                        }
+                    }
+                    int ran = Random.Range(0, dummyInfo.Count);
+                    var cainfo = dummyInfo[ran].GetComponent<Card_Info>();
+                    cainfo.stat.Job29Func();
+  
+                    if (PlayerInfo.Inst.IsCopy)
+                    {
+                        dummyInfo.Clear();
+                        for (int i = 0; i < PVPManager.inst.copyob.Count; i++)
+                        {
+                            var check = PVPManager.inst.copyob[i].GetComponent<Card_Info>();
+                            if (check.IsHaveJob(29))
+                            {
+                                dummyInfo.Add(check);
+                            }
+                        }
+                        ran = Random.Range(0, dummyInfo.Count);
+                        cainfo = dummyInfo[ran].GetComponent<Card_Info>();
+                        cainfo.stat.Job29Func();
+                    }
+                }
+                
+                
+                
+                
+                
+                
+            }
+            if (PlayerInfo.Inst.TraitandJobCnt[30]>=2)
+            {
+                dummyInfo.Clear();
+                for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+                {
+                    var check = PlayerInfo.Inst.PlayerCard_Filed[i].GetComponent<Card_Info>();
+                    if (check.IsHaveJob(30))
+                    {
+                        dummyInfo.Add(check);
+                    }
+                }
+                
+                int ran = Random.Range(0, dummyInfo.Count);
+                    var cainfo = dummyInfo[ran].GetComponent<Card_Info>();
+                    //소환
+                    UnitCreate(false,"Unit_Job30",cainfo.transform.position,Quaternion.identity,3000,100,1,2,300,cainfo.TeamIdx,cainfo.EnemyTeamIdx,cainfo.stat.DmgIdx);
+
+                    if (PlayerInfo.Inst.IsCopy)
+                    {
+                        dummyInfo.Clear();
+                        for (int i = 0; i < PVPManager.inst.copyob.Count; i++)
+                        {
+                            var check = PVPManager.inst.copyob[i].GetComponent<Card_Info>();
+                            if (check.IsHaveJob(30))
+                            {
+                                dummyInfo.Add(check);
+                            }
+                        }
+                
+                         ran = Random.Range(0, dummyInfo.Count);
+                         cainfo = dummyInfo[ran].GetComponent<Card_Info>();
+                        //소환
+                        UnitCreate(true,"Unit_Job30",cainfo.transform.position,Quaternion.identity,3000,100,1,2,300,cainfo.TeamIdx,cainfo.EnemyTeamIdx,cainfo.stat.DmgIdx);
+
+                    }
+                    
+                    
+                    
+            }
+            //
 
             coTime = StartCoroutine(BattleTimeFunc());
 
@@ -576,10 +822,44 @@ public class playerinfo
                 }
 
 
+
+                if (second % 4 == 0)
+                {
+
+                    if (PlayerInfo.Inst.TraitandJobCnt[2]>=2)
+                    {
+                        float v = 7;
+                        if (PlayerInfo.Inst.TraitandJobCnt[2]>=4)
+                        {
+                            v = 10;
+                        }
+                        
+                        for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+                        {
+                            var cainfo = PlayerInfo.Inst.PlayerCard_Filed[i].GetComponent<Card_Info>();
+                            if (!cainfo.stat.IsDead&&cainfo.IsHaveJob(2))
+                            {
+                                cainfo.stat.AtkPlus(0,0,v,true);
+                            }
+                        }
+                    }
+                }
+
+
                 if (second%5==0)
                 {
                     EventManager.inst.Sub_Item40Func.OnNext(20);
                 }
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 yield return YieldInstructionCache.WaitForSeconds(1);
                 second++;
             }
@@ -648,6 +928,11 @@ public class playerinfo
                 cardinfo.UnitStart(hp,damage,Cool,range,speed,teami,enemyi,uiidx);
             }
             PVEManager.inst.Enemis.Add(ob);
+
+            if (PlayerInfo.Inst.TraitandJobCnt[31]>=4)
+            {
+                ob.GetComponent<CardState>().Job31 = true;
+            }
 
         }
         

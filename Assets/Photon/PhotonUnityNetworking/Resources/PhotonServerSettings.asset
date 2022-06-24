@@ -136,6 +136,12 @@ MonoBehaviour:
   - RPC_PlayReady
   - RPC_NoStart
   - RPC_iconSet
+  - RPC_Job7
+  - RPC_Job9
+  - RPC_Job10
+  - RPC_Job27Func
+  - RPC_Job3Func
+  - RPC_TraitandJobFunc
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
