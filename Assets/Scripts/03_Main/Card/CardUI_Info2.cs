@@ -95,11 +95,17 @@ namespace GameS
             //스킬
             SkillInfoName.text = SkillName.text;
             SkillInfoIcon.sprite = SkillIcon.sprite;
+            List<string> lvco = new List<string>();
+            lvco.Add("<color=grey>");
+            lvco.Add("<color=grey>");
+            lvco.Add("<color=grey>");
+            int lv = info.Level-1;
+            lvco[lv] = "<color=green>";
             float real1 = info.info.skillinfo.Realcheck(1, info.Level);
             float real2 = info.info.skillinfo.Realcheck(2, info.Level);
             float real3 = info.info.skillinfo.Realcheck(3, info.Level);
             string s = string.Format(CsvManager.inst.GameText(info.info.skillinfo.Info), real1, real2, real3);
-            string s1 = string.Format(CsvManager.inst.GameText(info.info.skillinfo.Info), info.info.skillinfo.Real1[0],
+            string s1 = string.Format(CsvManager.inst.GameText(info.info.skillinfo.Info),lvco[0],lvco[1],lvco[2], info.info.skillinfo.Real1[0],
                 info.info.skillinfo.Real1[1], info.info.skillinfo.Real1[2], info.info.skillinfo.Real2[0],
                 info.info.skillinfo.Real2[1], info.info.skillinfo.Real2[2], info.info.skillinfo.Real3[0],
                 info.info.skillinfo.Real3[1], info.info.skillinfo.Real3[2]);

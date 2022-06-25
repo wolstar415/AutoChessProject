@@ -71,6 +71,20 @@ namespace GameS
                         NoAtk = target_stat.NoAttackCheck(IsPhy);
                     }
                     
+                   
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     
                     card_stat.BasicFunc(target,NoAtk);
                     if (NoAtk)
@@ -81,6 +95,40 @@ namespace GameS
                         return;
                     }
 
+                    
+                    
+                    //캐릭터 추가 데미지
+                    if (card_stat.info.Idx == 0)
+                    {
+                        if (card_stat.AttackCnt%3==0)
+                        {
+                            float plus=target_stat.HpMax() * 0.08f;
+                            plus *= card_stat.info.Level;
+                            adddamage += plus;
+                        }
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    //
                     if (card_stat.IsItemFunc49)
                     {
                         card_stat.IsItemFunc49 = false;

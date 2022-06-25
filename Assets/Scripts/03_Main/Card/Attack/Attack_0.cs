@@ -26,10 +26,11 @@ namespace GameS
         void AttackFunc()
         {
             //총알생성
+            float da = stat.Atk_Damage();
             GameObject bullet = PhotonNetwork.Instantiate("Bullet_0", CreatePos.position, Quaternion.identity);
             if (bullet.TryGetComponent(out Buulet_Move1 move))
             {
-                move.StartFUnc(gameObject,Target,stat.Atk_Damage());
+                move.StartFUnc(gameObject,Target,da);
             }
         }
 
