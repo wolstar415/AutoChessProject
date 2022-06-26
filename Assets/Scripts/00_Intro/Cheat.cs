@@ -276,19 +276,22 @@ namespace GameS
             }
             else if (Input.GetKeyDown(KeyCode.Keypad4))
             {
-                ItemManager.inst.ItemAdd(17);
-                ItemManager.inst.ItemAdd(25);
-                ItemManager.inst.ItemAdd(32);
-                ItemManager.inst.ItemAdd(38);
-                ItemManager.inst.ItemAdd(43);
-                ItemManager.inst.ItemAdd(47);
-                ItemManager.inst.ItemAdd(50);
-                ItemManager.inst.ItemAdd(52);
+                // ItemManager.inst.ItemAdd(17);
+                // ItemManager.inst.ItemAdd(25);
+                // ItemManager.inst.ItemAdd(32);
+                // ItemManager.inst.ItemAdd(38);
+                // ItemManager.inst.ItemAdd(43);
+                // ItemManager.inst.ItemAdd(47);
+                // ItemManager.inst.ItemAdd(50);
+                // ItemManager.inst.ItemAdd(52);
+                PlayerInfo.Inst.PlayerCard_Filed[0].GetComponent<CardState>().NetStopFunc(true,1f,true);
             }
             else if (Input.GetKeyDown(KeyCode.Keypad5))
             {
-                CreateManager.inst.CreateCharacter(5);
-                ItemManager.inst.ItemAdd(36);
+                CreateManager.inst.CreateCharacter(8);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
             }
             else if (Input.GetKeyDown(KeyCode.Keypad6))
             {

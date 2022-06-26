@@ -460,7 +460,7 @@ public class UIManager : MonoBehaviour
         PlayerinfoPanel.SetActive(false);
         DmginfoPanel.SetActive(true);
         IsDmgShow = true;
-        if (PlayerInfo.Inst.IsBattle&&PlayerInfo.Inst.roundDamgeMax>0) DmgOrder();
+        DmgOrder();
 
     }
 

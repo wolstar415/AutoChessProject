@@ -77,6 +77,13 @@ namespace GameS
             }
         }
 
+        protected float SkillValue(int i)
+        {
+            float f = CsvManager.inst.skillinfo[info.Idx].Realcheck(i, info.Level);
+
+            return f;
+        }
+
         public virtual void SkillFunc()
         {
             

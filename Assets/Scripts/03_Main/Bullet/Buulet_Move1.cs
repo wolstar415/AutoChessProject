@@ -69,9 +69,10 @@ namespace GameS
                 DamageManager.inst.DamageFunc1(me,target,damage,eDamageType.Speel_Magic);
                 if (buIdx==1)
                 {
-                    Vector3 dir=transform.position-target.transform.position;
+                    Vector3 dir=target.transform.position-transform.position;
                     dir.Normalize();
-                    target.GetComponent<CardState>().Knockback(dir,4);
+                    dir.y = 0;
+                    target.GetComponent<CardState>().Knockback(dir,2);
                 }
                 }
                 DestoryFunc();

@@ -1496,7 +1496,7 @@ GameObject:
   - component: {fileID: 794620965866707054}
   - component: {fileID: 910973219689201242}
   - component: {fileID: 5533469372153832835}
-  - component: {fileID: 4009239644382235231}
+  - component: {fileID: -618894047976155657}
   m_Layer: 0
   m_Name: Card_5_47
   m_TagString: Cards
@@ -1780,7 +1780,7 @@ MonoBehaviour:
   pv: {fileID: 794620965866707051}
   Enemy: {fileID: 0}
   nav: {fileID: 794620965866707049}
-  attackFunc: {fileID: 4009239644382235231}
+  attackFunc: {fileID: -618894047976155657}
   Enemies: []
   Enmies2: []
   IsCool: 0
@@ -1896,7 +1896,7 @@ MonoBehaviour:
   Buff_ManaMax: 0
   Buff_NoAttack: 0
   Checkidx: 0
---- !u!114 &4009239644382235231
+--- !u!114 &-618894047976155657
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1905,16 +1905,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 794620965866707063}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50137edc4228dd948a59c8bb0342dcf0, type: 3}
+  m_Script: {fileID: 11500000, guid: 433a5b011c55239439972d51a16627a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   info: {fileID: 794620965866707054}
   stat: {fileID: 5533469372153832835}
   fsm: {fileID: 910973219689201242}
   IsFastSkill: 0
-  CreatePos: {fileID: 794620965866707055}
-  bulletPrefab: {fileID: 8047877468769543902, guid: 41218a79503f1dd47b64d56752ecd345, type: 3}
+  CreatePos: {fileID: 0}
+  bulletPrefab: {fileID: 0}
   Target: {fileID: 0}
+  SkillEffect: {fileID: 0}
+  ManaBar: {fileID: 0}
 --- !u!1 &823211600542394274
 GameObject:
   m_ObjectHideFlags: 0

@@ -870,14 +870,15 @@ namespace GameS
 
         protected IEnumerator IKnockback(Vector3 dis,int power)
         {
-            
-            while (power>0)
+            int cnt = power;
+            while (cnt>0)
             {
                 if(IsDead) yield break;
-                power--;
+                cnt--;
 
 
-                transform.Translate(dis*Time.deltaTime*10);
+                //transform.Translate(dis*Time.deltaTime*10);
+                transform.position = transform.position + (dis * Time.deltaTime*30);
                 yield return null;
             }
             
