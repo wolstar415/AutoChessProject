@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GameS
 {
@@ -31,7 +32,7 @@ namespace GameS
             textHUD.text = text;
             textHUD.color = color;
             rectTransform.localScale = new Vector3(Size, Size, Size);
-            StartCoroutine(OnHUDText2(pos, gap));
+            StartCoroutine(OnHUDText2(pos+new Vector3(0,Random.Range(0,3f),0), gap));
         }
 
         IEnumerator OnHUDText2(Vector3 pos, float gap)

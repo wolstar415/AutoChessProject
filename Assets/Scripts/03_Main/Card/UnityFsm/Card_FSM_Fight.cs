@@ -20,7 +20,7 @@ namespace GameS
 
     public List<GameObject> Enmies2=new List<GameObject>();
     public bool IsCool=false;
-    
+    private Coroutine CoCool=null;
 
 
      public eCardFight_STATE state; // 인스펙터 확인용
@@ -28,6 +28,7 @@ namespace GameS
      public float noConTime = 0;
     public bool stop = false;
         public Card_Info info;
+        private FSMMsg noconmsg = new FSMMsg(0);
 
      
         // Start is called before the first frame update
@@ -133,7 +134,7 @@ namespace GameS
             }
 
             if (Enmies2.Count==0)
-                Enemy = FindNearestObject();
+                Enemy = GameSystem_AllInfo.inst.FindFirstObject(transform.position,info.EnemyTeamIdx,26f,true);
 
 
 
@@ -150,49 +151,7 @@ namespace GameS
             return null;
         }
 
-        public GameObject FindNearestObject()
-        {
 
-            
-            // Collider[] c =
-            // Physics.OverlapSphereNonAlloc(transform.position, 30f, c,
-            //     GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
-            // Collider[] c = new Collider[] { };
-            // var size = Physics.OverlapSphereNonAlloc(transform.position, 30f, c, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
-
-            Collider[] c = Physics.OverlapSphere(transform.position, 25f, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
-              c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false&&ob.GetComponent<Card_Info>().IsFiled&&
-                          ob.GetComponent<UnitState>().IsInvin == 0).OrderBy(ob => Vector3.Distance(transform.position, ob.transform.position)).ToArray();
-
-            
-             if (c.Length >0)
-             {
-            
-                 Enemy = c[0].gameObject;
-                 return Enemy;
-             }
-
-            return null;
-        }
-        public GameObject FindFarObjectasdasd()
-        {
-            // Collider[] c=null;
-            // Physics.OverlapSphereNonAlloc(transform.position, 30f, c,
-            //     GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
-            Collider[] c = Physics.OverlapSphere(transform.position, 25f, GameSystem_AllInfo.inst.masks[info.EnemyTeamIdx]);
-            c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false &&
-                             ob.GetComponent<UnitState>().IsInvin == 0&&ob.GetComponent<Card_Info>().IsFiled).OrderByDescending(ob => Vector3.Distance(transform.position, ob.transform.position)).ToArray();
-
-            
-            if (c.Length >0)
-            {
-
-                Enemy = c[0].gameObject;
-                return Enemy;
-            }
-
-            return null;
-        }
 
         public void EnemyEnter()
         {
@@ -219,18 +178,25 @@ namespace GameS
         }
 
 
-        public void CoolStart()
+        public void CoolStart(bool Re=false)
         {
-            StartCoroutine(CoolFunc(info.stat.Atk_Cool()) );
+            if(CoCool!=null) StopCoroutine(CoCool);
+            if (Re)
+            {
+                CoCool=StartCoroutine(CoolFunc(0.2f) );
+                return;
+            }
+            CoCool=StartCoroutine(CoolFunc(info.stat.Atk_Cool()) );
         }
         IEnumerator CoolFunc(float f)
         {
             yield return YieldInstructionCache.WaitForSeconds(f);
             IsCool = true;
+            CoCool = null;
 
         }
         
-        public void NoConTime(float Time,bool b)
+        public void NoConTime(float Time,bool b,int msg=0)
         {
             if (b)
             {
@@ -242,7 +208,9 @@ namespace GameS
                 noConTime = Time;
 
             }
-            fsm.SetState(eCardFight_STATE.NoCon);
+
+            noconmsg.m_msgType = msg;
+            fsm.SetState(eCardFight_STATE.NoCon,false,noconmsg);
         }
 
     }

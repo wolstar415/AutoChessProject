@@ -194,6 +194,8 @@ namespace GameS
             get { return _currentMana; }
             set
             {
+                if (IsNomana||BuffNomana>0) return;
+                
                 if (ManaMax()<=0)
                 {
                     return;
@@ -243,7 +245,10 @@ namespace GameS
         
         public bool IsDead;
         public int IsInvin;
+        public int BuffNomana=0;
+        public int AttackFailed=0;
         public bool IsStun;
+        public bool IsNomana=false;
 
         [PunRPC]
         protected void RPC_SetCurrentHp(float hp)
@@ -310,6 +315,7 @@ namespace GameS
 
         public void RangeSet()
         {
+            return;
             float f = Range();
             f=Mathf.Clamp(f, 0, 10);
             collider.radius =f;
@@ -511,6 +517,7 @@ namespace GameS
 
         public void MpHeal(float v)
         {
+            if (IsNomana||BuffNomana>0) return;
             if (v <= 0) return;
             currentMana += v;
         }
@@ -809,6 +816,71 @@ namespace GameS
         protected void RPC_Job10(int cnt)
         {
             Job10 = cnt;
+        }
+
+        public void NoAttack(bool Plus, float t)
+        {
+            pv.RPC(nameof(RPC_NoAttack),RpcTarget.All,Plus,t);
+        }
+
+        [PunRPC]
+        protected void RPC_NoAttack(bool Plus ,float t)
+        {
+            if (t <= 0)
+            {
+                if (Plus) AttackFailed ++;
+                else AttackFailed --;
+                return;
+            }
+            else
+            {
+                StartCoroutine(IRPC_NoAttack(Plus, t));
+            }
+        }
+
+        protected IEnumerator IRPC_NoAttack(bool Plus, float t)
+        {
+            if (Plus) AttackFailed ++;
+            else AttackFailed --;
+            yield return YieldInstructionCache.WaitForSeconds(t);
+            if (IsDead)
+            {
+                yield break;
+            }
+            
+            if (Plus) AttackFailed --;
+            else AttackFailed ++;
+        }
+
+
+        public void Knockback(Vector3 dis,int power)
+        {
+            if (IsDead) return;
+            pv.RPC(nameof(RPC_Knockback),RpcTarget.All,dis,power);
+        }
+        [PunRPC]
+        protected void RPC_Knockback(Vector3 dis,int power)
+        {
+            if (pv.IsMine)
+            {
+                if (IsDead) return;
+                StartCoroutine(IKnockback(dis, power));
+            }
+        }
+
+        protected IEnumerator IKnockback(Vector3 dis,int power)
+        {
+            
+            while (power>0)
+            {
+                if(IsDead) yield break;
+                power--;
+
+
+                transform.Translate(dis*Time.deltaTime*10);
+                yield return null;
+            }
+            
         }
 
     }

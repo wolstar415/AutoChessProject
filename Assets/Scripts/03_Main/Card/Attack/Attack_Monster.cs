@@ -8,7 +8,7 @@ namespace GameS
     public class Attack_Monster : AttackFunc
     {
 
-        public override void BasicAttack(GameObject target)
+        public override void BasicAttack(GameObject target,float t=0.2f)
         {
             base.BasicAttack(target);
            //fsm.NoConTime(stat.Atk_Cool(),false);

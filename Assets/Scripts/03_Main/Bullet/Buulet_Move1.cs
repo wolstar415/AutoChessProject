@@ -13,23 +13,29 @@ namespace GameS
         public GameObject me;
         public float damage;
         private bool phy = false;
+        public int buIdx = 0;
 
         [SerializeField] private float Speed = 10f;
         // Start is called before the first frame update
 
 
         // Update is called once per frame
-        public void StartFUnc(GameObject _me,GameObject _target,float _damage,bool _phy=true)
+        public void StartFUnc(GameObject _me, GameObject _target, float _damage,bool _phy = true, int _buIdx = 0)
         {
             me = _me;
             target = _target;
             damage = _damage;
             phy = _phy;
+            buIdx = _buIdx;
         }
         void Update()
         {
             if (!pv.IsMine) return;
-            if (target == null) return;
+            if (target == null)
+            {
+                DestoryFunc();
+                return;
+            }
             if (target.TryGetComponent(out UnitState state))
             {
                 if (state.IsDead==true)
@@ -60,8 +66,13 @@ namespace GameS
                 }
                 else
                 {
-                DamageManager.inst.DamageFunc1(me,target,damage,eDamageType.Basic_Magic);
-                    
+                DamageManager.inst.DamageFunc1(me,target,damage,eDamageType.Speel_Magic);
+                if (buIdx==1)
+                {
+                    Vector3 dir=transform.position-target.transform.position;
+                    dir.Normalize();
+                    target.GetComponent<CardState>().Knockback(dir,4);
+                }
                 }
                 DestoryFunc();
             }

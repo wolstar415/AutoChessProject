@@ -1639,7 +1639,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 794620965866707063}
   m_Enabled: 0
   m_AgentTypeID: 0
-  m_Radius: 0.1
+  m_Radius: 0.8
   m_Speed: 2
   m_Acceleration: 20
   avoidancePriority: 50
@@ -1690,8 +1690,8 @@ MonoBehaviour:
   Idx: 0
   MoveIdx: 0
   TileOb: {fileID: 0}
-  IsDead: 0
   GoldCost: 0
+  IsAni: 0
   info:
     Idx: 0
     Tier: 0
@@ -1800,11 +1800,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c01d28e37a36d4694f60f9a6cc2492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTime: 0.15
   pv: {fileID: 794620965866707051}
   collider: {fileID: 8509926675263366635}
   nav: {fileID: 794620965866707049}
   ani: {fileID: 6922979768061096268}
+  gani: {fileID: 0}
   IsCard: 1
   monster: 0
   IsUnit: 0
@@ -1841,9 +1841,21 @@ MonoBehaviour:
   IsItemFunc29: 0
   ItemFunc29Scan: {fileID: 4778588549133132389}
   NoHeal: 0
+  Job3: 0
+  Job4: 0
+  Job7: 0
+  Job9: 0
+  Job29: 0
+  Job10: 0
+  Job27: 0
+  Job31: 0
+  Job31_2: 0
   IsDead: 0
   IsInvin: 0
+  BuffNomana: 0
+  AttackFailed: 0
   IsStun: 0
+  IsNomana: 0
   Char_Hp: 0
   Char_Range: 0
   Char_Atk_Cool: 0

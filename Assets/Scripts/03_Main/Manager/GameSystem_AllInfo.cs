@@ -141,6 +141,64 @@ namespace GameS
 
             return result;
         }
+        
+        public GameObject FindFirstObject(Vector3 pos,int Findidx,float dis,bool Nearest)
+        {
+            
+            Collider[] c = Physics.OverlapSphere(pos, dis, GameSystem_AllInfo.inst.masks[Findidx]);
+
+            if (Nearest)
+            {
+                
+            c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false&&ob.GetComponent<Card_Info>().IsFiled&&
+                             ob.GetComponent<UnitState>().IsInvin == 0).OrderBy(ob => Vector3.Distance(pos, ob.transform.position)).ToArray();
+            }
+            else
+            {
+                c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false &&
+                                 ob.GetComponent<UnitState>().IsInvin == 0&&ob.GetComponent<Card_Info>().IsFiled).OrderByDescending(ob => Vector3.Distance(pos, ob.transform.position)).ToArray();
+
+            }
+
+            
+            if (c.Length >0)
+            {
+                return c[0].gameObject;
+            }
+
+            return null;
+        }
+        
+        public GameObject FindRandomObject(Vector3 pos,int Findidx,float f)
+        {
+            
+            Collider[] c = Physics.OverlapSphere(pos, f, GameSystem_AllInfo.inst.masks[Findidx]);
+            c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false&&ob.GetComponent<Card_Info>().IsFiled&&
+                             ob.GetComponent<UnitState>().IsInvin == 0).ToArray();
+            
+
+
+            
+            if (c.Length >0)
+            {
+                int ran = Random.Range(0, c.Length);
+                return c[ran].gameObject;
+            }
+
+            return null;
+        }
+        public List<GameObject> FindAllObject(Vector3 pos,int Findidx,float f)
+        {
+            
+            Collider[] c = Physics.OverlapSphere(pos, f, GameSystem_AllInfo.inst.masks[Findidx]);
+            List<GameObject> Dummy= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false&&ob.GetComponent<Card_Info>().IsFiled&&
+                                                  ob.GetComponent<UnitState>().IsInvin == 0).Select(x=>x.gameObject).ToList();
+
+            
+
+            return Dummy;
+        }
+
 
 
     }

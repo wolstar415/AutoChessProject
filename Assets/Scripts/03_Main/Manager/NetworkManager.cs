@@ -776,7 +776,7 @@ public class playerinfo
                 int ran = Random.Range(0, dummyInfo.Count);
                     var cainfo = dummyInfo[ran].GetComponent<Card_Info>();
                     //소환
-                    UnitCreate(false,"Unit_Job30",cainfo.transform.position,Quaternion.identity,3000,100,1,2,350,cainfo.TeamIdx,cainfo.EnemyTeamIdx,cainfo.stat.DmgIdx);
+                    UnitCreate(false,"Unit_Job30",cainfo.transform.position,Quaternion.identity,3000,100,1,2.6f,350,cainfo.TeamIdx,cainfo.EnemyTeamIdx,cainfo.stat.DmgIdx);
 
                     if (PlayerInfo.Inst.IsCopy)
                     {
@@ -793,7 +793,7 @@ public class playerinfo
                          ran = Random.Range(0, dummyInfo.Count);
                          cainfo = dummyInfo[ran].GetComponent<Card_Info>();
                         //소환
-                        UnitCreate(true,"Unit_Job30",cainfo.transform.position,Quaternion.identity,3000,100,1,2,350,cainfo.TeamIdx,cainfo.EnemyTeamIdx,cainfo.stat.DmgIdx);
+                        UnitCreate(true,"Unit_Job30",cainfo.transform.position,Quaternion.identity,3000,100,1,2.6f,350,cainfo.TeamIdx,cainfo.EnemyTeamIdx,cainfo.stat.DmgIdx);
 
                     }
                     

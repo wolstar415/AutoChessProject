@@ -8,7 +8,7 @@ namespace GameS
     public class Attack_0 : AttackFunc
     {
 
-        public override void BasicAttack(GameObject target)
+        public override void BasicAttack(GameObject target,float t=0.2f)
         {
             base.BasicAttack(target);
             StartCoroutine(IAttackFunc());
@@ -27,7 +27,7 @@ namespace GameS
         {
             //총알생성
             float da = stat.Atk_Damage();
-            GameObject bullet = PhotonNetwork.Instantiate("Bullet_0", CreatePos.position, Quaternion.identity);
+            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Bullet", CreatePos.position, Quaternion.identity);
             if (bullet.TryGetComponent(out Buulet_Move1 move))
             {
                 move.StartFUnc(gameObject,Target,da);

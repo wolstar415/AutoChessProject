@@ -34,7 +34,6 @@ namespace GameS
         public int Idx;
         public int MoveIdx;
         public GameObject TileOb;
-        public bool IsDead = false;
         public int GoldCost; //가격
 
         public bool IsAni;
@@ -219,7 +218,7 @@ namespace GameS
             gameObject.layer = 6 + PlayerIdx;
             stat.nav.speed = stat.Speed() * 0.01f;
             stat.currentHp = stat.HpMax();
-            stat.currentMana = stat.ManaMax();
+            stat.currentMana = stat.Mana();
             stat.HpAndMpSet();
             if (pv.IsMine)
             {
@@ -236,7 +235,7 @@ namespace GameS
             IsFiled = true;
             stat.Char_Speed = 350f;
             stat.nav.speed = 200 * 0.01f;
-            stat.Char_Range = 1.8f;
+            stat.Char_Range = 2.6f;
             stat.RangeSet();
             stat.Checkidx = Checkidx;
             pv.RPC(nameof(RPC_EnemyStart),RpcTarget.All,hp,damage,Cool,PlayerInfo.Inst.PlayerIdx);
@@ -264,7 +263,7 @@ namespace GameS
             EnemyTeamIdx = playeridx;
             gameObject.layer = 16;
             stat.currentHp = stat.HpMax();
-            stat.currentMana = stat.ManaMax();
+            stat.currentMana = stat.Mana();
             stat.HpAndMpSet();
         }
 
@@ -280,7 +279,7 @@ namespace GameS
             pv.RPC(nameof(RPC_UnitStart), RpcTarget.All, hp, damage, Cool, teami, enemyi);
 
 
-            stat.collider.enabled = true;
+            //stat.collider.enabled = true;
             stat.nav.enabled = true;
             fsm.BattleStart();
         }
@@ -298,7 +297,7 @@ namespace GameS
             EnemyTeamIdx = enemyi;
             gameObject.layer = 6 + teami;
             stat.currentHp = stat.HpMax();
-            stat.currentMana = stat.ManaMax();
+            stat.currentMana = stat.Mana();
             if (!pv.IsMine)stat.ColorChange();
             stat.HpAndMpSet();
             
@@ -350,7 +349,7 @@ namespace GameS
             gameObject.layer = 6 + PlayerIdx;
             stat.nav.speed = stat.Speed() * 0.01f;
             stat.currentHp = stat.HpMax();
-            stat.currentMana = stat.ManaMax();
+            stat.currentMana = stat.Mana();
             stat.HpAndMpSet();
             if (pv.IsMine)
             {
@@ -365,6 +364,7 @@ namespace GameS
         {
 
             int lv = Level+1;
+            EffectManager.inst.EffectCreate("LevelUp",transform.position,Quaternion.Euler(90,0,0),1.5f);
             pv.RPC(nameof(RPC_LevelUp),RpcTarget.All,lv);
 
         }
@@ -1094,7 +1094,7 @@ namespace GameS
         public void BattleStart()
         {
             if (!IsFiled) return;
-            stat.collider.enabled = true;
+            //stat.collider.enabled = true;
             stat.nav.enabled = true;
             fsm.BattleStart();
 
@@ -1249,6 +1249,7 @@ namespace GameS
                         {
                             
                         ca.IsItemFunc36 = true;
+                        EffectManager.inst.EffectCreate("Item36_Effect",ca.transform.position,Quaternion.Euler(-90,0,0));
                         Vector3 ad = ca.transform.position;
                         ad.y = 5;
                         ca.NetStopFunc(false,5,false);

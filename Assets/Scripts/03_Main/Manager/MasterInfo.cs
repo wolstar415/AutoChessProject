@@ -484,12 +484,12 @@ public class MasterInfo : MonoBehaviourPunCallbacks
          UIManager.inst.TimeFunc(30);
          for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
          {
-             if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
+             if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out CardState stat))
              {
-                 if (!info.IsDead)
+                 if (!stat.IsDead)
                  {
                      
-                    info.stat.AtkPlus(0, 0, 500, true);
+                    stat.AtkPlus(0, 0, 500, true);
                  }
              }
          }

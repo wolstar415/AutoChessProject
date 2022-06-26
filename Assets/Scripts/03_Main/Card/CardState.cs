@@ -114,9 +114,9 @@ namespace GameS
             float v = Char_Range + Item_Range + Buff_Range;
             if (info.IsItemHave(18)>0)
             {
-                v += (info.IsItemHave(18) * 1.8f);
+                v += (info.IsItemHave(18) * 2.6f);
             }
-            v=Mathf.Clamp(v, 0.1f, 11f);
+            v=Mathf.Clamp(v, 0.1f, 15f);
             return v;
         }
         public override float Atk_Cool()//공속
@@ -124,13 +124,13 @@ namespace GameS
             float v = Char_Atk_Cool;
             float v2=Item_Atk_Cool+Buff_Atk_Cool;
             if (IsItemFunc29 > 0) v2 -= 30f;
-            v = v - (v * (v2 * 0.01f));
-            if (Job31_2 >= 5) v += 50;
-            else if (Job31_2 >= 4) v += 40;
-            else if (Job31_2 >= 3) v += 30;
-            else if (Job31_2 >= 2) v += 20;
-            else if (Job31_2 >= 1) v += 10;
-            
+            if (Job31_2 >= 5) v2 += 50;
+            else if (Job31_2 >= 4) v2 += 40;
+            else if (Job31_2 >= 3) v2 += 30;
+            else if (Job31_2 >= 2) v2 += 20;
+            else if (Job31_2 >= 1) v2 += 10;
+
+            v = v / (1 + (v2*0.01f));
             v=Mathf.Clamp(v, 0.2f, 5f);
            
             return v;
@@ -666,6 +666,11 @@ namespace GameS
             AttackCnt = 0;
             AttackOb = null;
             OneAttackCnt = 0;
+            
+            // if (TryGetComponent(out CapsuleCollider col))
+            // {
+            //     col.enabled = true;
+            // }
             pv.RPC(nameof(RPC_BattleEndReset),RpcTarget.All);
         }
 
@@ -705,6 +710,8 @@ namespace GameS
             Job29 = false;
             Job31 = false;
             Job31_2 = 0;
+            BuffNomana = 0;
+            AttackFailed = 0;
 
 
 
@@ -725,6 +732,8 @@ namespace GameS
             IsInvin = 0;
             IsDead = false;
             IsStun = false;
+
+            info.fsm.attackFunc.BattelEnd();
         }
         public void ReSetFunc1()
         {
@@ -833,7 +842,7 @@ namespace GameS
                 float hp=lv*3;
                 float damage=30*lv;
                 float cool=0.5f;
-                float range=1.8f;
+                float range=2.6f;
                 float speed=350f;
                 for (int i = 0; i < have23; i++)
                 {
@@ -893,6 +902,7 @@ namespace GameS
 
         public void DeadCheck(bool b)
         {
+            StopAllCoroutines();
             pv.RPC(nameof(RPC_Dead),RpcTarget.All,b);
         }
 

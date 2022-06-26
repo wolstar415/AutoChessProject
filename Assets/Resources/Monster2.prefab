@@ -604,7 +604,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1
-  m_BlocksRaycasts: 0
+  m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!1 &457612258
 GameObject:
@@ -1484,7 +1484,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 794620965866707063}
   m_Enabled: 0
   m_AgentTypeID: 0
-  m_Radius: 0.1
+  m_Radius: 0.8
   m_Speed: 2
   m_Acceleration: 20
   avoidancePriority: 50
@@ -1535,7 +1535,6 @@ MonoBehaviour:
   Idx: 0
   MoveIdx: 0
   TileOb: {fileID: 0}
-  IsDead: 0
   GoldCost: 0
   IsAni: 0
   info:
@@ -1698,7 +1697,10 @@ MonoBehaviour:
   Job31_2: 0
   IsDead: 0
   IsInvin: 0
+  BuffNomana: 0
+  AttackFailed: 0
   IsStun: 0
+  IsNomana: 0
   Char_Hp: 0
   Char_Range: 0
   Char_Atk_Cool: 0

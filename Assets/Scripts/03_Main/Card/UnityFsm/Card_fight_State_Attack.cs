@@ -39,7 +39,7 @@ namespace GameS
                 return;
             }
             //거리가멀거나 적이없거나 무적이거나 죽었을때
-            if (Fight.Enemy==null||Fight.EnemyCheck() == false||Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position) > Fight.info.stat.Range())
+            if (Fight.Enemy==null||Fight.EnemyCheck() == false||Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position) > Fight.info.stat.Range()+1.2)
             {
                 Fight.fsm.SetState(eCardFight_STATE.Idle);
                 return;

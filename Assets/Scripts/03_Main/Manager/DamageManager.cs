@@ -64,29 +64,19 @@ namespace GameS
                     
                     
                     IsPhy = true;
-                    if (!card_stat.Job31)
+                    if (card_stat.AttackFailed == 0)
                     {
-                        
-                    if (card_stat.info.IsItemHave(18)==0)
-                        NoAtk = target_stat.NoAttackCheck(IsPhy);
+
+                        if (!card_stat.Job31)
+                        {
+
+                            if (card_stat.info.IsItemHave(18) == 0) NoAtk = target_stat.NoAttackCheck(IsPhy);
+                        }
+
+                        card_stat.BasicFunc(target, NoAtk);
                     }
+                    else NoAtk = true;
                     
-                   
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    card_stat.BasicFunc(target,NoAtk);
                     if (NoAtk)
                     {
 //                        Debug.Log("회피중");
@@ -300,8 +290,8 @@ namespace GameS
                     //덤불조끼 반사!
                     target_stat.ItemFuncAdd(26, true, 2.5f,false);
                 }
-                getmana = getmana+(damage * 0.07f);
-                getmana=Mathf.Clamp(getmana, 0, 50);
+                getmana = getmana+(damage * 0.05f);
+                getmana=Mathf.Clamp(getmana, 0, 30);
                 target_stat.MpHeal(getmana);
             
             

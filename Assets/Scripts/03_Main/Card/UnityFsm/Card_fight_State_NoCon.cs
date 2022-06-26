@@ -7,6 +7,7 @@ namespace GameS
     public class Card_fight_State_NoCon : Card_FSM_FightState
     {
         private float CurTime = 0;
+        public int Check = 0;
 
         public Card_fight_State_NoCon(Card_FSM_Fight _cardFsmFight): base(_cardFsmFight, eCardFight_STATE.NoCon)
         {
@@ -18,12 +19,17 @@ namespace GameS
         {
             Fight.state = eCardFight_STATE.NoCon;
             CurTime = 0f;
+            if (_msg.m_msgType>0)
+            {
+                Check += _msg.m_msgType;
+            }
             //base.Enter(_msg);
 
         }
 
         public override void Update()
         {
+            if (Check>0) return;
             CurTime += Time.deltaTime;
             if (CurTime>=Fight.noConTime)
             {
@@ -46,14 +52,13 @@ namespace GameS
         public override void Finally()
         {
             CurTime = 0f;
+            Check = 0;
             //base.Finally();
             //Fight.info.MoveIdx = 1;
+
         }
 
-        public override void SetMsg(FSMMsg _msg)
-        {
-            
-        }
+
     }
     
     

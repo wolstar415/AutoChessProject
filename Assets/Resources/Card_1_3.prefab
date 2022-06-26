@@ -1496,7 +1496,7 @@ GameObject:
   - component: {fileID: 794620965866707054}
   - component: {fileID: 910973219689201242}
   - component: {fileID: 5533469372153832835}
-  - component: {fileID: 4009239644382235231}
+  - component: {fileID: 4313146796880137364}
   m_Layer: 0
   m_Name: Card_1_3
   m_TagString: Cards
@@ -1639,7 +1639,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 794620965866707063}
   m_Enabled: 0
   m_AgentTypeID: 0
-  m_Radius: 0.1
+  m_Radius: 0.8
   m_Speed: 2
   m_Acceleration: 500
   avoidancePriority: 50
@@ -1690,7 +1690,6 @@ MonoBehaviour:
   Idx: 3
   MoveIdx: 0
   TileOb: {fileID: 0}
-  IsDead: 0
   GoldCost: 0
   IsAni: 0
   info:
@@ -1781,7 +1780,7 @@ MonoBehaviour:
   pv: {fileID: 794620965866707051}
   Enemy: {fileID: 0}
   nav: {fileID: 794620965866707049}
-  attackFunc: {fileID: 4009239644382235231}
+  attackFunc: {fileID: 4313146796880137364}
   Enemies: []
   Enmies2: []
   IsCool: 0
@@ -1853,7 +1852,10 @@ MonoBehaviour:
   Job31_2: 0
   IsDead: 0
   IsInvin: 0
+  BuffNomana: 0
+  AttackFailed: 0
   IsStun: 0
+  IsNomana: 0
   Char_Hp: 0
   Char_Range: 0
   Char_Atk_Cool: 0
@@ -1894,7 +1896,7 @@ MonoBehaviour:
   Buff_ManaMax: 0
   Buff_NoAttack: 0
   Checkidx: 0
---- !u!114 &4009239644382235231
+--- !u!114 &4313146796880137364
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1903,7 +1905,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 794620965866707063}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50137edc4228dd948a59c8bb0342dcf0, type: 3}
+  m_Script: {fileID: 11500000, guid: 401f510808ffc46419b8ad5d29c6c08a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   info: {fileID: 794620965866707054}
@@ -1911,7 +1913,7 @@ MonoBehaviour:
   fsm: {fileID: 910973219689201242}
   IsFastSkill: 0
   CreatePos: {fileID: 794620965866707055}
-  bulletPrefab: {fileID: 8047877468769543902, guid: 41218a79503f1dd47b64d56752ecd345, type: 3}
+  bulletPrefab: {fileID: 8047877468769543902, guid: a71c56e16726f0743ae52604b221aade, type: 3}
   Target: {fileID: 0}
 --- !u!1 &823211600542394274
 GameObject:

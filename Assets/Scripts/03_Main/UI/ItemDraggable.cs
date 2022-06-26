@@ -191,6 +191,7 @@ namespace GameS
                         info.Itemadd(Idx);
                     }
                     Destroy(gameObject);
+                    
                 }
             }
             else if (ob!=null)
@@ -214,6 +215,8 @@ namespace GameS
             ShowInfo = false;
             CreateItemInfoOb.SetActive(false);
             CardItemInfoOb.SetActive(false);
+            CanvasGroup.blocksRaycasts = true;
+            gridLayout.enabled = true;
         }
 
 

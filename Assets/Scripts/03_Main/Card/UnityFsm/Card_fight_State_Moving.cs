@@ -9,6 +9,7 @@ namespace GameS
         private bool IsMoving = false;
         private static readonly int Run = Animator.StringToHash("Run");
 
+        public float culTime;
         public Card_fight_State_Moving(Card_FSM_Fight _cardFsmFight): base(_cardFsmFight, eCardFight_STATE.Moving)
         {
         }
@@ -16,6 +17,7 @@ namespace GameS
 
         public override void Enter(FSMMsg _msg)
         {
+            culTime = 0;
             Fight.state = eCardFight_STATE.Moving;
             Fight.FindEnemy(); // 혹시모르니까 버그체크
             if (Fight.Enemy==null)
@@ -71,7 +73,12 @@ namespace GameS
             if (Fight.EnemyCheck() == false) //죽었거나 무적일경우 제거
                 Fight.Enemy = null;
             
-            
+            culTime += Time.deltaTime;
+            if (culTime>=0.5f)
+            {
+                culTime = 0;
+                Fight.FindEnemy();
+            }
                 if (Fight.Enemy == null)
             {
                 Fight.fsm.SetState(eCardFight_STATE.Idle);
@@ -82,10 +89,10 @@ namespace GameS
             Fight.nav.SetDestination(Fight.Enemy.transform.position); 
             
             //거리체크
-            
+
             if (Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position) <= Fight.info.stat.Range()+1f)
             {
-            // Debug.Log($"거리 :{Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position)}\n 사정거리:{Fight.info.stat.Range()}");
+//             Debug.Log($"거리 :{Vector3.Distance(Fight.transform.position, Fight.Enemy.transform.position)}\n 사정거리:{Fight.info.stat.Range()}");
                 Fight.nav.isStopped = true;
                 Fight.fsm.SetState(eCardFight_STATE.Attack);
             }

@@ -160,7 +160,7 @@ namespace GameS
                         pos.y = 1.5f;
                         GameObject ob1= PhotonNetwork.Instantiate("Monster5", pos, Quaternion.Euler(0, 180, 0));
                         Enemis.Add(ob1);
-                        ob1.GetComponent<Card_Info>().EnemyStart(1500,100,100,Random.Range(9,53));
+                        ob1.GetComponent<Card_Info>().EnemyStart(1500,1,1,100,Random.Range(9,53));
                         PlayerInfo.Inst.pVEdeadCnt = 1;
                         break;
                     }
@@ -172,7 +172,7 @@ namespace GameS
                         pos.y = 1.5f;
                         GameObject ob1= PhotonNetwork.Instantiate("Monster6", pos, Quaternion.Euler(0, 180, 0));
                         Enemis.Add(ob1);
-                        ob1.GetComponent<Card_Info>().EnemyStart(2000,150,1,100,Random.Range(9,53));
+                        ob1.GetComponent<Card_Info>().EnemyStart(2000,1,1,100,Random.Range(9,53));
                         PlayerInfo.Inst.pVEdeadCnt = 1;
                         break;
                     }
@@ -187,7 +187,6 @@ namespace GameS
                         ob1.GetComponent<Card_Info>().EnemyStart(4000,200,1,100,Random.Range(9,53));
                         PlayerInfo.Inst.pVEdeadCnt = 1;
                         break;
-                        break;
                     }
                 case 9:
                     if (true)
@@ -198,8 +197,7 @@ namespace GameS
                         GameObject ob1= PhotonNetwork.Instantiate("Monster8", pos, Quaternion.Euler(0, 180, 0));
                         Enemis.Add(ob1);
                         ob1.GetComponent<Card_Info>().EnemyStart(6000,250,1,100,Random.Range(9,53));
-                        PlayerInfo.Inst.pVEdeadCnt = 1;
-                        break;
+                        PlayerInfo.Inst.pVEdeadCnt = 1; ;
                         break;
                     }
                 default:

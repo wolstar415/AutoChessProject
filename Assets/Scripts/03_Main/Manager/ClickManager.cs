@@ -368,10 +368,16 @@ namespace GameS
             clickstate = PlayerClickState.None;
             clickstate2 = PlayerClickState2.None;
 
-
+            if (ClickCard.TryGetComponent(out CapsuleCollider col))
+            {
+                col.enabled = true;
+            }
             SellCheck = false;
             ClickCard = null;
             UIManager.inst.SellClose();
+            
+            
+            
         }
 
         void CharacterTileMove(GameObject ob, GameObject Tile)

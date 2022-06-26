@@ -148,9 +148,29 @@ namespace GameS
         GameObject.Find("Cheat").GetComponent<Cheat>().idx = idx;
 
     }
-#endif
+                [MenuItem("MyMenu/change")]
+        static void Check()
+        {
+            GameObject ob1 = GameObject.Find("Check1");
+            GameObject ob2 = GameObject.Find("Check2");
+
+            
+            Collider[] c = Physics.OverlapSphere(ob1.transform.position, 3, LayerMask.GetMask("Player_1"));
+            if (c.Length==0) 
+            {
+                Debug.Log($"안들어옴 거리:{Vector3.Distance(ob1.transform.position,ob2.transform.position)}");
+
+            }
+            else
+            {
+                Debug.Log($"들어옴 거리:{Vector3.Distance(ob1.transform.position,ob2.transform.position)}");
+
+            }
+            
         
-       
+        }
+
+#endif
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Keypad1))
@@ -264,6 +284,11 @@ namespace GameS
                 ItemManager.inst.ItemAdd(47);
                 ItemManager.inst.ItemAdd(50);
                 ItemManager.inst.ItemAdd(52);
+            }
+            else if (Input.GetKeyDown(KeyCode.Keypad5))
+            {
+                CreateManager.inst.CreateCharacter(5);
+                ItemManager.inst.ItemAdd(36);
             }
             else if (Input.GetKeyDown(KeyCode.Keypad6))
             {
