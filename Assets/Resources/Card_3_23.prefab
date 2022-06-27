@@ -1784,6 +1784,7 @@ MonoBehaviour:
   Enemies: []
   Enmies2: []
   IsCool: 0
+  noCon: 0
   state: 0
   noConTime: 0
   stop: 0
@@ -1855,7 +1856,7 @@ MonoBehaviour:
   BuffNomana: 0
   AttackFailed: 0
   IsStun: 0
-  IsNomana: 0
+  IsNomana: 1
   Char_Hp: 0
   Char_Range: 0
   Char_Atk_Cool: 0

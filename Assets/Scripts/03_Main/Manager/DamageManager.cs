@@ -23,7 +23,7 @@ namespace GameS
         private List<GameObject> Listob = new List<GameObject>();
 
         
-        public void DamageFunc1(GameObject card, GameObject target,float damage,eDamageType Type=eDamageType.Basic_phy)
+        public void DamageFunc1(GameObject card, GameObject target,float damage,eDamageType Type=eDamageType.Basic_phy,int check=0)
         {
 
             if (PlayerInfo.Inst.BattleEnd == true) return;
@@ -35,7 +35,7 @@ namespace GameS
             bool IsPhy = false;
             bool NoAtk = false;
             int TextColor = 0;
-   
+
             bool IsMagic = false;
             float damageHeal = 0;
             bool Istruedamage = card_stat.Job4;
@@ -423,6 +423,10 @@ namespace GameS
 
             if (target_stat.currentHp<=damage)
             {
+                if (check==1&&!card_stat.IsCopy)
+                {
+                    PlayerInfo.Inst.Gold++;
+                }
                 target_stat.UnitDead();
                 card_stat.UnitKill();
                 return;

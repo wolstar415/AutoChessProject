@@ -29,6 +29,10 @@ namespace GameS
             
         }
 
+        public virtual void BattelStart()
+        {
+            
+        }
         public virtual void BattelEnd()
         {
             

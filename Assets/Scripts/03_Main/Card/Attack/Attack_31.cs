@@ -12,7 +12,9 @@ namespace GameS
         public override void BasicAttack(GameObject target,float t=0.3f)
         {
 
-            base.BasicAttack(target,t);
+            Target = target;
+
+            stat.NetStopFunc(false,t,false);
 
 
             StartCoroutine(IAttackFunc());
@@ -21,12 +23,35 @@ namespace GameS
         
         IEnumerator IAttackFunc()
         {
-            float da = stat.Atk_Damage();
-            stat.AniStart("Attack");
+            bool skill = manacheck();
+
+            if (skill)
+            {
+                SkillBasic();
+                stat.AniStart("Skill");
+            }
+            else
+            {
+                stat.AniStart("Attack");
+                
+            }
             yield return YieldInstructionCache.WaitForSeconds(0.3f);
             fsm.CoolStart();
 
-            DamageManager.inst.DamageFunc1(gameObject,Target,da,eDamageType.Basic_phy);
+            if (skill)
+            {
+                EffectManager.inst.EffectCreate("Skill31_Effect",Target.transform.position,Quaternion.identity,2f);
+                float da = SkillValue(1);
+                DamageManager.inst.DamageFunc1(gameObject, Target, da, eDamageType.Speel_Magic);
+                
+                
+            }
+            else
+            {
+                float da = stat.Atk_Damage();
+                DamageManager.inst.DamageFunc1(gameObject, Target, da, eDamageType.Basic_phy);
+                
+            }
         }
 
 

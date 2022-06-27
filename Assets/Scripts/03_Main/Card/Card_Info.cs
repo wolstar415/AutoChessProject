@@ -1123,7 +1123,7 @@ namespace GameS
 
 
             ItemFuncCheck();//아이템 액션
-            
+            fsm.attackFunc.BattelStart();
             
             
             

@@ -21,13 +21,32 @@ namespace GameS
         
         IEnumerator IAttackFunc()
         {
-            float da = stat.Atk_Damage();
-            stat.AniStart("Attack");
+            bool skill = manacheck();
+
+            if (skill)
+            {
+                SkillBasic();
+            }
+            //stat.AniStart("Attack");
             yield return YieldInstructionCache.WaitForSeconds(0.3f);
             fsm.CoolStart();
 
-           
-            DamageManager.inst.DamageFunc1(gameObject,Target,da,eDamageType.Basic_phy);
+            if (skill)
+            {
+                
+                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Skill_24", CreatePos.position, Quaternion.identity);
+                if (bullet.TryGetComponent(out Buulet_Move2 move))
+                {
+                    float da = SkillValue(1);
+                    move.StartFUnc(gameObject,Target.transform.position,da,info.EnemyTeamIdx,false,false);
+                }
+            }
+            else
+            {
+                float da = stat.Atk_Damage();
+                DamageManager.inst.DamageFunc1(gameObject, Target, da, eDamageType.Basic_phy);
+                
+            }
         }
 
 

@@ -21,6 +21,7 @@ namespace GameS
     public List<GameObject> Enmies2=new List<GameObject>();
     public bool IsCool=false;
     private Coroutine CoCool=null;
+    public int noCon;
 
 
      public eCardFight_STATE state; // 인스펙터 확인용
@@ -63,7 +64,7 @@ namespace GameS
             fsm.SetState(eCardFight_STATE.Idle);
             IsCool = true;
             stop = false;
-            
+            noCon = 0;
             // 
         }
 

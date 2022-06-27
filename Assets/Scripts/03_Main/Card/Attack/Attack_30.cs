@@ -38,7 +38,35 @@ namespace GameS
         }
 
 
+        public override void SkillFunc()
+        {
+            SkillBasic();
 
-        
+            GameObject ob = GameSystem_AllInfo.inst.FindRandomObject(transform.position, info.EnemyTeamIdx, 26f);
+            if (ob == null) return;
+            
+            StartCoroutine(ISkillFunc(ob.transform.position));
+        }
+
+        IEnumerator ISkillFunc(Vector3 pos)
+        {
+            int cnt = 10;
+            float d = SkillValue(1)*0.1f;
+            EffectManager.inst.EffectCreate("Skill30_Effect",pos,Quaternion.identity,2f);
+            while (cnt>0)
+            {
+                cnt--;
+                dummy_Enemy.Clear();
+                dummy_Enemy = GameSystem_AllInfo.inst.FindAllObject(transform.position, info.EnemyTeamIdx, 6.6f);
+                
+                for (var i = 0; i < dummy_Enemy.Count; i++)
+                {
+                    DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],d,eDamageType.Speel_Magic);
+                }
+                yield return YieldInstructionCache.WaitForSeconds(0.3f);
+            }
+
+
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GameS
 {
@@ -20,6 +21,23 @@ namespace GameS
             fsm.CoolStart();
             yield return YieldInstructionCache.WaitForSeconds(0.1f);
             AttackFunc();
+            if (PlayerInfo.Inst.TraitandJobCnt[21]>=3)
+            {
+                float f = 30;
+                if (PlayerInfo.Inst.TraitandJobCnt[21] >= 9) f = 90;
+                else if (PlayerInfo.Inst.TraitandJobCnt[21] >= 6) f = 60;
+
+                if (Random.Range(0,100f)<=f)
+                {
+                    yield return YieldInstructionCache.WaitForSeconds(0.1f);
+                    if (Target.GetComponent<CardState>().IsDead==false)
+                    {
+                        AttackFunc();
+                        
+                    }
+                }
+
+            }
         }
 
         void AttackFunc()

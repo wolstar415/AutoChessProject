@@ -155,6 +155,7 @@ MonoBehaviour:
   - Check
   - Check2
   - RPC_FireActive
+  - SkillActive
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
