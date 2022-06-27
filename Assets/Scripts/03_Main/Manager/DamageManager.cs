@@ -88,7 +88,7 @@ namespace GameS
                     
                     
                     //캐릭터 추가 데미지
-                    if (card_stat.info.Idx == 0)
+                    if (card_stat.info.Idx == 0||card_stat.info.Idx == 11)
                     {
                         if (card_stat.AttackCnt%3==0)
                         {
@@ -96,6 +96,22 @@ namespace GameS
                             plus *= card_stat.info.Level;
                             adddamage += plus;
                         }
+                    }
+                    if (card_stat.info.Idx == 15||card_stat.OneAttackCnt >= 2)
+                    {
+                        float v=CsvManager.inst.skillinfo[15].Realcheck(1,card_stat.info.Level);
+                            float plus=damage * v*0.01f;
+                            
+                            adddamage += plus;
+                        
+                    }
+                    if (card_stat.info.Idx == 16||card_stat.OneAttackCnt == 1)
+                    {
+                        float v=CsvManager.inst.skillinfo[16].Realcheck(1,card_stat.info.Level);
+                        float plus=damage * v*0.01f;
+                            
+                        adddamage += plus;
+                        
                     }
                     
                     

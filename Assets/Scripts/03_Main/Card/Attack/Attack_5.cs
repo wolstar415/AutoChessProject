@@ -41,7 +41,7 @@ namespace GameS
             float v = CsvManager.inst.skillinfo[info.Idx].Realcheck(1,info.Level);
             stat.NetStopFunc(false,0.2f,false);
             stat.AtkPlus(0,0,v,true);
-            stat.AniStart("skill");
+            stat.AniStart("Skill");
             EffectManager.inst.EffectCreate("Skill5_Effect",transform.position,Quaternion.identity,5);
 
             fsm.CoolStart(true);

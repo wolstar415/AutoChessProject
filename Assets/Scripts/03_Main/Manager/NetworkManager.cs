@@ -39,6 +39,7 @@ public class playerinfo
         public Color[] Dagamecolors;
         public Image[] Playericons;
         public List<Card_Info> dummyInfo=new List<Card_Info>();
+        public int Checkint = 0;
 
         private void Awake()
         {
@@ -47,9 +48,42 @@ public class playerinfo
 
         private void Start()
         {
-            
-            
             PhotonNetwork.IsMessageQueueRunning = true;
+            pv.RPC(nameof(check),RpcTarget.MasterClient,PhotonNetwork.LocalPlayer.NickName);
+            
+        }
+
+        private void StartFunc()
+        {
+            
+            
+            
+            
+            
+
+
+
+            //pv.RPC(nameof(IdxCheck), RpcTarget.All);
+
+        }
+
+        [PunRPC]
+        public void check(string name)
+        {
+            Checkint++;
+            Debug.Log($"{name} 로딩 완료! {Checkint} / {PhotonNetwork.PlayerList.Length}");
+            if (Checkint==PhotonNetwork.PlayerList.Length)
+            {
+                Debug.Log("로딩이 완료되었습니다 게임을 실행합니다.");
+                StartFunc();
+                Master();
+                pv.RPC(nameof(start2),RpcTarget.All);
+            }
+        }
+
+        [PunRPC]
+        public void start2()
+        {
             for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
             {
 
@@ -60,15 +94,6 @@ public class playerinfo
                 }
 
             }
-            
-            if (PhotonNetwork.IsMasterClient)
-            {
-                Master();
-            }
-
-
-            //pv.RPC(nameof(IdxCheck), RpcTarget.All);
-
         }
 
         public void RoundFuncGo(int idx)

@@ -51,8 +51,8 @@ namespace GameS
             }
             if (IsFastSkill)
             {
-                SkillFunc();
                 SkillBasic();
+                SkillFunc();
             }
             return IsFastSkill;
         }
@@ -80,10 +80,6 @@ namespace GameS
             Manabar.SetActive(false);
             stat.ani = ani2;
             stat.BuffNomana++;
-            if (stat.pv.IsMine)
-            {
-                stat.currentMana = 0;
-            }
         }
 
         public override void BattelEnd()

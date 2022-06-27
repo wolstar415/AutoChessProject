@@ -8,66 +8,51 @@ namespace GameS
 {
     public class Attack_20 : AttackFunc
     {
-        
-        public GameObject SkillEffect;
-        public GameObject ManaBar;
 
-        // ReSharper disable Unity.PerformanceAnalysis
-        public override void BasicAttack(GameObject target,float t=0.2f)
+        public override void BasicAttack(GameObject target, float t = 0.3f)
         {
 
-            //base.BasicAttack(target);
-            Target = target;
-            
 
-            
-            stat.NetStopFunc(false,t,false);
 
-            StartCoroutine(IAttackFunc());
+                base.BasicAttack(target, t);
+                StartCoroutine(IAttackFunc());
+            
         }
 
-        
+
         IEnumerator IAttackFunc()
         {
-            float da = stat.Atk_Damage();
-            bool skill=false;
-             if (stat.currentMana>=stat.ManaMax())
-             {
-                 SkillBasic();
-                 skill = true;
-                
-             }
+            
+            bool skill = manacheck();
 
+            if (skill)
+            {
+                SkillBasic();
+            }
             stat.AniStart("Attack");
-            yield return YieldInstructionCache.WaitForSeconds(0.2f);
+            yield return YieldInstructionCache.WaitForSeconds(0.3f);
             fsm.CoolStart();
 
             if (skill)
             {
-                float da2=SkillValue(1);
-                float v=SkillValue(2);
                 
-                if (Target.TryGetComponent(out CardState enemystat))
+                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Skill_20", CreatePos.position, Quaternion.identity);
+                if (bullet.TryGetComponent(out Buulet_Move2 move))
                 {
-                    Vector3 dir = Target.transform.position - transform.position;
-                    dir.Normalize();
-                    dir.y = 0;
-                enemystat.NetStopFunc(true,v,true);
-                enemystat.Knockback(dir,20);
-                    
+                    float da = SkillValue(1);
+                    move.StartFUnc(gameObject,Target.transform.position,da,info.EnemyTeamIdx,false,false);
                 }
-            DamageManager.inst.DamageFunc1(gameObject,Target,da+da2,eDamageType.Basic_Magic);
-                EffectManager.inst.EffectCreate("Skill8_Effect",Target.transform.position,Quaternion.identity,5f);
             }
             else
             {
-            DamageManager.inst.DamageFunc1(gameObject,Target,da,eDamageType.Basic_phy);
+                float da = stat.Atk_Damage();
+            DamageManager.inst.DamageFunc1(gameObject, Target, da, eDamageType.Basic_phy);
                 
             }
+            
         }
-
-
-
         
+
+
     }
 }

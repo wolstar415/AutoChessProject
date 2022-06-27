@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &82530740
 RectTransform:
   m_ObjectHideFlags: 0
@@ -716,7 +716,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1855,7 +1855,7 @@ MonoBehaviour:
   BuffNomana: 0
   AttackFailed: 0
   IsStun: 0
-  IsNomana: 0
+  IsNomana: 1
   Char_Hp: 0
   Char_Range: 0
   Char_Atk_Cool: 0
@@ -1915,8 +1915,6 @@ MonoBehaviour:
   CreatePos: {fileID: 0}
   bulletPrefab: {fileID: 0}
   Target: {fileID: 0}
-  SkillEffect: {fileID: 0}
-  ManaBar: {fileID: 0}
 --- !u!1 &823211600542394274
 GameObject:
   m_ObjectHideFlags: 0

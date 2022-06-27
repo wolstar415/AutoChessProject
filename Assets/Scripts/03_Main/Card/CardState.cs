@@ -426,7 +426,28 @@ namespace GameS
                 
             }
         }
+        public void NoAttackPlus(float Char, float Item, float buff, bool network = false)
+        {
+            Char_NoAttack += Char;
+            Item_NoAttack += Item;
+            Buff_NoAttack += buff;
+            float f1 = Char_NoAttack;
+            float f2 = Item_NoAttack;
+            float f3 = Buff_NoAttack;
+            if (network)
+            {
+                pv.RPC(nameof(RPC_NoAttackPlus),RpcTarget.All,f1,f2,f3);
+                
+            }
+        }
+        [PunRPC]
+        void RPC_NoAttackPlus(float Char, float Item, float buff,bool hpset)
+        {
+            Char_NoAttack = Char;
+            Item_NoAttack = Item;
+            Buff_NoAttack = buff;
 
+        }
         [PunRPC]
         void RPC_HpPlus(float Char, float Item, float buff,bool hpset)
         {
@@ -689,6 +710,7 @@ namespace GameS
             Buff_ManaMax= 0;
             Buff_CriPer = 0;
             Buff_CriDmg= 0;
+            Buff_NoAttack= 0;
             
             IsItemFunc11 = false;
             IsItemFunc12 = false;
@@ -726,6 +748,11 @@ namespace GameS
                 currentHp = HpMax();
                 currentMana = Mana();
                 ReSetFunc1();
+                if (StunOb.activeSelf)
+                {
+                    StunShow(false);
+                }
+                
             }
             StopAllCoroutines();
 

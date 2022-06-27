@@ -1096,6 +1096,11 @@ namespace GameS
             {
                 stat.shiled += stat.HpMax() * 0.8f;
             }
+            if (Idx == 17)
+            {
+                float v = CsvManager.inst.skillinfo[Idx].Realcheck(1, Level) * 0.01f;
+                stat.shiled += (stat.HpMax() * v);
+            }
             
             
             
@@ -1313,7 +1318,7 @@ namespace GameS
             stat.PhyDmg = 0;
             stat.MagicDmg = 0;
             stat.TrueDmg = 0;
-            
+            fsm.Enemy = null;
         }
 
         public void TileShow(bool b)

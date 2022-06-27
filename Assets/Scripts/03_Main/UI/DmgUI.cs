@@ -23,13 +23,11 @@ namespace GameS
         public TextMeshProUGUI dmgtext;
         public void OnPointerUp(PointerEventData eventData)
         {
-            Debug.Log("마우스땜");
             UIManager.inst.DmgUiob.SetActive(false);
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            Debug.Log("클릭");
             UIManager.inst.DmgUIFunc(name,DmgAll,DmgPhy,DmgMagic,DmgTrue);
             
         }
@@ -38,7 +36,7 @@ namespace GameS
         {
             //
             gameObject.SetActive(true);
-            name = info.name;
+            name = CsvManager.inst.GameText(info.Name);
             phySlider.value = 0;
             magicSlider.value = 0;
             trueSlider.value = 0;

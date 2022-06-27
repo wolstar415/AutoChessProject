@@ -9,60 +9,64 @@ namespace GameS
     public class Attack_13 : AttackFunc
     {
         
-        public GameObject SkillEffect;
-        public GameObject ManaBar;
-
-        // ReSharper disable Unity.PerformanceAnalysis
-        public override void BasicAttack(GameObject target,float t=0.2f)
+        public override void BasicAttack(GameObject target,float t=0.3f)
         {
-
-            //base.BasicAttack(target);
-            Target = target;
             
-
             
-            stat.NetStopFunc(false,t,false);
-
-            StartCoroutine(IAttackFunc());
-        }
-
-        
-        IEnumerator IAttackFunc()
-        {
-            float da = stat.Atk_Damage();
-            bool skill=false;
-             if (stat.currentMana>=stat.ManaMax())
-             {
-                 SkillBasic();
-                 skill = true;
-                
-             }
-
-            stat.AniStart("Attack");
-            yield return YieldInstructionCache.WaitForSeconds(0.2f);
-            fsm.CoolStart();
-
-            if (skill)
+            
+            if (manacheck())
             {
-                float da2=SkillValue(1);
-                float v=SkillValue(2);
+                Target = target;
+            StartCoroutine(ISkillFunc());
                 
-                if (Target.TryGetComponent(out CardState enemystat))
-                {
-                    Vector3 dir = Target.transform.position - transform.position;
-                    dir.Normalize();
-                    dir.y = 0;
-                enemystat.NetStopFunc(true,v,true);
-                enemystat.Knockback(dir,20);
-                    
-                }
-            DamageManager.inst.DamageFunc1(gameObject,Target,da+da2,eDamageType.Basic_Magic);
-                EffectManager.inst.EffectCreate("Skill8_Effect",Target.transform.position,Quaternion.identity,5f);
             }
             else
             {
-            DamageManager.inst.DamageFunc1(gameObject,Target,da,eDamageType.Basic_phy);
+                base.BasicAttack(target,t);
+            StartCoroutine(IAttackFunc());
+            }
+            
+        }
+
+ 
+
+        IEnumerator ISkillFunc()
+        {
+            stat.NetStopFunc(false,0.4f,false);
+            stat.AniStart("Skill");
+            yield return YieldInstructionCache.WaitForSeconds(0.4f);
+            fsm.CoolStart();
+            float v=SkillValue(1);
+            
+            dummy_Enemy.Clear();
+            dummy_Enemy = GameSystem_AllInfo.inst.FindAllObject(Target.transform.position, info.EnemyTeamIdx, 4f);
+
+            for (int i = 0; i < dummy_Enemy.Count; i++)
+            {
+            DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],v,eDamageType.Speel_Magic);
                 
+            }
+            EffectManager.inst.EffectCreate("Skill13_Effect",Target.transform.position,Quaternion.Euler(-90,0,0),2);
+
+        }
+
+        IEnumerator IAttackFunc()
+        {
+            //float f = stat.AtkAniTime();
+            fsm.CoolStart();
+            yield return YieldInstructionCache.WaitForSeconds(0.1f);
+            AttackFunc();
+            
+        }
+
+        void AttackFunc()
+        {
+            //총알생성
+            float da = stat.Atk_Damage();
+            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Ice", CreatePos.position, Quaternion.identity);
+            if (bullet.TryGetComponent(out Buulet_Move1 move))
+            {
+                move.StartFUnc(gameObject,Target,da);
             }
         }
 

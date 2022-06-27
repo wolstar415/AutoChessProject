@@ -1915,8 +1915,6 @@ MonoBehaviour:
   CreatePos: {fileID: 0}
   bulletPrefab: {fileID: 0}
   Target: {fileID: 0}
-  SkillEffect: {fileID: 0}
-  ManaBar: {fileID: 0}
 --- !u!1 &823211600542394274
 GameObject:
   m_ObjectHideFlags: 0
