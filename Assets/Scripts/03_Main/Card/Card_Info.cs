@@ -1090,6 +1090,21 @@ namespace GameS
                 transform.DOJump(pos, 3, 1, 0.5f);
             }
             
+            //캐릭 시작전
+
+            if (Idx == 54)
+            {
+                stat.shiled += stat.HpMax() * 0.8f;
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
         }
         public void BattleStart()
         {

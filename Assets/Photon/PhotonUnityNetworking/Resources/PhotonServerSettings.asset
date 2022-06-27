@@ -146,6 +146,7 @@ MonoBehaviour:
   - RPC_NoAttack
   - RPC_Knockback
   - RPC_Skillfunc
+  - RPC_SkillFunc
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

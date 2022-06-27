@@ -320,35 +320,6 @@ namespace GameS
             //데미지체크
             //체력확인
 
-            if (target_stat.shiled>0)
-            {
-
-                if (target_stat.shiled>damage)
-                {
-                    damage = 0;
-                    target_stat.shiled -= damage;
-                }
-                else
-                {
-                    damage -= target_stat.shiled;
-                    target_stat.shiled = 0;
-                }
-            }
-
-            if (damage<=0) return;
-
-
-
-            if (target_stat.currentHp<=damage)
-            {
-                target_stat.UnitDead();
-                card_stat.UnitKill();
-                return;
-            }
-
-
-            target_stat.currentHp -= damage;
-            target_stat.currentMana += getmana;
 
 
 
@@ -404,8 +375,45 @@ namespace GameS
 
             #endregion
             
+
+            
+            
             if (damageHeal>0) card_stat.HpHeal(damageHeal);
 
+
+
+
+
+            
+            
+            if (target_stat.shiled>0)
+            {
+
+                if (target_stat.shiled>damage)
+                {
+                    target_stat.shiled -= damage;
+                    damage = 0;
+                }
+                else
+                {
+                    damage -= target_stat.shiled;
+                    target_stat.shiled = 0;
+                }
+            }
+
+            if (damage<=0) return;
+
+
+
+            if (target_stat.currentHp<=damage)
+            {
+                target_stat.UnitDead();
+                card_stat.UnitKill();
+                return;
+            }
+            
+            target_stat.currentHp -= damage;
+            target_stat.currentMana += getmana;
 
         }
         

@@ -39,7 +39,7 @@ MonoBehaviour:
     m_Id: 851269e02ffee6546b76b1d57d86e2b8
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
-  m_overridePlayerVersion: 
+  m_overridePlayerVersion: yu
   m_GroupAssets:
   - {fileID: 11400000, guid: 9d4bec967fd499c418b9350240d309f1, type: 2}
   - {fileID: 11400000, guid: b4b788e31ec87404b9d7879a922f0036, type: 2}

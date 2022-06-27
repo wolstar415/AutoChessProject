@@ -8,65 +8,93 @@ namespace GameS
 {
     public class Attack_55 : AttackFunc
     {
-        
-        public GameObject SkillEffect;
-        public GameObject ManaBar;
 
+        public GameObject Manabar;
+        public bool skillOn = false;
+        public Animator ani1;
+        public Animator ani2;
+        public GameObject model1;
+        public GameObject model2;
         // ReSharper disable Unity.PerformanceAnalysis
         public override void BasicAttack(GameObject target,float t=0.2f)
         {
 
-            //base.BasicAttack(target);
-            Target = target;
-            
-
-            
-            stat.NetStopFunc(false,t,false);
-
+            base.BasicAttack(target);
             StartCoroutine(IAttackFunc());
         }
 
         
         IEnumerator IAttackFunc()
         {
-            float da = stat.Atk_Damage();
-            bool skill=false;
-             if (stat.currentMana>=stat.ManaMax())
-             {
-                 SkillBasic();
-                 skill = true;
-                
-             }
-
-            stat.AniStart("Attack");
-            yield return YieldInstructionCache.WaitForSeconds(0.2f);
+            //float f = stat.AtkAniTime();
             fsm.CoolStart();
+            yield return YieldInstructionCache.WaitForSeconds(0.1f);
+            AttackFunc();
+            
+        }
 
-            if (skill)
+        void AttackFunc()
+        {
+            //총알생성
+            float da = stat.Atk_Damage();
+            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Bullet_2", CreatePos.position, Quaternion.identity);
+            if (bullet.TryGetComponent(out Buulet_Move1 move))
             {
-                float da2=SkillValue(1);
-                float v=SkillValue(2);
-                
-                if (Target.TryGetComponent(out CardState enemystat))
-                {
-                    Vector3 dir = Target.transform.position - transform.position;
-                    dir.Normalize();
-                    dir.y = 0;
-                enemystat.NetStopFunc(true,v,true);
-                enemystat.Knockback(dir,20);
-                    
-                }
-            DamageManager.inst.DamageFunc1(gameObject,Target,da+da2,eDamageType.Basic_Magic);
-                EffectManager.inst.EffectCreate("Skill8_Effect",Target.transform.position,Quaternion.identity,5f);
+                move.StartFUnc(gameObject,Target,da);
             }
-            else
+        }
+        public override bool SkillCheck()
+        {
+            if (skillOn||stat.currentMana<stat.ManaMax()) // 잠시만 쓸꺼 
             {
-            DamageManager.inst.DamageFunc1(gameObject,Target,da,eDamageType.Basic_phy);
-                
+                return false;
+            }
+            if (IsFastSkill)
+            {
+                SkillFunc();
+                SkillBasic();
+            }
+            return IsFastSkill;
+        }
+        public override void SkillFunc()
+        {
+            if (skillOn) return;
+
+            float v = SkillValue(1);
+            float v2 = SkillValue(2);
+            skillOn = true;
+            stat.pv.RPC(nameof(RPC_SkillFunc),RpcTarget.All);
+            
+            stat.AtkPlus(0,0,v,true);
+            stat.HpPlus(0,0,v2,true);
+        }
+        
+
+
+        [PunRPC]
+        public void RPC_SkillFunc()
+        {
+            skillOn = true;
+            model1.SetActive(false);
+            model2.SetActive(true);
+            Manabar.SetActive(false);
+            stat.ani = ani2;
+            stat.BuffNomana++;
+            if (stat.pv.IsMine)
+            {
+                stat.currentMana = 0;
             }
         }
 
-
+        public override void BattelEnd()
+        {
+            model1.SetActive(true);
+            model2.SetActive(false);
+            Manabar.SetActive(true);
+            skillOn = false;
+            stat.ani = ani1;
+            stat.BuffNomana=0;
+        }
 
         
     }

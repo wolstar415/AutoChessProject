@@ -288,7 +288,9 @@ namespace GameS
             }
             else if (Input.GetKeyDown(KeyCode.Keypad5))
             {
-                CreateManager.inst.CreateCharacter(8);
+                CreateManager.inst.CreateCharacter(54);
+                CreateManager.inst.CreateCharacter(55);
+                CreateManager.inst.CreateCharacter(56);
                 ItemManager.inst.ItemAdd(44);
                 ItemManager.inst.ItemAdd(44);
                 ItemManager.inst.ItemAdd(44);

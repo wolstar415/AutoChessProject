@@ -9,20 +9,16 @@ namespace GameS
     public class Attack_54 : AttackFunc
     {
         
-        public GameObject SkillEffect;
-        public GameObject ManaBar;
 
         // ReSharper disable Unity.PerformanceAnalysis
+        public bool skillOn = false;
+        public Animator ani1;
+        public Animator ani2;
+        public GameObject model1;
+        public GameObject model2;
         public override void BasicAttack(GameObject target,float t=0.2f)
         {
-
-            //base.BasicAttack(target);
-            Target = target;
-            
-
-            
-            stat.NetStopFunc(false,t,false);
-
+            base.BasicAttack(target);
             StartCoroutine(IAttackFunc());
         }
 
@@ -30,44 +26,48 @@ namespace GameS
         IEnumerator IAttackFunc()
         {
             float da = stat.Atk_Damage();
-            bool skill=false;
-             if (stat.currentMana>=stat.ManaMax())
-             {
-                 SkillBasic();
-                 skill = true;
-                
-             }
-
             stat.AniStart("Attack");
             yield return YieldInstructionCache.WaitForSeconds(0.2f);
             fsm.CoolStart();
-
-            if (skill)
-            {
-                float da2=SkillValue(1);
-                float v=SkillValue(2);
-                
-                if (Target.TryGetComponent(out CardState enemystat))
-                {
-                    Vector3 dir = Target.transform.position - transform.position;
-                    dir.Normalize();
-                    dir.y = 0;
-                enemystat.NetStopFunc(true,v,true);
-                enemystat.Knockback(dir,20);
-                    
-                }
-            DamageManager.inst.DamageFunc1(gameObject,Target,da+da2,eDamageType.Basic_Magic);
-                EffectManager.inst.EffectCreate("Skill8_Effect",Target.transform.position,Quaternion.identity,5f);
-            }
-            else
-            {
             DamageManager.inst.DamageFunc1(gameObject,Target,da,eDamageType.Basic_phy);
-                
-            }
+        }
+
+        public override void SkillFunc()
+        {
+            if (skillOn) return;
+
+            float v = SkillValue(1);
+            skillOn = true;
+            stat.AniStart("Skill");
+            stat.NetStopFunc(false,1f,false);
+            stat.InvinSet(1f);
+            StartCoroutine(ISkillFunc());
+            stat.CoolPlus(0,0,v,true);
+        }
+
+        IEnumerator ISkillFunc()
+        {
+            yield return YieldInstructionCache.WaitForSeconds(1);
+            stat.pv.RPC(nameof(RPC_SkillFunc),RpcTarget.All);
+            
+            
         }
 
 
+        [PunRPC]
+        public void RPC_SkillFunc()
+        {
+            model1.SetActive(false);
+            model2.SetActive(true);
+            stat.ani = ani2;
+        }
 
-        
+        public override void BattelEnd()
+        {
+            model1.SetActive(true);
+            model2.SetActive(false);
+            skillOn = false;
+            stat.ani = ani1;
+        }
     }
 }
