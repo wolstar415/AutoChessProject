@@ -40,16 +40,21 @@ namespace GameS
         /// <returns></returns>
         public virtual bool SkillCheck()
         {
-            if (stat.currentMana<stat.ManaMax()) // 잠시만 쓸꺼 
+            if (stat.IsNomana||manacheck()==false) // 잠시만 쓸꺼 
             {
                 return false;
             }
             if (IsFastSkill)
             {
-                SkillFunc();
                 SkillBasic();
+                SkillFunc();
             }
             return IsFastSkill;
+        }
+
+        public bool manacheck()
+        {
+            return stat.currentMana >= stat.ManaMax();
         }
 
         public virtual void SkillBasic()

@@ -124,6 +124,7 @@ MonoBehaviour:
   target: {fileID: 0}
   me: {fileID: 0}
   damage: 0
+  buIdx: 0
   Speed: 10
 --- !u!135 &4763399813099673686
 SphereCollider:

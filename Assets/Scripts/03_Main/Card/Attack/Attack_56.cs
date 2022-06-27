@@ -35,10 +35,13 @@ namespace GameS
              {
                  SkillBasic();
                  skill = true;
-                
+                 stat.AniStart("Skill");
+             }
+             else
+             {
+                 stat.AniStart("Attack");
              }
 
-            stat.AniStart("Attack");
             yield return YieldInstructionCache.WaitForSeconds(0.2f);
             fsm.CoolStart();
 
@@ -46,18 +49,23 @@ namespace GameS
             {
                 float da2=SkillValue(1);
                 float v=SkillValue(2);
-                
-                if (Target.TryGetComponent(out CardState enemystat))
+                float heal = 0;
+                dummy_Enemy.Clear();
+                dummy_Enemy = GameSystem_AllInfo.inst.FindAllObject(transform.position, info.EnemyTeamIdx, 3.3f);
+                if (dummy_Enemy.Count > 0)
                 {
-                    Vector3 dir = Target.transform.position - transform.position;
-                    dir.Normalize();
-                    dir.y = 0;
-                enemystat.NetStopFunc(true,v,true);
-                enemystat.Knockback(dir,20);
-                    
+                    for (int i = 0; i < dummy_Enemy.Count; i++)
+                    {
+                        DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],da2,eDamageType.Speel_Magic);
+                        heal += v;
+                    }
+
+                    if (heal>0)
+                    {
+                        stat.HpHeal(heal);
+                    }
+                    EffectManager.inst.EffectCreate("Skill56_Effect",transform.position,Quaternion.Euler(-90,0,0),2f);
                 }
-            DamageManager.inst.DamageFunc1(gameObject,Target,da+da2,eDamageType.Basic_Magic);
-                EffectManager.inst.EffectCreate("Skill8_Effect",Target.transform.position,Quaternion.identity,5f);
             }
             else
             {

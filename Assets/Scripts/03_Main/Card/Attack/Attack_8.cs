@@ -9,20 +9,13 @@ namespace GameS
     public class Attack_8 : AttackFunc
     {
         
-        public GameObject SkillEffect;
-        public GameObject ManaBar;
+
 
         // ReSharper disable Unity.PerformanceAnalysis
         public override void BasicAttack(GameObject target,float t=0.2f)
         {
 
-            //base.BasicAttack(target);
-            Target = target;
-            
-
-            
-            stat.NetStopFunc(false,t,false);
-
+            base.BasicAttack(target);
             StartCoroutine(IAttackFunc());
         }
 
@@ -38,7 +31,7 @@ namespace GameS
                 
              }
 
-            stat.AniStart("Attack");
+
             yield return YieldInstructionCache.WaitForSeconds(0.2f);
             fsm.CoolStart();
 

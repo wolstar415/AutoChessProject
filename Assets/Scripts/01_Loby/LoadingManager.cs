@@ -47,7 +47,7 @@ namespace GameS
 
                     yield return YieldInstructionCache.WaitForSeconds(1);
                     op.allowSceneActivation = true;
-                    PhotonNetwork.LoadLevel("03_Main");
+                    //PhotonNetwork.LoadLevel("03_Main");
                         yield break;
                     
                 }

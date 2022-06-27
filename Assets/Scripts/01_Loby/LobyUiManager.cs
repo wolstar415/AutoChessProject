@@ -85,7 +85,8 @@ namespace GameS
         public void MusicSlider()
         {
             GameManager.inst.audioSource.volume = musicSldier.value;
-            musicText.text = musicSldier.value.ToString("F0");
+            float f=musicSldier.value*100;
+            musicText.text = f.ToString("F0");
         }
 
         public void LangugeSet(int idx)

@@ -32,6 +32,7 @@ namespace GameS
         }
         void Update()
         {
+            if (!pv.IsMine) return;
             transform.Translate(Vector3.forward*Time.deltaTime*Speed);
         }
 

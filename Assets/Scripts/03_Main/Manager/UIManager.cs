@@ -499,7 +499,7 @@ public class UIManager : MonoBehaviour
 
     public void DmgOrder()
     {
-        if (!IsDmgShow) return;
+        //if (!IsDmgShow) return;
 
         DmgOrderList.Clear();
         for (int i = 0; i < DmgObs.Length; i++)

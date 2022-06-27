@@ -112,6 +112,7 @@ namespace GameS
                         }
 
                         Rankingint.Sort();
+                        Rankingint.Reverse();
 
                         LobyUiManager.inst.playerdata[10].text =(Rankingint.IndexOf(so)+1).ToString() + " / " + Rankingint.Count;
                         //LobyUiManager.inst.playerdata[10].text =0 + " / " + snapshot.Children.Count();

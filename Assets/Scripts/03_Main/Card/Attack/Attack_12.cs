@@ -9,10 +9,6 @@ namespace GameS
     public class Attack_12 : AttackFunc
     {
         
-        public GameObject SkillEffect;
-        public GameObject ManaBar;
-
-        // ReSharper disable Unity.PerformanceAnalysis
         public override void BasicAttack(GameObject target,float t=0.2f)
         {
 
@@ -21,8 +17,7 @@ namespace GameS
             
 
             
-            stat.NetStopFunc(false,t,false);
-
+            stat.NetStopFunc(false,0.3f,false);
             StartCoroutine(IAttackFunc());
         }
 
@@ -30,40 +25,21 @@ namespace GameS
         IEnumerator IAttackFunc()
         {
             float da = stat.Atk_Damage();
-            bool skill=false;
-             if (stat.currentMana>=stat.ManaMax())
-             {
-                 SkillBasic();
-                 skill = true;
-                
-             }
 
-            stat.AniStart("Attack");
-            yield return YieldInstructionCache.WaitForSeconds(0.2f);
-            fsm.CoolStart();
-
-            if (skill)
+            if (stat.currentHp>Target.GetComponent<CardState>().currentHp)
             {
-                float da2=SkillValue(1);
-                float v=SkillValue(2);
-                
-                if (Target.TryGetComponent(out CardState enemystat))
-                {
-                    Vector3 dir = Target.transform.position - transform.position;
-                    dir.Normalize();
-                    dir.y = 0;
-                enemystat.NetStopFunc(true,v,true);
-                enemystat.Knockback(dir,20);
-                    
-                }
-            DamageManager.inst.DamageFunc1(gameObject,Target,da+da2,eDamageType.Basic_Magic);
-                EffectManager.inst.EffectCreate("Skill8_Effect",Target.transform.position,Quaternion.identity,5f);
+                float v = SkillValue(1) * 0.01f;
+                da *= v;
+                stat.AniStart("Skill");
             }
             else
             {
-            DamageManager.inst.DamageFunc1(gameObject,Target,da,eDamageType.Basic_phy);
+            stat.AniStart("Attack");
                 
             }
+            yield return YieldInstructionCache.WaitForSeconds(0.2f);
+            fsm.CoolStart();
+            DamageManager.inst.DamageFunc1(gameObject,Target,da,eDamageType.Basic_phy);
         }
 
 

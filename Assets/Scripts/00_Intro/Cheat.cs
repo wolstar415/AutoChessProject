@@ -169,8 +169,24 @@ namespace GameS
             
         
         }
+        
+        [MenuItem("MyMenu/change")]
+        static void Check2()
+        {
+            GameObject ob1 = GameObject.Find("Check1");
+            GameObject ob2 = GameObject.Find("Check2");
+
+            GameObject line=GameObject.Find("SkillLine1");
+            
+            line.GetComponent<LineRenderer>().SetPosition(0,ob1.transform.position);
+            line.GetComponent<LineRenderer>().SetPosition(1,ob2.transform.position);
+
+
+        }
 
 #endif
+        
+        
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Keypad1))
@@ -288,7 +304,10 @@ namespace GameS
             }
             else if (Input.GetKeyDown(KeyCode.Keypad5))
             {
-                CreateManager.inst.CreateCharacter(8);
+                CreateManager.inst.CreateCharacter(19);
+                CreateManager.inst.CreateCharacter(20);
+                CreateManager.inst.CreateCharacter(21);
+
                 ItemManager.inst.ItemAdd(44);
                 ItemManager.inst.ItemAdd(44);
                 ItemManager.inst.ItemAdd(44);

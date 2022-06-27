@@ -9,8 +9,6 @@ namespace GameS
     public class Attack_6 : AttackFunc
     {
         
-        public GameObject SkillEffect;
-        public GameObject ManaBar;
 
         // ReSharper disable Unity.PerformanceAnalysis
         public override void BasicAttack(GameObject target,float t=0.2f)

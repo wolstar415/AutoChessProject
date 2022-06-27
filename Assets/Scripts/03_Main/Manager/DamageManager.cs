@@ -88,7 +88,7 @@ namespace GameS
                     
                     
                     //캐릭터 추가 데미지
-                    if (card_stat.info.Idx == 0)
+                    if (card_stat.info.Idx == 0||card_stat.info.Idx == 11)
                     {
                         if (card_stat.AttackCnt%3==0)
                         {
@@ -96,6 +96,22 @@ namespace GameS
                             plus *= card_stat.info.Level;
                             adddamage += plus;
                         }
+                    }
+                    if (card_stat.info.Idx == 15||card_stat.OneAttackCnt >= 2)
+                    {
+                        float v=CsvManager.inst.skillinfo[15].Realcheck(1,card_stat.info.Level);
+                            float plus=damage * v*0.01f;
+                            
+                            adddamage += plus;
+                        
+                    }
+                    if (card_stat.info.Idx == 16||card_stat.OneAttackCnt == 1)
+                    {
+                        float v=CsvManager.inst.skillinfo[16].Realcheck(1,card_stat.info.Level);
+                        float plus=damage * v*0.01f;
+                            
+                        adddamage += plus;
+                        
                     }
                     
                     
@@ -320,35 +336,6 @@ namespace GameS
             //데미지체크
             //체력확인
 
-            if (target_stat.shiled>0)
-            {
-
-                if (target_stat.shiled>damage)
-                {
-                    damage = 0;
-                    target_stat.shiled -= damage;
-                }
-                else
-                {
-                    damage -= target_stat.shiled;
-                    target_stat.shiled = 0;
-                }
-            }
-
-            if (damage<=0) return;
-
-
-
-            if (target_stat.currentHp<=damage)
-            {
-                target_stat.UnitDead();
-                card_stat.UnitKill();
-                return;
-            }
-
-
-            target_stat.currentHp -= damage;
-            target_stat.currentMana += getmana;
 
 
 
@@ -404,8 +391,45 @@ namespace GameS
 
             #endregion
             
+
+            
+            
             if (damageHeal>0) card_stat.HpHeal(damageHeal);
 
+
+
+
+
+            
+            
+            if (target_stat.shiled>0)
+            {
+
+                if (target_stat.shiled>damage)
+                {
+                    target_stat.shiled -= damage;
+                    damage = 0;
+                }
+                else
+                {
+                    damage -= target_stat.shiled;
+                    target_stat.shiled = 0;
+                }
+            }
+
+            if (damage<=0) return;
+
+
+
+            if (target_stat.currentHp<=damage)
+            {
+                target_stat.UnitDead();
+                card_stat.UnitKill();
+                return;
+            }
+            
+            target_stat.currentHp -= damage;
+            target_stat.currentMana += getmana;
 
         }
         

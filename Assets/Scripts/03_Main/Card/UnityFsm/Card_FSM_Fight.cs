@@ -113,11 +113,17 @@ namespace GameS
                 return Enemy = null;
 
 
+
             
 
             if (Enemy != null)
             {
-                
+                if (Enemy.layer!=6+info.EnemyTeamIdx)
+                {
+                    
+                    return Enemy = null;
+
+                }
                 if (Enemy.activeSelf==true)
                 {
                 return Enemy;
