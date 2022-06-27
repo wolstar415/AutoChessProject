@@ -12,6 +12,7 @@ namespace GameS
         public List<LoadingInfo> Infos;
         public PhotonView pv;
 
+        public int checkint=0;
         private void Start()
         {
             for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
@@ -23,10 +24,13 @@ namespace GameS
                 }
             }
 
+
             if (PhotonNetwork.IsMasterClient)
             {
+                
                 StartCoroutine(LoadingFunc());
             }
+            
         }
 
         IEnumerator LoadingFunc()
@@ -47,8 +51,7 @@ namespace GameS
 
                     yield return YieldInstructionCache.WaitForSeconds(1);
                     op.allowSceneActivation = true;
-                    //PhotonNetwork.LoadLevel("03_Main");
-                        yield break;
+                    yield break;
                     
                 }
             }
@@ -61,5 +64,8 @@ namespace GameS
             Infos[idx].NickNameSet(name);
             Infos[idx].gameObject.SetActive(true);
         }
+        
+
+        
     }
 }

@@ -119,7 +119,17 @@ namespace GameS
             {
                 gameObject.SetActive(true);
             }
+
+            if (CntIf[level]>=99)
+            {
+            CntText.text=Cnt.ToString();
+                
+            }
+            else
+            {
+                
             CntText.text=Cnt+" / "+CntIf[level];
+            }
             UiCheck();
         }
 
@@ -132,7 +142,18 @@ namespace GameS
             {
                 gameObject.SetActive(false);
             }
+
+            if (CntIf[level] >= 99)
+            {
+            CntText.text=Cnt.ToString();
+                
+            }
+
+            else
+            {
             CntText.text=Cnt+" / "+CntIf[level];
+                
+            }
             UiCheck();
         }
     }

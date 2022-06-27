@@ -26,15 +26,7 @@ namespace GameS
             yield return YieldInstructionCache.WaitForSeconds(0.3f);
             fsm.CoolStart();
 
-            if (Target.TryGetComponent(out CardState enemystat))
-            {
-                if (enemystat.currentMana>0)
-                {
-                    float v = SkillValue(1);
-                    enemystat.currentMana -= 20;
-                    stat.shiled += v;
-                }
-            }
+            
             DamageManager.inst.DamageFunc1(gameObject,Target,da,eDamageType.Basic_phy);
         }
 

@@ -91,5 +91,13 @@ namespace GameS
             }
             
         }
+
+        public override void BattelEnd()
+        {
+            if (line.gameObject.activeSelf)
+            {
+                stat.pv.RPC(nameof(RPC_SkillFunc),RpcTarget.All,false);
+            }
+        }
     }
 }

@@ -53,6 +53,7 @@ namespace GameS
                             ItemManager.inst.ItemAdd(info.idx);
                         }
                     }
+                    EffectManager.inst.EffectCreate("ItemGetEffect",other.transform.position,Quaternion.identity,3f);
                     PhotonNetwork.Destroy(other.gameObject);
                 }
 

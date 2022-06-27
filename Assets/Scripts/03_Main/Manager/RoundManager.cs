@@ -23,6 +23,8 @@ namespace GameS
             int Enemyidx = PlayerInfo.Inst.EnemyIdx;
             PlayerInfo.Inst.EnemyFiledTile = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyFiledTile;
             PlayerInfo.Inst.PlayerTileOb = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyPlayerTileob;
+            PlayerInfo.Inst.PlayerTile = PositionManager.inst.playerPositioninfo[Enemyidx].EnemyPlayerTile;
+            
             EventManager.inst.Sub_CardBattleMove.OnNext(1);
             NetworkManager.inst.GoldSet(PlayerInfo.Inst.EnemyIdx,PlayerInfo.Inst.Gold);
             CameraMoveFunc2();
@@ -49,6 +51,7 @@ namespace GameS
             int pidx = PlayerInfo.Inst.PlayerIdx;
             PlayerInfo.Inst.EnemyFiledTile = PositionManager.inst.playerPositioninfo[pidx].EnemyFiledTile;
             PlayerInfo.Inst.PlayerTileOb = PositionManager.inst.playerPositioninfo[pidx].PlayerTileob;
+            PlayerInfo.Inst.PlayerTile= PositionManager.inst.playerPositioninfo[pidx].PlayerTile;
             EventManager.inst.Sub_CardBattleMove.OnNext(2);
             PlayerInfo.Inst.EnemyIdx = -1;
             PlayerInfo.Inst.BattleMove = false;

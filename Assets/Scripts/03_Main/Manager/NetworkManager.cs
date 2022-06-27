@@ -7,6 +7,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Random = UnityEngine.Random;
 
 [Serializable]
@@ -38,6 +39,8 @@ public class playerinfo
         public PhotonView pv;
         public Color[] Dagamecolors;
         public Image[] Playericons;
+        public GameObject[] Fireob;
+        public TextMeshProUGUI[] PlayerTexts;
         public List<Card_Info> dummyInfo=new List<Card_Info>();
         public int Checkint = 0;
 
@@ -75,6 +78,7 @@ public class playerinfo
             if (Checkint==PhotonNetwork.PlayerList.Length)
             {
                 Debug.Log("로딩이 완료되었습니다 게임을 실행합니다.");
+                MasterInfo.inst.VictoryInt = PhotonNetwork.PlayerList.Length;
                 StartFunc();
                 Master();
                 pv.RPC(nameof(start2),RpcTarget.All);
@@ -91,6 +95,7 @@ public class playerinfo
                 {
                     PlayerInfo.Inst.PlayerIdx = i;
                     pv.RPC(nameof(RPC_iconSet), RpcTarget.All, i, GameManager.inst.CharIdx);
+                    PlayerTexts[i].color=Color.yellow;
                 }
 
             }
@@ -302,6 +307,8 @@ public class playerinfo
             {
                 //게임끝남
                 Debug.Log($"승리! 남은플레이어 번호 :{finalplayer}");
+                
+                //MasterInfo.inst.VictoryGo(1);
                 //return;
             }
 
@@ -1013,6 +1020,17 @@ public class playerinfo
                 GameSystem_AllInfo.inst.battleinfos[i].IsCopy = false;
                 GameSystem_AllInfo.inst.battleinfos[i].copyidx = -1;
             }
+        }
+
+        public void FireActive(int idx, bool b)
+        {
+            pv.RPC(nameof(RPC_FireActive),RpcTarget.All,idx,b);
+        }
+
+        [PunRPC]
+        void RPC_FireActive(int idx, bool b)
+        {
+            Fireob[idx].SetActive(b);
         }
 
     }

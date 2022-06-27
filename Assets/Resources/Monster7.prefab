@@ -1532,7 +1532,7 @@ MonoBehaviour:
   IsAttacker: 0
   TeamIdx: 0
   EnemyTeamIdx: 1
-  Idx: 0
+  Idx: 57
   MoveIdx: 0
   TileOb: {fileID: 0}
   GoldCost: 0
@@ -1588,7 +1588,7 @@ MonoBehaviour:
       - 0
   Name: 0
   Icon: 0
-  Level: 0
+  Level: 1
   Tier: 0
   Food: 0
   IsRangeAttack: 0

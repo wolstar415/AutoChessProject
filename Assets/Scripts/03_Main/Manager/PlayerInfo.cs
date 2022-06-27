@@ -449,14 +449,19 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
                 if (IsVictory)
                 {
                     IsVictory = false;
+                    if (victoryCnt>=5)
+                    {
+                        NetworkManager.inst.FireActive(PlayerIdx,false);
+                    }
                     victoryCnt = 0;
                     defeatCnt = 1;
                 }
                 else
                 {
-                    
-                    victoryCnt = 1;
+
+                    victoryCnt = 0;
                     defeatCnt++;
+                    
                 }
 
                 UIManager.inst.VictorySet();
@@ -472,13 +477,18 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
                 if (IsVictory)
                 {
                     IsVictory = false;
+                    if (victoryCnt>=5)
+                    {
+                        NetworkManager.inst.FireActive(PlayerIdx,false);
+                    }
                     victoryCnt = 0;
                     defeatCnt = 1;
                 }
                 else
                 {
                     
-                    victoryCnt = 1;
+
+                    victoryCnt = 0;
                     defeatCnt++;
                 }
 
@@ -536,6 +546,10 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         if (IsVictory)
         {
             victoryCnt++;
+            if (victoryCnt==5)
+            {
+                NetworkManager.inst.FireActive(PlayerIdx,true);
+            }
         }
         else
         {
@@ -614,6 +628,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
 
 
         UIManager.inst.DeadUi();
+        MasterInfo.inst.VictoryCheck();
     }
 
 

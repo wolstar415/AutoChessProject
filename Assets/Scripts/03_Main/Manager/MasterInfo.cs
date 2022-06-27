@@ -8,6 +8,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Random = System.Random;
 using Newtonsoft.Json;
+using UnityEngine.SceneManagement;
 
 
 [System.Serializable]
@@ -43,6 +44,8 @@ public class MasterInfo : MonoBehaviourPunCallbacks
     public List<LifeRank> lifeCheck;
     public List<LifeRank> lifeRank;
     public List<LifeRank> lifeRank2;
+
+    public int VictoryInt = 0;
     
 
     private void Start()
@@ -515,6 +518,123 @@ public class MasterInfo : MonoBehaviourPunCallbacks
              }
 
          }
+     }
+
+     public void VictoryCheck()
+     {
+         pv.RPC(nameof(RPC_VictoryMaster),RpcTarget.MasterClient,PlayerInfo.Inst.PlayerIdx);
+     }
+     public void VictoryGo(int i)
+     {
+         switch (i)
+         {
+             case 1:
+                 GameManager.inst.Victory1++;
+                 GameManager.inst.Score += 20;
+                 DataManager.inst.SaveData("Victory1",GameManager.inst.Victory1);
+                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 GoLoby();
+                 break;
+             case 2:
+                 GameManager.inst.Victory2++;
+                 GameManager.inst.Score += 10;
+                 DataManager.inst.SaveData("Victory2",GameManager.inst.Victory2);
+                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 break;
+             case 3:
+                 GameManager.inst.Victory3++;
+                 GameManager.inst.Score += 8;
+                 DataManager.inst.SaveData("Victory3",GameManager.inst.Victory3);
+                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 break;
+             case 4:
+                 GameManager.inst.Victory4++;
+                 GameManager.inst.Score += 6;
+                 DataManager.inst.SaveData("Victory4",GameManager.inst.Victory4);
+                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 break;
+             case 5:
+                 GameManager.inst.Victory5++;
+                 GameManager.inst.Score += 4;
+                 DataManager.inst.SaveData("Victory5",GameManager.inst.Victory5);
+                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 break;
+             case 6:
+                 GameManager.inst.Victory6++;
+                 GameManager.inst.Score += 3;
+                 DataManager.inst.SaveData("Victory6",GameManager.inst.Victory6);
+                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 break;
+             case 7:
+                 GameManager.inst.Victory7++;
+                 GameManager.inst.Score += 2;
+                 DataManager.inst.SaveData("Victory7",GameManager.inst.Victory7);
+                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 break;
+             case 8:
+                 GameManager.inst.Victory8++;
+                 GameManager.inst.Score += 1;
+                 DataManager.inst.SaveData("Victory8",GameManager.inst.Victory8);
+                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 break;
+             default:
+                 break;
+         }
+     }
+
+     public void GoLoby()
+     {
+         PhotonNetwork.Disconnect();
+     }
+
+     public override void OnDisconnected(DisconnectCause cause)
+     {
+         SceneManager.LoadScene("01_Loby");
+     }
+
+     public override void OnPlayerLeftRoom(Player otherPlayer)
+     {
+         //강제종료 해결
+         if (PhotonNetwork.IsMasterClient)
+         {
+             int pidx = 0;
+
+             for (int i = 0; i < NetworkManager.inst.players.Count; i++)
+             {
+                 if (NetworkManager.inst.players[i].OriNickName==otherPlayer.NickName)
+                 {
+                     pidx = i;
+                 }
+             }
+
+             if (NetworkManager.inst.players[pidx].State==1)
+             {
+                 VictoryInt--;
+             }
+             NetworkManager.inst.players[pidx].Dead = true;
+             NetworkManager.inst.players[pidx].State = 3;
+             NetworkManager.inst.players[pidx].Life = 0;
+             
+             var lifeRank = MasterInfo.inst.lifeCheck[pidx];
+             lifeRank.Life=0;
+
+         }
+     }
+
+     [PunRPC]
+     public void RPCVictoryGo(int pidx,int i)
+     {
+         if (PlayerInfo.Inst.PlayerIdx==pidx)
+         {
+             VictoryGo(i);
+         }
+     }
+
+     [PunRPC]
+     public void RPC_VictoryMaster(int pidx)
+     {
+         VictoryInt--;
+         pv.RPC(nameof(RPCVictoryGo),RpcTarget.All,pidx,VictoryInt);
      }
      
 }
