@@ -118,6 +118,12 @@ public class UIManager : MonoBehaviour
 
     public void XpBuy()
     {
+        if (PlayerInfo.Inst.Level == 9)
+        {
+            return;
+        }
+        
+
         if (PlayerInfo.Inst.Gold>=4)
         {
         PlayerInfo.Inst.XpPlus(4);
@@ -127,6 +133,14 @@ public class UIManager : MonoBehaviour
 
     public void XpSliderSet()
     {
+        if (PlayerInfo.Inst.Level==9)
+        {
+            XpSlider.value = 1;
+            XpSlider.maxValue = 1;
+            XpText.text = "Max";
+            LvText.text = PlayerInfo.Inst.Level.ToString();
+            return;
+        }
         int xp = PlayerInfo.Inst.Xp;
         int xpmax = PlayerInfo.Inst.XpMax;
 
