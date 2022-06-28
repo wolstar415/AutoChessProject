@@ -36,6 +36,27 @@ namespace GameS
                 move.StartFUnc(gameObject,Target,da);
             }
         }
+        
+        public override void SkillFunc()
+        {
+            stat.NetStopFunc(false,0.3f,false);
+            stat.AniStart("Skill");
+            StartCoroutine(ISkillFunc());
+        }
+
+        IEnumerator ISkillFunc()
+        {
+            
+            yield return YieldInstructionCache.WaitForSeconds(0.3f);
+            GameObject ob = GameSystem_AllInfo.inst.FindFirstObject(transform.position, info.EnemyTeamIdx, 26f, true);
+            
+            if(ob==null) yield break;
+            float v=SkillValue(1);
+            
+            DamageManager.inst.DamageFunc1(gameObject,ob,v,eDamageType.Speel_Magic);
+            EffectManager.inst.EffectCreate("Skill50_Effect",ob.transform.position,Quaternion.identity,2);
+
+        }
 
 
         

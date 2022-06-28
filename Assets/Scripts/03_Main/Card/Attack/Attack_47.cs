@@ -47,12 +47,35 @@ namespace GameS
         void AttackFunc()
         {
             //총알생성
-            float da = stat.Atk_Damage();
-            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Bullet", CreatePos.position, Quaternion.identity);
-            if (bullet.TryGetComponent(out Buulet_Move1 move))
+            bool skill = manacheck();
+            if (skill)
             {
-                move.StartFUnc(gameObject,Target,da);
+                SkillBasic();
+                float v=SkillValue(1);
+
+                dummy_Enemy.Clear();
+                dummy_Enemy = GameSystem_AllInfo.inst.FindAllObject(Target.transform.position, info.EnemyTeamIdx, 3.3f);
+                for (int i = 0; i < dummy_Enemy.Count; i++)
+                {
+                    DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],v,eDamageType.Speel_Magic);
+                    
+                }
+                    
+                EffectManager.inst.EffectCreate("Skill47_Effect",Target.transform.position,Quaternion.identity,2f);
             }
+            else
+            {
+                float da = stat.Atk_Damage();
+                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Bullet", CreatePos.position, Quaternion.identity);
+                if (bullet.TryGetComponent(out Buulet_Move1 move))
+                {
+                    move.StartFUnc(gameObject,Target,da);
+                }
+                
+            }
+            
+            
+
         }
 
 

@@ -22,7 +22,7 @@ namespace GameS
         IEnumerator IAttackFunc()
         {
             float da = stat.Atk_Damage();
-            stat.AniStart("Attack");
+            //stat.AniStart("Attack");
             yield return YieldInstructionCache.WaitForSeconds(0.3f);
             fsm.CoolStart();
 

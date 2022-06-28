@@ -1784,6 +1784,7 @@ MonoBehaviour:
   Enemies: []
   Enmies2: []
   IsCool: 0
+  noCon: 0
   state: 0
   noConTime: 0
   stop: 0
@@ -1915,8 +1916,6 @@ MonoBehaviour:
   CreatePos: {fileID: 0}
   bulletPrefab: {fileID: 0}
   Target: {fileID: 0}
-  SkillEffect: {fileID: 0}
-  ManaBar: {fileID: 0}
 --- !u!1 &823211600542394274
 GameObject:
   m_ObjectHideFlags: 0

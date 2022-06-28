@@ -28,12 +28,27 @@ namespace GameS
 
         void AttackFunc()
         {
-            //총알생성
-            float da = stat.Atk_Damage();
-            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Bullet", CreatePos.position, Quaternion.identity);
-            if (bullet.TryGetComponent(out Buulet_Move1 move))
+            bool skill = manacheck();
+
+            if (skill)
             {
-                move.StartFUnc(gameObject,Target,da);
+                SkillBasic();
+                float da = SkillValue(1);
+                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Skill_48", CreatePos.position, Quaternion.identity);
+                if (bullet.TryGetComponent(out Buulet_Move2 move))
+                {
+                    move.StartFUnc(gameObject,Target.transform.position,da,info.EnemyTeamIdx,false,false);
+                }
+
+            }
+            else
+            {
+                float da = stat.Atk_Damage();
+                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Bullet", CreatePos.position, Quaternion.identity);
+                if (bullet.TryGetComponent(out Buulet_Move1 move))
+                {
+                    move.StartFUnc(gameObject,Target,da);
+                }
             }
         }
 

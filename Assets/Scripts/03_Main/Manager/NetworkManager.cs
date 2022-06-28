@@ -793,7 +793,7 @@ public class playerinfo
                 
                 
             }
-            if (PlayerInfo.Inst.TraitandJobCnt[30]>=2)
+            if (PlayerInfo.Inst.TraitandJobCnt[30]>=3)
             {
                 dummyInfo.Clear();
                 for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)

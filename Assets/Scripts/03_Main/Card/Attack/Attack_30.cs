@@ -57,7 +57,7 @@ namespace GameS
             {
                 cnt--;
                 dummy_Enemy.Clear();
-                dummy_Enemy = GameSystem_AllInfo.inst.FindAllObject(transform.position, info.EnemyTeamIdx, 6.6f);
+                dummy_Enemy = GameSystem_AllInfo.inst.FindAllObject(pos, info.EnemyTeamIdx, 6.6f);
                 
                 for (var i = 0; i < dummy_Enemy.Count; i++)
                 {

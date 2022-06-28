@@ -1784,6 +1784,7 @@ MonoBehaviour:
   Enemies: []
   Enmies2: []
   IsCool: 0
+  noCon: 0
   state: 0
   noConTime: 0
   stop: 0
@@ -1912,11 +1913,9 @@ MonoBehaviour:
   stat: {fileID: 5533469372153832835}
   fsm: {fileID: 910973219689201242}
   IsFastSkill: 0
-  CreatePos: {fileID: 0}
+  CreatePos: {fileID: 794620965866707055}
   bulletPrefab: {fileID: 0}
   Target: {fileID: 0}
-  SkillEffect: {fileID: 0}
-  ManaBar: {fileID: 0}
 --- !u!1 &823211600542394274
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,7 +29,6 @@ namespace GameS
             {
                 SkillBasic();
             }
-            stat.AniStart("Attack");
             yield return YieldInstructionCache.WaitForSeconds(0.3f);
             fsm.CoolStart();
 

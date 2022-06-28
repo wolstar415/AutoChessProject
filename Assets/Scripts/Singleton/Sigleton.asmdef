@@ -5,7 +5,8 @@
         "Unity.TextMeshPro",
         "PhotonRealtime",
         "PhotonUnityNetworking.Utilities",
-        "PhotonUnityNetworking"
+        "PhotonUnityNetworking",
+        "Loby"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

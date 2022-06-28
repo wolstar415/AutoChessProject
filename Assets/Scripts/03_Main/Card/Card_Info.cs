@@ -1155,15 +1155,19 @@ namespace GameS
                     if (leftob.TryGetComponent(out CardState cstat))
                     {
                         
+                        
                             cstat.CoolPlus(0,0,15*have15,true);
                         
+                            EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
+
+                            
                     }
                 }
                 if (rightob!=null)
                 {
                     if (rightob.TryGetComponent(out CardState cstat2))
                     {
-                        
+                        EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
                             cstat2.CoolPlus(0,0,15*have15,true);
                         
                     }
@@ -1183,7 +1187,7 @@ namespace GameS
                     if (leftob.TryGetComponent(out CardState cstat))
                     {
                         
-
+                        EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
                             cstat.shiled += sv;
                         
                     }
@@ -1192,7 +1196,7 @@ namespace GameS
                 {
                     if (rightob.TryGetComponent(out CardState cstat2))
                     {
-                        
+                        EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
                             cstat2.shiled += sv;
                         
                     }
@@ -1209,7 +1213,7 @@ namespace GameS
                     if (leftob.TryGetComponent(out CardState cstat))
                     {
                         
-
+                        EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
                             cstat.MagicPlus(0,0,50*have35,true);
                         
                     }
@@ -1218,7 +1222,7 @@ namespace GameS
                 {
                     if (rightob.TryGetComponent(out CardState cstat2))
                     {
-                        
+                        EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
                             cstat2.MagicPlus(0,0,50*have35,true);
                         
                     }

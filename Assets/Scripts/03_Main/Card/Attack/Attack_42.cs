@@ -44,20 +44,26 @@ namespace GameS
 
             if (skill)
             {
-                float da2=SkillValue(1);
-                float v=SkillValue(2);
                 
-                if (Target.TryGetComponent(out CardState enemystat))
+                
+                
+                dummy_Enemy.Clear();
+                dummy_Enemy = GameSystem_AllInfo.inst.FindAllObject(transform.position, info.EnemyTeamIdx, 6f);
+                float d1 = SkillValue(1);
+                float d2 = SkillValue(2);
+                EffectManager.inst.EffectCreate("Skill42_Effect",transform.position,Quaternion.identity,4f);
+
+                for (int i = 0; i < dummy_Enemy.Count; i++)
                 {
-                    Vector3 dir = Target.transform.position - transform.position;
-                    dir.Normalize();
-                    dir.y = 0;
-                enemystat.NetStopFunc(true,v,true);
-                enemystat.Knockback(dir,20);
-                    
+                    if (dummy_Enemy[i].TryGetComponent(out CardState enemystat))
+                    {
+                        enemystat.NetStopFunc(true,d2,false);
+                        enemystat.Jump(enemystat.transform.position,3,1,1.5f);
+                        DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],d1,eDamageType.Speel_Magic);
+                    }
+                
                 }
-            DamageManager.inst.DamageFunc1(gameObject,Target,da+da2,eDamageType.Basic_Magic);
-                EffectManager.inst.EffectCreate("Skill8_Effect",Target.transform.position,Quaternion.identity,5f);
+                
             }
             else
             {

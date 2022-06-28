@@ -48,6 +48,7 @@ namespace GameS
             }
 
 
+
             if (card_stat.IsDead||target_stat.IsDead||!PlayerInfo.Inst.IsBattle||target_stat.IsInvin>0)
             {
                 return;
@@ -88,16 +89,20 @@ namespace GameS
                     
                     
                     //캐릭터 추가 데미지
-                    if (card_stat.info.Idx == 0||card_stat.info.Idx == 11)
+                    if (card_stat.info.Idx == 0||card_stat.info.Idx == 11||card_stat.info.Idx == 52)
                     {
                         if (card_stat.AttackCnt%3==0)
                         {
                             float plus=target_stat.HpMax() * 0.08f;
+                            if (card_stat.info.Idx==52)
+                            {
+                                plus *= 2;
+                            }
                             plus *= card_stat.info.Level;
                             adddamage += plus;
                         }
                     }
-                    if (card_stat.info.Idx == 15||card_stat.OneAttackCnt >= 2)
+                    if (card_stat.info.Idx == 15&&card_stat.OneAttackCnt >= 2)
                     {
                         float v=CsvManager.inst.skillinfo[15].Realcheck(1,card_stat.info.Level);
                             float plus=damage * v*0.01f;
@@ -105,7 +110,7 @@ namespace GameS
                             adddamage += plus;
                         
                     }
-                    if (card_stat.info.Idx == 16||card_stat.OneAttackCnt == 1)
+                    if (card_stat.info.Idx == 16&&card_stat.OneAttackCnt == 1)
                     {
                         float v=CsvManager.inst.skillinfo[16].Realcheck(1,card_stat.info.Level);
                         float plus=damage * v*0.01f;
@@ -117,9 +122,7 @@ namespace GameS
                     
                     
                     
-                    
-                    
-                    
+
                     
                     
                     
@@ -186,7 +189,7 @@ namespace GameS
 
 
                     }
-                    
+
                     if (card_stat.Job3) damageHeal+=30;
                     
                     if (card_stat.info.IsItemHave(20)>0)
@@ -210,7 +213,8 @@ namespace GameS
                     {
                         //스태틱 이펙트
                         DamageFunc1(card, target, 60 * item22, eDamageType.Speel_Magic);
-                     
+                        EffectManager.inst.EffectCreate("Item22_Effect",target.transform.position,Quaternion.Euler(-90,0,0),2f);
+
                         card_stat.ItemFuncAdd(22,true,5,false);
                     }
                     if (card_stat.info.IsItemHave(24)>0)
@@ -227,6 +231,7 @@ namespace GameS
 
                     
                 }
+
 
      
                 if (Type==eDamageType.Speel_Magic||Type==eDamageType.Basic_Magic)
@@ -259,6 +264,7 @@ namespace GameS
                 {
                     TextColor = 1;
                     daMi = 100 / (100 + target_stat.Defence_Magic());
+                    
                 }
                 else if (Istruedamage)
                 {
@@ -270,10 +276,11 @@ namespace GameS
                     adddamage = adddamage + (damage * (card_stat.CriDmg() * 0.01f));
 
                 }
-
+  
             
                 damage += adddamage;
                 damage = damage * daMi;
+
 
                 
                 

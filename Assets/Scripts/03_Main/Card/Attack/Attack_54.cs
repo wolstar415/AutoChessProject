@@ -26,7 +26,6 @@ namespace GameS
         IEnumerator IAttackFunc()
         {
             float da = stat.Atk_Damage();
-            stat.AniStart("Attack");
             yield return YieldInstructionCache.WaitForSeconds(0.2f);
             fsm.CoolStart();
             DamageManager.inst.DamageFunc1(gameObject,Target,da,eDamageType.Basic_phy);

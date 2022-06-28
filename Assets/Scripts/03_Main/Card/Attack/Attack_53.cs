@@ -12,7 +12,9 @@ namespace GameS
         public override void BasicAttack(GameObject target,float t=0.3f)
         {
 
-            base.BasicAttack(target,t);
+            Target = target;
+
+            stat.NetStopFunc(false,t,false);
 
 
             StartCoroutine(IAttackFunc());
@@ -22,12 +24,43 @@ namespace GameS
         IEnumerator IAttackFunc()
         {
             float da = stat.Atk_Damage();
-            stat.AniStart("Attack");
-            yield return YieldInstructionCache.WaitForSeconds(0.3f);
+            bool skill=false;
+            if (stat.currentMana>=stat.ManaMax())
+            {
+                SkillBasic();
+                skill = true;
+                stat.AniStart("Skill");
+                
+            }
+            else
+            {
+                stat.AniStart("Attack");
+                
+            }
+
+
+            yield return YieldInstructionCache.WaitForSeconds(0.2f);
             fsm.CoolStart();
 
-           
-            DamageManager.inst.DamageFunc1(gameObject,Target,da,eDamageType.Basic_phy);
+            if (skill)
+            {
+                float v=SkillValue(1);
+
+                dummy_Enemy.Clear();
+                dummy_Enemy = GameSystem_AllInfo.inst.FindAllObject(transform.position, info.EnemyTeamIdx, 3.3f);
+                for (int i = 0; i < dummy_Enemy.Count; i++)
+                {
+                    DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],v,eDamageType.Speel_Magic);
+                    
+                }
+                    
+                EffectManager.inst.EffectCreate("Skill53_Effect",Target.transform.position,Quaternion.Euler(-90,0,0),3f);
+            }
+            else
+            {
+                DamageManager.inst.DamageFunc1(gameObject,Target,da,eDamageType.Basic_phy);
+                
+            }
         }
 
 
