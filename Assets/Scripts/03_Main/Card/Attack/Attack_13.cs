@@ -18,7 +18,7 @@ namespace GameS
             {
                 Target = target;
             StartCoroutine(ISkillFunc());
-                
+                SkillBasic();
             }
             else
             {

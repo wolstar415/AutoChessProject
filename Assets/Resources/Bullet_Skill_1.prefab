@@ -142,7 +142,7 @@ MonoBehaviour:
   EnemyIdx: 0
   damage: 0
   NoDamage: []
-  Speed: 10
+  Speed: 15
 --- !u!65 &3471099180753533481
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -154,7 +154,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.14, y: 1, z: 0.7637873}
+  m_Size: {x: 0.3, y: 1, z: 0.7637873}
   m_Center: {x: 0, y: 0, z: 0.32526115}
 --- !u!114 &-8285141642763607698
 MonoBehaviour:
@@ -251,7 +251,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114602481117139958, guid: 24c86df1468884d499ca1d5cb865a6f7, type: 3}
+    - {fileID: 135783597193828132, guid: 24c86df1468884d499ca1d5cb865a6f7, type: 3}
+    - {fileID: 54374910547708342, guid: 24c86df1468884d499ca1d5cb865a6f7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 24c86df1468884d499ca1d5cb865a6f7, type: 3}
 --- !u!4 &1951775589345610544 stripped
 Transform:

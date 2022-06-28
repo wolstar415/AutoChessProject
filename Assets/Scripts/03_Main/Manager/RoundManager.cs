@@ -106,6 +106,7 @@ namespace GameS
 
         public void RoundStart(int Round)
         {
+            
             int RoundCheck = CsvManager.inst.RoundCheck3[Round];
             PlayerInfo.Inst.RoundIdx = RoundCheck;
             PlayerInfo.Inst.Round = Round;
@@ -177,17 +178,20 @@ namespace GameS
 
          void Round_PVP_StartFunc()
         {
-            if (PlayerInfo.Inst.Dead == true) return;
             int TimeWait = CsvManager.inst.RoundCheck4[PlayerInfo.Inst.Round];
-            if (PlayerInfo.Inst.IsLock)
+            if (PlayerInfo.Inst.Dead == false)
             {
-                UIManager.inst.LockCheck(false);
-            }
-            else
-            {
-            CardManager.inst.CardReset();
+                if (PlayerInfo.Inst.IsLock)
+                {
+                    UIManager.inst.LockCheck(false);
+                }
+                else
+                {
+                    CardManager.inst.CardReset();
                 
+                }
             }
+            
 
 
             if (PhotonNetwork.IsMasterClient)
@@ -202,22 +206,26 @@ namespace GameS
         }
          void Round_PVE_StartFunc()
         {
-            if (PlayerInfo.Inst.Dead == true) return;
-            int TimeWait = CsvManager.inst.RoundCheck4[PlayerInfo.Inst.Round];
-            PlayerInfo.Inst.EnemyIdx = 10;
-            if (PlayerInfo.Inst.Round>=2)
+                int TimeWait = CsvManager.inst.RoundCheck4[PlayerInfo.Inst.Round];
+            if (PlayerInfo.Inst.Dead == false)
             {
-                if (PlayerInfo.Inst.IsLock)
+                PlayerInfo.Inst.EnemyIdx = 10;
+                if (PlayerInfo.Inst.Round>=2)
                 {
-                    UIManager.inst.LockCheck(false);
+                    if (PlayerInfo.Inst.IsLock)
+                    {
+                        UIManager.inst.LockCheck(false);
 
-                }
-                else
-                {
-                    CardManager.inst.CardReset();
+                    }
+                    else
+                    {
+                        CardManager.inst.CardReset();
                 
+                    }
                 }
             }
+            
+            
             PVEManager.inst.PVEstart();
             if (PhotonNetwork.IsMasterClient)
             {
@@ -243,7 +251,6 @@ namespace GameS
             
 
             //카메라이동
-            PlayerInfo.Inst.camer.transform.SetPositionAndRotation(PositionManager.inst.Camera_PickPos[idx].localPosition,PositionManager.inst.Camera_PickPos[idx].localRotation);
             
             
             if (PlayerInfo.Inst.PlayerOb.TryGetComponent(out PlayerMoving pl))
@@ -253,6 +260,8 @@ namespace GameS
             }
             //길막기 모두 정상
             }
+            PlayerInfo.Inst.camer.transform.SetPositionAndRotation(PositionManager.inst.Camera_PickPos[idx].localPosition,PositionManager.inst.Camera_PickPos[idx].localRotation);
+
             PickRoundManager.inst.PickAllClose();
             if (PhotonNetwork.IsMasterClient)
             {
@@ -272,12 +281,13 @@ namespace GameS
             {
                 
             
-            BattleEndC();
-            UIManager.inst.BattleUiSetting();
-            UIManager.inst.BattleEndUi();
-            MoneyCheck(true);
-            PlayerInfo.Inst.XpPlus(2);
+                BattleEndC();
+                UIManager.inst.BattleUiSetting();
+                UIManager.inst.BattleEndUi();
+                MoneyCheck(true);
+                PlayerInfo.Inst.XpPlus(2);
             }
+            
             if (PhotonNetwork.IsMasterClient)
             {
                 NetworkManager.inst.MasterRoundNextStart();
@@ -302,12 +312,13 @@ namespace GameS
                 
 
                 BattleEndC();
-            UIManager.inst.BattleUiSetting();
-            UIManager.inst.BattleEndUi();
-            PlayerInfo.Inst.EnemyIdx = -1;
-            MoneyCheck(false);
-            PlayerInfo.Inst.XpPlus(2);
+                UIManager.inst.BattleUiSetting();
+                UIManager.inst.BattleEndUi();
+                PlayerInfo.Inst.EnemyIdx = -1;
+                MoneyCheck(false);
+                PlayerInfo.Inst.XpPlus(2);
             }
+            
             if (PhotonNetwork.IsMasterClient) NetworkManager.inst.MasterRoundNextStart();
         }
 
@@ -397,37 +408,39 @@ namespace GameS
         }
         public void Round_PICk_EndFunc()
         {
-            if (PlayerInfo.Inst.Dead == true) return;
-
-
-            if (PlayerInfo.Inst.PlayerOb.TryGetComponent(out PlayerPickSelect pick))
+            if (PlayerInfo.Inst.Dead == false)
             {
-                pick.StopAllCoroutines();
-                GameObject ob = pick.pickOb;
                 
-                CreateManager.inst.Pick_CreateCharacter(ob);
-                ob.transform.rotation=Quaternion.identity;
+                if (PlayerInfo.Inst.PlayerOb.TryGetComponent(out PlayerPickSelect pick))
+                {
+                    pick.StopAllCoroutines();
+                    GameObject ob = pick.pickOb;
+                
+                    CreateManager.inst.Pick_CreateCharacter(ob);
+                    ob.transform.rotation=Quaternion.identity;
+                
+                }
+                int idx = PlayerInfo.Inst.PlayerIdx;
+                //카메라설정 본인자리로 가기
+                PlayerInfo.Inst.camer.transform.SetPositionAndRotation(PositionManager.inst.Camera_Pos[idx].position,
+                    PositionManager.inst.Camera_Pos[idx].rotation);
+            
+                
+                //UI돌아오게하기
+                UIManager.inst.BattleUiSetting();
+                PlayerInfo.Inst.PickRound = false;
+                //플레이어 돌아오게하기
+                if (PlayerInfo.Inst.PlayerOb.TryGetComponent(out PlayerMoving moving))
+                {
+                    // moving.nav.enabled = false;
+                    // moving.gameObject.transform.position = PlayerInfo.Inst.PlayerMovePos.position;
+                    // moving.nav.enabled = true;
+                    moving.MovePos(PlayerInfo.Inst.PlayerMovePos.position);
+                }
                 
             }
-            int idx = PlayerInfo.Inst.PlayerIdx;
-            //카메라설정 본인자리로 가기
-            PlayerInfo.Inst.camer.transform.SetPositionAndRotation(PositionManager.inst.Camera_Pos[idx].position,
-                PositionManager.inst.Camera_Pos[idx].rotation);
-            
-                
-            //UI돌아오게하기
-            UIManager.inst.BattleUiSetting();
-            PlayerInfo.Inst.PickRound = false;
-            //플레이어 돌아오게하기
             
             
-            if (PlayerInfo.Inst.PlayerOb.TryGetComponent(out PlayerMoving moving))
-            {
-                // moving.nav.enabled = false;
-                // moving.gameObject.transform.position = PlayerInfo.Inst.PlayerMovePos.position;
-                // moving.nav.enabled = true;
-                moving.MovePos(PlayerInfo.Inst.PlayerMovePos.position);
-            }
             if (PhotonNetwork.IsMasterClient) NetworkManager.inst.MasterRoundNextStart();
 
         }

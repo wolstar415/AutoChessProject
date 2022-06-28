@@ -44,7 +44,7 @@ namespace GameS
             else
             {
                 float da = stat.Atk_Damage();
-                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Bullet", CreatePos.position, Quaternion.identity);
+                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Dark", CreatePos.position, Quaternion.identity);
                 if (bullet.TryGetComponent(out Buulet_Move1 move))
                 {
                     move.StartFUnc(gameObject,Target,da);

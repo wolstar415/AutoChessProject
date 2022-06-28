@@ -33,6 +33,7 @@ namespace GameS
         public Transform[] CameraPos_De;
         public Transform PickPos;
         public LayerMask[] masks;
+        public bool[] playerdead;
 
         public Transform TextUIparent;
 
@@ -43,6 +44,8 @@ namespace GameS
         public List<GameObject> Card_4;
         public List<GameObject> Card_5;
 
+        public Transform mainCanvas;
+        public Transform itemMoveTrans;
 
         public List<GameObject> PickCard;
 

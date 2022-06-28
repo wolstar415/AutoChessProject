@@ -19,6 +19,7 @@ namespace GameS
         {
             culTime = 0;
             Fight.state = eCardFight_STATE.Moving;
+            //Fight.Enemy = null;
             Fight.FindEnemy(); // 혹시모르니까 버그체크
             if (Fight.Enemy==null)
             {
@@ -77,6 +78,7 @@ namespace GameS
             if (culTime>=0.5f)
             {
                 culTime = 0;
+                Fight.Enemy = null;
                 Fight.FindEnemy();
             }
                 if (Fight.Enemy == null)

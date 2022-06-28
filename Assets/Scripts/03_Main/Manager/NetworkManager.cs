@@ -904,6 +904,9 @@ public class playerinfo
         [PunRPC]
         void RPC_BattleEnd()
         {
+           
+            
+            
             PlayerInfo.Inst.roundDamgeMax = 0;
             //죽은애 다시 살리기
             if (PhotonNetwork.IsMasterClient)
@@ -922,19 +925,22 @@ public class playerinfo
             }
             PVEManager.inst.Enemis.Clear();
             PVPManager.inst.copyob.Clear();
-
-            
-            
-            for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+            if (PlayerInfo.Inst.Dead == false)
             {
-                if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
+                
+            
+            
+                for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
                 {
-                    
-                    info.BattleEnd();
-                    info.stat.DmgIdx = -1;
+                    if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info info))
+                    {
+                        
+                        info.BattleEnd();
+                        info.stat.DmgIdx = -1;
+                    }
                 }
+                RoundManager.inst.BattleMoveFunc2();
             }
-            RoundManager.inst.BattleMoveFunc2();
             if(coTime!=null) StopCoroutine(coTime);
             coTime = null;
 

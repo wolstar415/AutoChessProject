@@ -234,11 +234,14 @@ namespace GameS
             else if (Input.GetKeyDown(KeyCode.C))
             {
                 ItemManager.inst.ItemAdd(36);
-                
+                CreateManager.inst.CreateCharacter(43);
             }
             else if (Input.GetKeyDown(KeyCode.V))
             {
-                CreateManager.inst.CreateCharacter(27);
+                CreateManager.inst.CreateCharacter(26);
+                CreateManager.inst.CreateCharacter(31);
+                CreateManager.inst.CreateCharacter(41);
+                CreateManager.inst.CreateCharacter(44);
             }
             else if (Input.GetKeyDown(KeyCode.B))
             {
@@ -250,7 +253,46 @@ namespace GameS
             }
             else if (Input.GetKeyDown(KeyCode.M))
             {
-                CreateManager.inst.CreateCharacter(40);
+                CreateManager.inst.CreateCharacter(27);
+            }
+            else if (Input.GetKeyDown(KeyCode.F))
+            {
+                CreateManager.inst.CreateCharacter(37);
+            }
+            else if (Input.GetKeyDown(KeyCode.G))
+            {
+                CreateManager.inst.CreateCharacter(42);
+            }
+            else if (Input.GetKeyDown(KeyCode.H))
+            {
+                CreateManager.inst.CreateCharacter(48);
+            }
+            else if (Input.GetKeyDown(KeyCode.J))
+            {
+                CreateManager.inst.CreateCharacter(49);
+            }
+            else if (Input.GetKeyDown(KeyCode.K))
+            {
+                CreateManager.inst.CreateCharacter(33);
+            }
+            else if (Input.GetKeyDown(KeyCode.L))
+            {
+                CreateManager.inst.CreateCharacter(35);
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                ItemManager.inst.ItemAdd(17);
+                ItemManager.inst.ItemAdd(25);
+                ItemManager.inst.ItemAdd(29);
+                ItemManager.inst.ItemAdd(32);
+            }
+            else if (Input.GetKeyDown(KeyCode.W))
+            {
+                CreateManager.inst.CreateCharacter(19);
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+                CreateManager.inst.CreateCharacter(54);
             }
             else if (Input.GetKeyDown(KeyCode.Keypad4))
             {
@@ -259,7 +301,9 @@ namespace GameS
             else if (Input.GetKeyDown(KeyCode.Keypad5))
             {
                 
-                CreateManager.inst.CreateCharacter(43);
+                
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
                 ItemManager.inst.ItemAdd(44);
             }
             else if (Input.GetKeyDown(KeyCode.Keypad6))
@@ -270,13 +314,7 @@ namespace GameS
             }
             else if (Input.GetKeyDown(KeyCode.Keypad7))
             {
-                for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
-                {
-                    var a = PlayerInfo.Inst.PlayerCard_Filed[i].GetComponent<CardState>();
-                    Debug.Log("----------------------------------------------");
-                    Debug.Log($"이름 : {a.info.name} ,공속 : {a.Atk_Cool()}");
-                    Debug.Log("----------------------------------------------");
-                }
+                
             }
             else if (Input.GetKeyDown(KeyCode.Keypad9))
             {

@@ -35,7 +35,7 @@ namespace GameS
         {
             //총알생성
             float da = stat.Atk_Damage();
-            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Bullet", CreatePos.position, Quaternion.identity);
+            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Po", CreatePos.position, Quaternion.identity);
             if (bullet.TryGetComponent(out Buulet_Move1 move))
             {
                 move.StartFUnc(gameObject,Target,da);

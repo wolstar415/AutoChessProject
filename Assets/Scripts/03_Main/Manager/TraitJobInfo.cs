@@ -48,6 +48,7 @@ namespace GameS
             int info = CsvManager.inst.TraitandJobInfo[Idx];
             InfoIcon.sprite = IconManager.inst.icon[icon];
             Infoname.text = CsvManager.inst.GameText(name);
+            Name.text = CsvManager.inst.GameText(name);
             InfoInfo1.text = CsvManager.inst.GameText(info);
             
             // 챔피언들 추가
@@ -81,7 +82,7 @@ namespace GameS
 
         }
 
-        int LevelCheck()
+        public int LevelCheck()
         {
             int a = 0;
             for (int i = 0; i < 5; i++)
@@ -122,13 +123,29 @@ namespace GameS
 
             if (CntIf[level]>=99)
             {
-            CntText.text=Cnt.ToString();
+             CntText.text=Cnt.ToString();
                 
             }
             else
             {
                 
-            CntText.text=Cnt+" / "+CntIf[level];
+              CntText.text=Cnt+" / "+CntIf[level];
+            }
+
+
+            if (level>=1)
+            {
+                
+                for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+                {
+                    if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info cardinfo))
+                    {
+                        if (cardinfo.IsHaveJob(Idx,true))
+                        {
+                            EffectManager.inst.EffectCreate("JobEffect",cardinfo.transform.position,Quaternion.identity,1.5f);
+                        }
+                    }
+                }
             }
             UiCheck();
         }
@@ -145,14 +162,29 @@ namespace GameS
 
             if (CntIf[level] >= 99)
             {
-            CntText.text=Cnt.ToString();
+                CntText.text=Cnt.ToString();
                 
             }
 
             else
             {
-            CntText.text=Cnt+" / "+CntIf[level];
+             CntText.text=Cnt+" / "+CntIf[level];
                 
+            }
+            
+            if (level>=1)
+            {
+                
+                for (int i = 0; i < PlayerInfo.Inst.PlayerCard_Filed.Count; i++)
+                {
+                    if (PlayerInfo.Inst.PlayerCard_Filed[i].TryGetComponent(out Card_Info cardinfo))
+                    {
+                        if (cardinfo.IsHaveJob(Idx,true))
+                        {
+                            EffectManager.inst.EffectCreate("JobEffect",cardinfo.transform.position,Quaternion.identity,1.5f);
+                        }
+                    }
+                }
             }
             UiCheck();
         }

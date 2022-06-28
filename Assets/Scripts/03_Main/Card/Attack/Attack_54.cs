@@ -61,8 +61,25 @@ namespace GameS
             stat.ani = ani2;
         }
 
+        public override void BattelStart()
+        {
+            StartCoroutine(ShiledCheck());
+        }
+
+        IEnumerator ShiledCheck()
+        {
+            
+            while (stat.shiled>0)
+            {
+                yield return null;
+            }
+
+            SkillFunc();
+        }
+
         public override void BattelEnd()
         {
+            StopAllCoroutines();
             model1.SetActive(true);
             model2.SetActive(false);
             skillOn = false;

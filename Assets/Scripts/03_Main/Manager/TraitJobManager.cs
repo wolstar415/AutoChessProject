@@ -83,7 +83,8 @@ namespace GameS
                 }
 
                 return i > 0;
-            }).OrderByDescending(n =>
+            }).OrderByDescending(n=>n.GetComponent<TraitJobInfo>().LevelCheck())
+                .ThenByDescending(n =>
             {
                 int i=0;
                 if (n.TryGetComponent(out TraitJobInfo info))

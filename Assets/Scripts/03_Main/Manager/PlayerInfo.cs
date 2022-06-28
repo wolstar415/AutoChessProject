@@ -56,6 +56,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
                 life = 0;
 
             pv.RPC(nameof(RPC_DeadFunc),RpcTarget.MasterClient,PlayerIdx);
+            pv.RPC(nameof(RPC_DeadCheck),RpcTarget.All,PlayerIdx);
                 PlayerDead();
                 return;
             }
@@ -593,15 +594,22 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_RoundDamage(int dmg, int pidx)
     {
+        if (PlayerInfo.Inst.Dead) return;
         if (PlayerInfo.Inst.PlayerIdx==pidx)
         {
             //이펙트
+            
             EffectManager.inst.EffectCreate("DeadEffect",PlayerOb.transform.position,Quaternion.identity,1);
             LifeDamage(dmg);
         }
     }
 
 
+    [PunRPC]
+    void RPC_DeadCheck(int pidx)
+    {
+        GameSystem_AllInfo.inst.playerdead[pidx] = true;
+    }
 
     [PunRPC]
     void RPC_DeadFunc(int pidx)
@@ -627,6 +635,12 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
             }
             
         }
+        for (int i = 0; i < PVEManager.inst.Enemis.Count; i++)
+        {
+            PhotonNetwork.Destroy(PVEManager.inst.Enemis[i]);
+        }
+        
+        PVEManager.inst.Enemis.Clear();
 
 
         UIManager.inst.DeadUi();

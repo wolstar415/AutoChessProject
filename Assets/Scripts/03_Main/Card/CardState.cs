@@ -866,7 +866,7 @@ namespace GameS
             {
                 
                 int lv = info.Level;
-                float hp=lv*3;
+                float hp=1000*lv*3;
                 float damage=30*lv;
                 float cool=0.5f;
                 float range=2.6f;

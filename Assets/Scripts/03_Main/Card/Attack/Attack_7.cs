@@ -23,6 +23,7 @@ namespace GameS
             stat.NetStopFunc(false,0.3f,false);
             stat.AniStart("Skill");
             StartCoroutine(ISkillFunc());
+            //SkillBasic();
         }
 
         IEnumerator ISkillFunc()

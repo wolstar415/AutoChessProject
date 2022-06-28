@@ -53,50 +53,57 @@ namespace GameS
             GameObject ob = GameSystem_AllInfo.inst.FindFirstObject(transform.position, info.EnemyTeamIdx, 26f, false);
             
             if(ob==null) yield break;
-            Vector3 pos = ob.transform.position;
+            var obstat = ob.GetComponent<CardState>();
+            Vector3 pos;
             stat.NetStopFunc(false,2f,false);
-            stat.pv.RPC(nameof(RPC_SkillFunc), RpcTarget.All, gameObject.transform.position, ob.transform.position, true);
+            stat.pv.RPC(nameof(RPC_Active), RpcTarget.All, true);
             
             
-            yield return YieldInstructionCache.WaitForSeconds(1f);
-            
-            stat.pv.RPC(nameof(RPC_SkillFunc), RpcTarget.All, Vector3.zero, Vector3.zero, false);
+            float cultime = 0;
+            while (cultime<=2f)
+            {
+                cultime += Time.deltaTime;
+                if (obstat.IsDead)
+                {
+                    stat.NetStopFunc(false,0.1f,false);
+                    stat.pv.RPC(nameof(RPC_Active), RpcTarget.All, false);
+                    fsm.CoolStart(true);
+                    yield break;
+                }
+            stat.pv.RPC(nameof(LineMove), RpcTarget.All,transform.position,ob.transform.position);
+                
+                yield return null;
+            }
+            stat.pv.RPC(nameof(RPC_Active), RpcTarget.All, false);
             if (stat.IsDead) yield break;
             fsm.CoolStart(true);
             float da = SkillValue(1);
             GameObject bullet = PhotonNetwork.Instantiate("Bullet_Skill_19", CreatePos.position, Quaternion.identity);
             if (bullet.TryGetComponent(out Buulet_Move2 move))
             {
-                move.StartFUnc(gameObject,pos,da,info.EnemyTeamIdx,true,false);
+                move.StartFUnc(gameObject,ob.transform.position,da,info.EnemyTeamIdx,true,false);
             }
         }
 
         [PunRPC]
-        public void RPC_SkillFunc(Vector3 startpos,Vector3 endpos,bool b)
+        public void RPC_Active(bool b)
         {
-            if (b)
-            {
-                //line.transform.parent = null;
-                //line.transform.localScale = new Vector3(1,1,1);
-                //line.transform.position=Vector3.zero;
-                line.SetPosition(0,startpos);
-                line.SetPosition(1,endpos);
-                line.gameObject.SetActive(true);
-            }
-            else
-            {
-                //line.transform.parent = gameObject.transform;
-                line.gameObject.SetActive(false);
-                
-            }
+            line.gameObject.SetActive(b);
             
+        }
+
+        [PunRPC]
+        void LineMove(Vector3 startpos, Vector3 endpos)
+        {
+            line.SetPosition(0,startpos);
+            line.SetPosition(1,endpos);
         }
 
         public override void BattelEnd()
         {
             if (line.gameObject.activeSelf)
             {
-                stat.pv.RPC(nameof(RPC_SkillFunc),RpcTarget.All,false);
+                stat.pv.RPC(nameof(RPC_Active),RpcTarget.All,false);
             }
         }
     }

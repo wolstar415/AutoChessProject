@@ -78,7 +78,7 @@ public class LoginManager : MonoBehaviour
 
                 firebaseApp = FirebaseApp.DefaultInstance;
                 firebaseAuth = FirebaseAuth.DefaultInstance;
-
+                CheckFirebaseDependencies();
 
 
             }
@@ -92,7 +92,7 @@ public class LoginManager : MonoBehaviour
         Addressables.InternalIdTransformFunc += FirebaseAddressablesCache.IdTransformFunc;
         
         configuration = new GoogleSignInConfiguration { WebClientId = webClientId, RequestEmail = true, RequestIdToken = true };
-        CheckFirebaseDependencies();
+        
     }
 
     public void LoginBtn()
@@ -309,7 +309,6 @@ public class LoginManager : MonoBehaviour
                 if (task.Result == DependencyStatus.Available)
                 {
                     auth = FirebaseAuth.DefaultInstance;
-                    Debug.Log("성공");
                 }
             }
             else

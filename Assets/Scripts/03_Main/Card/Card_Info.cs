@@ -64,7 +64,7 @@ namespace GameS
         private IDisposable Event_TJ4=null;
         
         private IDisposable Event_item40=null;
-
+        private IDisposable[] Event_TJItem = new IDisposable[3];
 
         [Header("Pick")] public int pickIdx = -1;
 
@@ -269,7 +269,7 @@ namespace GameS
 
         public void UnitStart(float hp, float damage, float Cool, float range, float speed, int teami, int enemyi,int uiidx)
         {
-            IsFiled = true;
+            
             stat.Char_Speed = speed;
             stat.nav.speed = speed * 0.01f;
             stat.Char_Range = range;
@@ -287,6 +287,7 @@ namespace GameS
         [PunRPC]
         void RPC_UnitStart(float hp, float damage, float Cool,int teami,int enemyi)
         {
+            IsFiled = true;
             stat.IsUnit = true;
             stat.Char_Hp = hp;
             stat.Char_Atk_Cool = Cool;
@@ -424,6 +425,9 @@ namespace GameS
             Event_TJ2?.Dispose();
             Event_TJ3?.Dispose();
             Event_TJ4?.Dispose();
+            Event_TJItem[0]?.Dispose();
+            Event_TJItem[1]?.Dispose();
+            Event_TJItem[2]?.Dispose();
             Event_item40?.Dispose();
 
             if (TileOb.TryGetComponent(out TileInfo info))
@@ -719,18 +723,42 @@ namespace GameS
             {
                 case 17:
                     //파수꾼의 상징
-                    if (IsFiled&&IsHaveJob(3,false)==false)
+                    if (IsHaveJob(3,false)==false&&IsItemHave(17)==1)
                     {
-                        TraitJobManager.inst.TraitJobAdd(3);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobAdd(3);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==17&&Event_TJItem[i]==null)
+                            {
+                                Event_TJItem[i]=TraitJobManager.inst.Obs[3].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
+                                break;
+                            }
+                        }
+
                     }
                     break;
                 case 25:
                     //전사의 상징
-                    if (IsFiled&&IsHaveJob(26,false)==false)
+                    if (IsHaveJob(26,false)==false&&IsItemHave(25)==1)
                     {
-                        TraitJobManager.inst.TraitJobAdd(26);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobAdd(26);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==25&&Event_TJItem[i]==null)
+                            {
+                                Event_TJItem[i]=TraitJobManager.inst.Obs[26].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
+                                break;
+                            }
+                        }
                     }
                     break;
                 case 29:
@@ -739,18 +767,40 @@ namespace GameS
                     break;
                 case 32:
                     //기사의 상징
-                    if (IsFiled&&IsHaveJob(27,false)==false)
+                    if (IsHaveJob(27,false)==false&&IsItemHave(32)==1)
                     {
-                        TraitJobManager.inst.TraitJobAdd(27);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobAdd(27);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==32&&Event_TJItem[i]==null)
+                            {
+                                Event_TJItem[i]=TraitJobManager.inst.Obs[27].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
+                                break;
+                            }
+                        }
                     }
                     break;
                 case 38:
                     //보호자의 상징
-                    if (IsFiled&&IsHaveJob(8,false)==false)
+                    if (IsHaveJob(8,false)==false&&IsItemHave(38)==1)
                     {
-                        TraitJobManager.inst.TraitJobAdd(8);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobAdd(8);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==38&&Event_TJItem[i]==null)
+                            {
+                                Event_TJItem[i]=TraitJobManager.inst.Obs[8].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
+                                break;
+                            }
+                        }
                     }
                     break;
                 case 40:
@@ -760,34 +810,78 @@ namespace GameS
                     break;
                 case 43:
                     //마법사의 상징
-                    if (IsFiled&&IsHaveJob(28,false)==false)
+                    if (IsHaveJob(28,false)==false&&IsItemHave(43)==1)
                     {
-                        TraitJobManager.inst.TraitJobAdd(28);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobAdd(28);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==43&&Event_TJItem[i]==null)
+                            {
+                                Event_TJItem[i]=TraitJobManager.inst.Obs[28].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
+                                break;
+                            }
+                        }
                     }
                     break;
                 case 47:
                     //왕국의 상징
-                    if (IsFiled&&IsHaveJob(24,false)==false)
+                    if (IsHaveJob(24,false)==false&&IsItemHave(47)==1)
                     {
-                        TraitJobManager.inst.TraitJobAdd(24);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobAdd(24);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==47&&Event_TJItem[i]==null)
+                            {
+                                Event_TJItem[i]=TraitJobManager.inst.Obs[24].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
+                                break;
+                            }
+                        }
                     }
                     break;
                 case 50:
                     //유령의상징
-                    if (IsFiled&&IsHaveJob(23,false)==false)
+                    if (IsHaveJob(23,false)==false&&IsItemHave(50)==1)
                     {
-                        TraitJobManager.inst.TraitJobAdd(23);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobAdd(23);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==50&&Event_TJItem[i]==null)
+                            {
+                                Event_TJItem[i]=TraitJobManager.inst.Obs[23].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
+                                break;
+                            }
+                        }
                     }
                     break;
                 case 52:
                     //암살자의 상징
-                    if (IsFiled&&IsHaveJob(25,false)==false)
+                    if (IsHaveJob(25,false)==false&&IsItemHave(52)==1)
                     {
-                        TraitJobManager.inst.TraitJobAdd(25);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobAdd(25);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==52&&Event_TJItem[i]==null)
+                            {
+                                Event_TJItem[i]=TraitJobManager.inst.Obs[25].GetComponent<TraitJobInfo>().Sub_CardJobAndTraitShow.Subscribe(TileShow);
+                                break;
+                            }
+                        }
                     }
                     break;
 
@@ -812,19 +906,44 @@ namespace GameS
             {
                 case 17:
                     //파수꾼의 상징
-                    if (IsFiled&&IsHaveJob(3,false)==false)
+                    if (IsHaveJob(3,false)==false&&IsItemHave(17)==0)
                     {
-                        TraitJobManager.inst.TraitJobRemove(3);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobRemove(3);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==-1&&Event_TJItem[i]!=null)
+                            {
+                                Event_TJItem[i]?.Dispose();
+                                break;
+                            }
+                        }
+                        
                     }
+                    
                     break;
                 case 25:
                     //전사의 상징
-                    if (IsFiled&&IsHaveJob(26,false)==false)
+                    if (IsHaveJob(26,false)==false&&IsItemHave(25)==0)
                     {
-                        TraitJobManager.inst.TraitJobRemove(26);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobRemove(26);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==-1&&Event_TJItem[i]!=null)
+                            {
+                                Event_TJItem[i]?.Dispose();
+                                break;
+                            }
+                        }
                     }
+                    
                     break;
                 case 29:
                     if (IsItemHave(29)<=0)
@@ -835,19 +954,43 @@ namespace GameS
                     break;
                 case 32:
                     //기사의 상징
-                    if (IsFiled&&IsHaveJob(27,false)==false)
+                    if (IsHaveJob(27,false)==false&&IsItemHave(32)==0)
                     {
-                        TraitJobManager.inst.TraitJobRemove(27);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobRemove(27);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==-1&&Event_TJItem[i]!=null)
+                            {
+                                Event_TJItem[i]?.Dispose();
+                                break;
+                            }
+                        }
                     }
+                    
                     break;
                 case 38:
                     //보호자의 상징
-                    if (IsFiled&&IsHaveJob(8,false)==false)
+                    if (IsHaveJob(8,false)==false&&IsItemHave(38)==0)
                     {
-                        TraitJobManager.inst.TraitJobRemove(8);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobRemove(8);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==-1&&Event_TJItem[i]!=null)
+                            {
+                                Event_TJItem[i]?.Dispose();
+                                break;
+                            }
+                        }
                     }
+                    
                     break;
                 case 40:
                     
@@ -856,35 +999,83 @@ namespace GameS
                     break;
                 case 43:
                     //마법사의 상징
-                    if (IsFiled&&IsHaveJob(28,false)==false)
+                    if (IsHaveJob(28,false)==false&&IsItemHave(43)==0)
                     {
-                        TraitJobManager.inst.TraitJobRemove(28);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobRemove(28);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==-1&&Event_TJItem[i]!=null)
+                            {
+                                Event_TJItem[i]?.Dispose();
+                                break;
+                            }
+                        }
                     }
+                    
                     break;
                 case 47:
                     //왕국의 상징
-                    if (IsFiled&&IsHaveJob(24,false)==false)
+                    if (IsHaveJob(24,false)==false&&IsItemHave(47)==0)
                     {
-                        TraitJobManager.inst.TraitJobRemove(24);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobRemove(24);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==-1&&Event_TJItem[i]!=null)
+                            {
+                                Event_TJItem[i]?.Dispose();
+                                break;
+                            }
+                        }
                     }
+                    
                     break;
                 case 50:
                     //유령의상징
-                    if (IsFiled&&IsHaveJob(23,false)==false)
+                    if (IsHaveJob(23,false)==false&&IsItemHave(50)==0)
                     {
-                        TraitJobManager.inst.TraitJobRemove(23);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobRemove(23);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==-1&&Event_TJItem[i]!=null)
+                            {
+                                Event_TJItem[i]?.Dispose();
+                                break;
+                            }
+                        }
                     }
+                    
                     break;
                 case 52:
                     //암살자의 상징
-                    if (IsFiled&&IsHaveJob(25,false)==false)
+                    if (IsHaveJob(25,false)==false&&IsItemHave(52)==0)
                     {
-                        TraitJobManager.inst.TraitJobRemove(25);
-                        TraitJobManager.inst.OrderList();
+                        if (IsFiled)
+                        {
+                            TraitJobManager.inst.TraitJobRemove(25);
+                            TraitJobManager.inst.OrderList();
+                        }
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (Item[i]==-1&&Event_TJItem[i]!=null)
+                            {
+                                Event_TJItem[i]?.Dispose();
+                                break;
+                            }
+                        }
                     }
+                    
                     break;
                 case 53:
                     

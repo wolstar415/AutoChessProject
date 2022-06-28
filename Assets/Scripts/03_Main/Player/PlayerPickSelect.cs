@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GameS
 {
@@ -11,7 +13,14 @@ namespace GameS
         [SerializeField] private PhotonView pv;
          public GameObject pickOb;
          [SerializeField] private Transform pos;
-        private void OnTriggerEnter(Collider other)
+         private Camera cam;
+
+         private void Start()
+         {
+             cam = Camera.main;
+         }
+
+         private void OnTriggerEnter(Collider other)
         {
             if (!pv.IsMine)
             {
@@ -51,6 +60,12 @@ namespace GameS
                         else
                         {
                             ItemManager.inst.ItemAdd(info.idx);
+                            GameObject ob = ObjectPooler.SpawnFromPool("ItemMoveEffect",Vector3.zero);
+                            ob.transform.SetParent(GameSystem_AllInfo.inst.mainCanvas);
+                            int itemicon = CsvManager.inst.itemInfo[info.idx].Icon;
+                                ob.transform.GetChild(0).GetComponent<Image>().sprite = IconManager.inst.icon[itemicon];
+                            ob.transform.position = cam.WorldToScreenPoint(other.transform.position);
+                            ob.transform.DOMove(GameSystem_AllInfo.inst.itemMoveTrans.position, 0.9f);
                         }
                     }
                     EffectManager.inst.EffectCreate("ItemGetEffect",other.transform.position,Quaternion.identity,3f);

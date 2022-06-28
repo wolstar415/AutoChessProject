@@ -20,7 +20,8 @@ namespace GameS
 
         public void PVEstart()
         {
-            
+            if (PlayerInfo.Inst.Dead) return;
+
             PveCreate();
         }
 

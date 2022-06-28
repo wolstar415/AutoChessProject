@@ -243,6 +243,7 @@ public class UIManager : MonoBehaviour
 
     public void BattleUiSetting()
     {
+        if (PlayerInfo.Inst.Dead) return;
         //BuyPanelOb.SetActive(false);
         InfoPanelOb.SetActive(false);
         TopPancel.SetActive(true);
@@ -258,12 +259,15 @@ public class UIManager : MonoBehaviour
 
     public void RoundChange()
     {
+        if (PlayerInfo.Inst.Dead) return;
         FirstRound.SetActive(false);
         NormalRound.SetActive(true);
     }
 
     public void RoundSet()
     {
+        if (PlayerInfo.Inst.Dead) return;
+
         int r = PlayerInfo.Inst.Round;
         int round=CsvManager.inst.RoundCheck1[r];
         int round2=CsvManager.inst.RoundCheck2[r];
@@ -339,6 +343,7 @@ public class UIManager : MonoBehaviour
 
     public void PlayerInfoClick(int idx)
     {
+        if (GameSystem_AllInfo.inst.playerdead[idx])return;
         //공격중이라면 공격중인곳으로가기
         //아니라면 그곳으로 이동
         if (PlayerInfo.Inst.PlayerIdx==idx)

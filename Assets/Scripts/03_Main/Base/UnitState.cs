@@ -233,17 +233,7 @@ namespace GameS
                 if (shiled<=0 )
                 {
                     shiled = 0;
-                    if (PlayerInfo.Inst.IsBattle&&info.Idx==54)
-                    {
-                        if (gameObject.TryGetComponent(out Attack_54 atk))
-                        {
-                            if (atk.skillOn == false)
-                            {
-                            atk.SkillFunc();
-                                
-                            }
-                        }
-                    }
+                    
                 }
                 if (shiled==_shiled)
                 {
