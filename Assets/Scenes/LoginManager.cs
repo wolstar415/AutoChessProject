@@ -7,8 +7,10 @@ using UnityEngine.UI;
 using TMPro;
 using Firebase;
 using GameS;
+using Google;
 using Photon.Pun;
 using UnityEngine.AddressableAssets;
+using System.Threading.Tasks;
 using RobinBird.FirebaseTools.Storage.Addressables;
 using UnityEngine.EventSystems;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -37,7 +39,7 @@ public class LoginManager : MonoBehaviour
     private Coroutine taskcheck1;
     private Coroutine taskcheck2;
     public Transform canvasParent;
-    Firebase.Auth.FirebaseAuth auth;
+    //Firebase.Auth.FirebaseAuth auth;
     public static FirebaseApp firebaseApp;
     public static FirebaseAuth firebaseAuth;
     AsyncOperationHandle handle;
@@ -55,7 +57,13 @@ public class LoginManager : MonoBehaviour
     public Selectable firstInput3;
     public Button submitButton;
     public Button submitButton2;
-
+    
+    [Header("구글 로그인")]
+    public Text infoText;
+    public string webClientId = "867301402469-m9r5l5a57muanogh0h76d54bce5ge80m.apps.googleusercontent.com";
+ 
+    private FirebaseAuth auth;
+    private GoogleSignInConfiguration configuration;
     private void Start()
     {
         // FirebaseStorage storageInstance = FirebaseStorage.DefaultInstance;
@@ -82,6 +90,9 @@ public class LoginManager : MonoBehaviour
 
         // This requires Addressables >=1.75 and can be commented out for lower versions
         Addressables.InternalIdTransformFunc += FirebaseAddressablesCache.IdTransformFunc;
+        
+        configuration = new GoogleSignInConfiguration { WebClientId = webClientId, RequestEmail = true, RequestIdToken = true };
+        CheckFirebaseDependencies();
     }
 
     public void LoginBtn()
@@ -282,5 +293,109 @@ public class LoginManager : MonoBehaviour
             
             yield return null;
         }
+    }
+
+
+
+
+ 
+    
+    private void CheckFirebaseDependencies()
+    {
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                if (task.Result == DependencyStatus.Available)
+                {
+                    auth = FirebaseAuth.DefaultInstance;
+                    Debug.Log("성공");
+                }
+            }
+            else
+            {
+                Debug.Log("실패");
+            }
+        });
+    }
+    
+    public void SignInWithGoogle() { OnSignIn(); }
+    
+    private void OnSignIn()
+    {
+        GoogleSignIn.Configuration = configuration;
+        GoogleSignIn.Configuration.UseGameSignIn = false;
+        GoogleSignIn.Configuration.RequestIdToken = true;
+
+        GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
+    }
+    
+    internal void OnAuthenticationFinished(Task<GoogleSignInUser> task)
+    {
+        if (task.IsFaulted)
+        {
+            using (IEnumerator<Exception> enumerator = task.Exception.InnerExceptions.GetEnumerator())
+            {
+                if (enumerator.MoveNext())
+                {
+                    GoogleSignIn.SignInException error = (GoogleSignIn.SignInException)enumerator.Current;
+                    Debug.Log("Got Error: " + error.Status + " " + error.Message);
+                }
+                else
+                {
+                    Debug.Log("Got Unexpected Exception?!?" + task.Exception);
+                }
+            }
+        }
+        else if (task.IsCanceled)
+        {
+            Debug.Log("Canceled");
+        }
+        else
+        {
+            // Debug.Log("Welcome: " + task.Result.DisplayName + "!");
+            // Debug.Log("Email = " + task.Result.Email);
+            // Debug.Log("Google ID Token = " + task.Result.IdToken);
+            // Debug.Log("Email = " + task.Result.Email);
+            PhotonNetwork.LocalPlayer.NickName = task.Result.Email;
+            GameManager.inst.OriNickName = task.Result.Email;
+            SignInWithGoogleOnFirebase(task.Result.IdToken);
+        }
+    }
+    
+    private void SignInWithGoogleOnFirebase(string idToken)
+    {
+        Credential credential = GoogleAuthProvider.GetCredential(idToken, null);
+ 
+        auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
+        {
+            AggregateException ex = task.Exception;
+            if (ex != null)
+            {
+                if (ex.InnerExceptions[0] is FirebaseException inner && (inner.ErrorCode != 0))
+                    Debug.Log("\nError code = " + inner.ErrorCode + " Message = " + inner.Message);
+            }
+            else
+            {
+                //Debug.Log("Sign In Successful.");
+                
+
+                string[] s = GameManager.inst.OriNickName.Split('@');
+                GameManager.inst.NickName = s[0];
+                LobyOb.SetActive(false);
+                DataManager.inst.StartFunc();
+                Invoke("PathBtn",1.0f);
+            }
+        });
+    }
+    
+    public void OnSignInSilently()
+    {
+        GoogleSignIn.Configuration = configuration;
+        GoogleSignIn.Configuration.UseGameSignIn = false;
+        GoogleSignIn.Configuration.RequestIdToken = true;
+        Debug.Log("Calling SignIn Silently");
+ 
+        GoogleSignIn.DefaultInstance.SignInSilently().ContinueWith(OnAuthenticationFinished);
     }
 }

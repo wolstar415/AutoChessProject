@@ -1629,6 +1629,7 @@ MonoBehaviour:
   Enemies: []
   Enmies2: []
   IsCool: 0
+  noCon: 0
   state: 0
   noConTime: 0
   stop: 0

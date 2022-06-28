@@ -395,13 +395,15 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         Level++;
         UIManager.inst.ReRollSet(Level);
         Xp = Xp - XpMax;
-        XpMax = CsvManager.inst.Player_Xp[Level];
+        XpMax = CsvManager.inst.Player_Xp[Level-1];
         UIManager.inst.XpSliderSet();
         foodMax = Level;
-        if (PlayerOb.TryGetComponent(out PlayerMoving p))
-        {
-            p.LevelSet(Level);
-        }
+            if (PlayerOb.TryGetComponent(out PlayerMoving p))
+            {
+                p.LevelSet(Level);
+            }
+
+
         }
     }
 
