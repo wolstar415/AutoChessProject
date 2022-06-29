@@ -77,10 +77,13 @@ namespace GameS
         [Header("특성계열 확인")] 
         
         public bool Job3=false;
+        public GameObject job3Effect;
         public bool Job4=false;
+        public GameObject job4Effect;
         public int Job7;
         public bool Job9;
         public bool Job29;
+        public GameObject job29Effect;
         public int Job10;
         public int Job27;
         public bool Job31;
@@ -687,8 +690,10 @@ namespace GameS
         protected void Item34Func(int targetnum,float d,int pidx)
         {
             if (PlayerInfo.Inst.PlayerIdx != pidx) return;
-            
-            DamageManager.inst.DamageFunc1(gameObject,PhotonView.Find(targetnum).gameObject,d,eDamageType.Speel_Magic);
+            GameObject ob = PhotonView.Find(targetnum).gameObject;
+            DamageManager.inst.DamageFunc1(gameObject,ob,d,eDamageType.Speel_Magic);
+            EffectManager.inst.EffectCreate("Item34_Effect",ob.transform.position,Quaternion.Euler(-90,0,0),2f);
+
         }
 
         public void AniStart(string name)
@@ -739,16 +744,29 @@ namespace GameS
         protected void RPC_Job3Func()
         {
             Job3 = true;
+            job3Effect?.SetActive(true);
         }
         public void Job4Func()
         {
-            Job4 = true;
+            pv.RPC(nameof(RPC_Job4Func),RpcTarget.All);
             //이펙트
+        }
+        [PunRPC]
+        protected void RPC_Job4Func()
+        {
+            Job4 = true;
+            job4Effect?.SetActive(true);
         }
         public void Job29Func()
         {
-            Job29 = true;
+            pv.RPC(nameof(RPC_Job29Func),RpcTarget.All);
             //이펙트
+        }
+        [PunRPC]
+        protected void RPC_Job29Func()
+        {
+            Job29 = true;
+            job29Effect?.SetActive(true);
         }
         public void Job7Func()
         {
@@ -761,6 +779,8 @@ namespace GameS
             int cnt = Job7;
             Job7 = 0;
             StartCoroutine(IJob7Func(cnt));
+            EffectManager.inst.EffectCreate("Job7_Effect",transform.position,Quaternion.Euler(-90,0,0),3f);
+
         }
 
         protected IEnumerator IJob7Func(int lv)

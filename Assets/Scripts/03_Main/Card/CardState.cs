@@ -723,13 +723,30 @@ namespace GameS
             IsItemFunc49 = false;
 
 
-            Job3 = false;
+            if (Job3)
+            {
+                Job3 = false;
+                job3Effect?.SetActive(false);
+                
+            }
+            if (Job4)
+            {
+                Job4 = false;
+                job4Effect?.SetActive(false);
+                
+            }
+            if (Job29)
+            {
+                Job29 = false;
+                job29Effect?.SetActive(false);
+                
+            }
             Job4 = false;
             Job7 = 0;
             Job9 = false;
             Job10 = 0;
             Job27 = 0;
-            Job29 = false;
+            
             Job31 = false;
             Job31_2 = 0;
             BuffNomana = 0;
@@ -1027,6 +1044,7 @@ namespace GameS
                     break;
                 }
                 CoolPlus(0,0,v);
+                EffectManager.inst.EffectCreate("Job22_Effect",transform.position,Quaternion.Euler(-90,0,0),1.5f);
             yield return YieldInstructionCache.WaitForSeconds(4);
             CoolPlus(0,0,-v);
             yield return YieldInstructionCache.WaitForSeconds(4);

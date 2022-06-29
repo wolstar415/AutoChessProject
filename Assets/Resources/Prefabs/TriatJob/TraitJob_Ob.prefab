@@ -206,6 +206,13 @@ MonoBehaviour:
   InfoInfo2: {fileID: 2701172877028465664}
   IconPrefab: {fileID: 6382257803027636810, guid: 411e512490342d146b58b37d64251362, type: 3}
   parent: {fileID: 7121811228934963794}
+  dummylist:
+  - <color=grey>
+  - <color=grey>
+  - <color=grey>
+  - <color=grey>
+  - <color=grey>
+  - <color=grey>
 --- !u!1 &1110674905999139693
 GameObject:
   m_ObjectHideFlags: 0

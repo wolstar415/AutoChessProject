@@ -8,7 +8,10 @@ namespace GameS
     public class AutoDestory : MonoBehaviour
     {
         public float deadTime = 1;
+        
         // Start is called before the first frame update
+
+        
 
         private void OnEnable()
         {

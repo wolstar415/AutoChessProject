@@ -160,6 +160,8 @@ MonoBehaviour:
   - RPC_DeadCheck
   - LineMove
   - RPC_Active
+  - RPC_Job29Func
+  - RPC_Job4Func
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

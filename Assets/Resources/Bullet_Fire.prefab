@@ -120,7 +120,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 5180142139623171517}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -141,7 +142,7 @@ MonoBehaviour:
   me: {fileID: 0}
   damage: 0
   buIdx: 0
-  Speed: 10
+  Speed: 13
 --- !u!199 &5907595197531292658
 ParticleSystemRenderer:
   serializedVersion: 6

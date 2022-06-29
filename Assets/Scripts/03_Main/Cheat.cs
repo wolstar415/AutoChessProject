@@ -265,6 +265,7 @@ namespace GameS
             }
             else if (Input.GetKeyDown(KeyCode.H))
             {
+                CreateManager.inst.CreateCharacter(40);
                 CreateManager.inst.CreateCharacter(48);
             }
             else if (Input.GetKeyDown(KeyCode.J))

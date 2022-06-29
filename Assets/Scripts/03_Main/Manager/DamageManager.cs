@@ -29,6 +29,7 @@ namespace GameS
             if (PlayerInfo.Inst.BattleEnd == true) return;
             var card_stat = card.GetComponent<CardState>();
             var target_stat = target.GetComponent<CardState>();
+            if (!target_stat.info.IsFiled) return;
             float getmana=damage * 0.01f;
             float adddamage = 0f;
             bool IsCri;

@@ -303,13 +303,13 @@ public class playerinfo
                     finalplayer = i;
                 }
             }
-            if (cnt==1)
+            if (cnt==1&&PhotonNetwork.PlayerList.Length>1)
             {
                 //게임끝남
                 Debug.Log($"승리! 남은플레이어 번호 :{finalplayer}");
                 
-                //MasterInfo.inst.VictoryGo(1);
-                //return;
+                MasterInfo.inst.VictoryGo(1);
+                return;
             }
 
             if (cnt==0)
@@ -871,6 +871,8 @@ public class playerinfo
                             if (!cainfo.stat.IsDead&&cainfo.IsHaveJob(2))
                             {
                                 cainfo.stat.AtkPlus(0,0,v,true);
+                                EffectManager.inst.EffectCreate("Job2_Effect",PlayerInfo.Inst.PlayerCard_Filed[i].transform.position,Quaternion.Euler(-90,0,0),1.5f);
+
                             }
                         }
                     }

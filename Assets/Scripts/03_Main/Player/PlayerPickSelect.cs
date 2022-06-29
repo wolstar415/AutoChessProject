@@ -59,13 +59,10 @@ namespace GameS
                         }
                         else
                         {
-                            ItemManager.inst.ItemAdd(info.idx);
-                            GameObject ob = ObjectPooler.SpawnFromPool("ItemMoveEffect",Vector3.zero);
-                            ob.transform.SetParent(GameSystem_AllInfo.inst.mainCanvas);
-                            int itemicon = CsvManager.inst.itemInfo[info.idx].Icon;
-                                ob.transform.GetChild(0).GetComponent<Image>().sprite = IconManager.inst.icon[itemicon];
-                            ob.transform.position = cam.WorldToScreenPoint(other.transform.position);
-                            ob.transform.DOMove(GameSystem_AllInfo.inst.itemMoveTrans.position, 0.9f);
+                            
+                            
+                            GameObject ob = ObjectPooler.SpawnFromPool("ItemMoveEffect",cam.WorldToScreenPoint(other.transform.position));
+                            ob.GetComponent<ItemMoveInfo>().GoGo(info.idx);
                         }
                     }
                     EffectManager.inst.EffectCreate("ItemGetEffect",other.transform.position,Quaternion.identity,3f);

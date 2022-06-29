@@ -47,13 +47,20 @@ namespace GameS
         public GameObject SkillInfo_ob;
 
         [SerializeField] private List<string> lvco;
+        [Header("Job_Info")] 
+        public GameObject job_ob;
 
+        public TextMeshProUGUI JobInfoName;
+        public TextMeshProUGUI JobInfoInfo1;
+        public TextMeshProUGUI JobInfoInfo2;
+        public List<string> dummylist;
 
         public void InfoSet(GameObject ob)
         {
             TraitJob_ob.SetActive(false);
             ItemInfo_ob.SetActive(false);
             SkillInfo_ob.SetActive(false);
+            job_ob.SetActive(false);
             Card = ob;
             info = Card.GetComponent<Card_Info>();
 
@@ -213,7 +220,58 @@ namespace GameS
         public void SkillClick()
         {
             ItemInfo_ob.SetActive(false);
+            job_ob.SetActive(false);
             SkillInfo_ob.SetActive(true);
+        }
+
+        public void JobClikc(int i)
+        {
+            int idx;
+            if (i==1)
+            {
+                idx = info.Character_trait1;
+            }
+            else if(i==2)
+            {
+                idx = info.Character_Job1;
+            }
+            else
+            {
+                if (info.Character_trait2>=1)
+                {
+                    idx = info.Character_trait2;
+                }
+                else
+                {
+                    idx = info.Character_Job2;
+                }
+            }
+            SkillInfo_ob.SetActive(false);
+            job_ob.SetActive(true);
+            ItemInfo_ob.SetActive(false);
+             int name=CsvManager.inst.TraitandJobName[idx];
+             int info1=CsvManager.inst.TraitandJobInfo[idx];
+             int info2=CsvManager.inst.TraitandJobInfo1[idx];
+
+             JobInfoInfo1.text = CsvManager.inst.GameText(info1);
+             JobInfoName.text = CsvManager.inst.GameText(name);
+             
+             
+             dummylist[0] = "<color=grey>";
+             dummylist[1] = "<color=grey>";
+             dummylist[2] = "<color=grey>";
+             dummylist[3] = "<color=grey>";
+             dummylist[4] = "<color=grey>";
+             int level=0;
+             if (info.pv.IsMine)
+             {
+                level= TraitJobManager.inst.Obs[idx].GetComponent<TraitJobInfo>().LevelCheck();
+             }
+             dummylist[level] = "<color=green>";
+             string a = CsvManager.inst.GameText(info2);
+             string a2=String.Format(a,dummylist[0],dummylist[1],dummylist[2],dummylist[3],dummylist[4]);
+             JobInfoInfo2.text = a2;
+
         }
 
         public void ItemClick(int i)
@@ -233,6 +291,7 @@ namespace GameS
             ItemInfo_Info.text = s;
             //das
             SkillInfo_ob.SetActive(false);
+            job_ob.SetActive(false);
             ItemInfo_ob.SetActive(true);
         }
     }

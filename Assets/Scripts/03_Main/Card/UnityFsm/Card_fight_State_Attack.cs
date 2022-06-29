@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,7 +46,15 @@ namespace GameS
                 return;
             }
             Vector3 dir = Fight.Enemy.transform.position - Fight.transform.position;
+            try
+            {
+
             Fight.transform.rotation = Quaternion.Lerp(Fight.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
+            }
+            catch (Exception e)
+            {
+                
+            }
 
 
             if (Fight.IsCool) // 공격할수있을때 공격!

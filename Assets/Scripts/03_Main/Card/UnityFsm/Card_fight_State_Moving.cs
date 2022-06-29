@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -75,7 +76,7 @@ namespace GameS
                 Fight.Enemy = null;
             
             culTime += Time.deltaTime;
-            if (culTime>=0.5f)
+            if (culTime>=1f)
             {
                 culTime = 0;
                 Fight.Enemy = null;
@@ -113,8 +114,16 @@ namespace GameS
             
             //base.Finally();
             //Fight.info.MoveIdx = 1;
-            IsMoving = false;
-            Fight.nav.isStopped = true;
+            try
+            {
+                IsMoving = false;
+                Fight.nav.isStopped = true;
+            }
+            catch (Exception e)
+            {
+                
+            }
+            
         }
         public override void SetMsg(FSMMsg _msg)
         {

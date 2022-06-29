@@ -38,7 +38,7 @@ namespace GameS
             {
                 if (other.TryGetComponent(out Card_Info info))
                 {
-                    if (info.TeamIdx==EnemyIdx)
+                    if (info.TeamIdx==EnemyIdx&&info.IsFiled)
                     {
                         
                         DamageManager.inst.DamageFunc1(me,other.gameObject,damage,eDamageType.Basic_phy);

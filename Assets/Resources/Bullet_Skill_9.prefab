@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destime: 2
+  pv: {fileID: 8047877468769543876}
 --- !u!65 &3471099180753533481
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -154,7 +155,7 @@ MonoBehaviour:
   me: {fileID: 0}
   EnemyIdx: 0
   damage: 0
-  Speed: 10
+  Speed: 15
 --- !u!114 &-2857169985155067094
 MonoBehaviour:
   m_ObjectHideFlags: 0

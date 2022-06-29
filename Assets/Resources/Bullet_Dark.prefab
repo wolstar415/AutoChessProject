@@ -19914,7 +19914,7 @@ MonoBehaviour:
   me: {fileID: 0}
   damage: 0
   buIdx: 0
-  Speed: 10
+  Speed: 13
 --- !u!114 &9142586704590837159
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -47,7 +47,7 @@ namespace GameS
             {
                 if (other.TryGetComponent(out Card_Info info))
                 {
-                    if (info.TeamIdx==EnemyIdx)
+                    if (info.TeamIdx==EnemyIdx&&info.IsFiled)
                     {
                         
                         if (phy)

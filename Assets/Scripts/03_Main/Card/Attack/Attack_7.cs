@@ -52,6 +52,7 @@ namespace GameS
             AttackFunc();
             
         }
+        public 
 
         void AttackFunc()
         {

@@ -26,6 +26,7 @@ namespace GameS
         [SerializeField] TextMeshProUGUI InfoInfo2;
         [SerializeField] GameObject IconPrefab;
         [SerializeField] Transform parent;
+        public List<string> dummylist ;
         public Subject<bool> Sub_CardJobAndTraitShow = new Subject<bool>();
         public void OnPointerDown(PointerEventData eventData)
         {
@@ -67,17 +68,16 @@ namespace GameS
 
         void Info2Set()
         {
-            List<string> s = new List<string>();
-            s.Add("<color=grey>");
-            s.Add("<color=grey>");
-            s.Add("<color=grey>");
-            s.Add("<color=grey>");
-            s.Add("<color=grey>");
+            dummylist[0] = "<color=grey>";
+            dummylist[1] = "<color=grey>";
+            dummylist[2] = "<color=grey>";
+            dummylist[3] = "<color=grey>";
+            dummylist[4] = "<color=grey>";
             int level = LevelCheck();
-            s[level] = "<color=green>";
+            dummylist[level] = "<color=green>";
             int infocnt = CsvManager.inst.TraitandJobInfo1[Idx];
             string a = CsvManager.inst.GameText(infocnt);
-            string info=String.Format(a,s[0],s[1],s[2],s[3],s[4]);
+            string info=String.Format(a,dummylist[0],dummylist[1],dummylist[2],dummylist[3],dummylist[4]);
             InfoInfo2.text = info;
 
         }
