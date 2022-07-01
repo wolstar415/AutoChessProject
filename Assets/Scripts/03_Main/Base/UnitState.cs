@@ -516,6 +516,7 @@ namespace GameS
         public void HpHeal(float v)
         {
             if (v <= 0||NoHeal) return;
+            Debug.Log($"힐중 {v}");
             currentHp += v;
         }
 

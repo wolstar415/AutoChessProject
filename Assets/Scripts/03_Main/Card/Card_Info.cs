@@ -55,13 +55,13 @@ namespace GameS
         [Header("UI")] public GameObject[] StarUI;
         public GameObject[] ItemUI;
 
-        private IDisposable Event_MoveReset;
-        private IDisposable Event_BattleMove;
-        private IDisposable Event_CheckLevelUp=null;
-        private IDisposable Event_TJ1=null;
-        private IDisposable Event_TJ2=null;
-        private IDisposable Event_TJ3=null;
-        private IDisposable Event_TJ4=null;
+        private IDisposable Event_MoveReset; //무브 이벤트
+        private IDisposable Event_BattleMove; //무브 이벤트
+        private IDisposable Event_CheckLevelUp=null; //전투중에 레벨업못한거 이벤트
+        private IDisposable Event_TJ1=null; // 특성선택시 표시이벤트
+        private IDisposable Event_TJ2=null;// 특성선택시 표시이벤트
+        private IDisposable Event_TJ3=null;// 특성선택시 표시이벤트
+        private IDisposable Event_TJ4=null;// 특성선택시 표시이벤트
         
         private IDisposable Event_item40=null;
         private IDisposable[] Event_TJItem = new IDisposable[3];

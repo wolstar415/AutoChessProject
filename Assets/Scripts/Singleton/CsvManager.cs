@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
@@ -131,6 +133,7 @@ public class CsvManager : MonoBehaviour
     public List<String> Text_Germany;
     public List<String> Text_tur;
     public List<String> Text_rus;
+    public TextMeshProUGUI path;
 
     //private string URL ="https://docs.google.com/spreadsheets/d/1tqaUzgkVwxE2bLmNdsPophYnCnuGFQbiGWfsFSVdln8/gviz/tq?tqx=out:csv&sheet={캐릭터}";
     [SerializeField] private string[] URL;
@@ -152,11 +155,14 @@ public class CsvManager : MonoBehaviour
     {
         for (int i = 0; i < URL.Length; i++)
         {
+            float a = ((float)(i) / URL.Length) *100;
+            path.text = a.ToString("F2")+"%";
             UnityWebRequest www = UnityWebRequest.Get(URL[i]);
             yield return www.SendWebRequest();
             data[i] = www.downloadHandler.text;
         }
 
+        path.text = "100%";
         yield return null;
         SkillSeet();
         CharacherSeet();

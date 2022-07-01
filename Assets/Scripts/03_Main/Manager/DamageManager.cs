@@ -374,7 +374,7 @@ namespace GameS
             }
             if (card_stat.info.IsItemHave(13)>0)
             {
-                int h = target_stat.info.IsItemHave(13);
+                int h = card_stat.info.IsItemHave(13);
                 damageHeal += (damage * 0.25f * h);
                 
             }

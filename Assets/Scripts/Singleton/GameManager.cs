@@ -1,34 +1,35 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Singleton1;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoSingleton<GameManager>
 {
-    public string GameLanguage;
     public static GameManager inst;
+
+    private void Awake() => inst = this;
+
+    public string GameLanguage;
     public string OriNickName;
     public int CharIdx = 0;
     public AudioSource audioSource;
     public Sprite[] charIcons;
     
-    [Header("플레이어 정보")]
+    [Header("플레이어 정보 서버저장")]
     public string NickName;
 
-    public int Victory1;
-    public int Victory2;
-    public int Victory3;
-    public int Victory4;
-    public int Victory5;
-    public int Victory6;
-    public int Victory7;
-    public int Victory8;
-    public int Score;
+    public int Victory1; //1등
+    public int Victory2; //2등
+    public int Victory3; // 3등
+    public int Victory4; //4등
+    public int Victory5; // 5등
+    public int Victory6; //6등
+    public int Victory7; //7등
+    public int Victory8; //8등
+    public int Score; //점수
 
-    private void Awake()
-    {
-        inst = this;
-    }
+    
 
     private void Start()
     {
