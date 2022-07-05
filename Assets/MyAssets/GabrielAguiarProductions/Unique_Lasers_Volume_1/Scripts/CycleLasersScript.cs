@@ -8,7 +8,6 @@ public class CycleLasersScript : MonoBehaviour {
 	public List<GameObject> targetPoints;
 	public List<GameObject> Lasers = new List<GameObject> ();
 
-	private int count = 0;
 	private GameObject newLaser;
 	private LaserScript laserScript;
 	private WaitForSeconds shortWait = new WaitForSeconds (0.5f);

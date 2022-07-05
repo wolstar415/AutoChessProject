@@ -1338,6 +1338,7 @@ namespace GameS
             if (have15>0)
             {
                 stat.CoolPlus(0,0,15*have15,true);
+                            EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
                 if(leftob==null) leftob=BattleTileLeft();
                 if(rightob==null) rightob=BattleTileRight();
                 
@@ -1349,7 +1350,7 @@ namespace GameS
                         
                             cstat.CoolPlus(0,0,15*have15,true);
                         
-                            EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
+                            EffectManager.inst.EffectCreate("ItemBuff_Effect",cstat.transform.position,Quaternion.identity,1.5f);
 
                             
                     }
@@ -1358,7 +1359,7 @@ namespace GameS
                 {
                     if (rightob.TryGetComponent(out CardState cstat2))
                     {
-                        EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
+                        EffectManager.inst.EffectCreate("ItemBuff_Effect",cstat2.transform.position,Quaternion.identity,1.5f);
                             cstat2.CoolPlus(0,0,15*have15,true);
                         
                     }
@@ -1373,12 +1374,13 @@ namespace GameS
                 if (Level == 2) sv = 400;
                 else if (Level == 3) sv = 500;
                 stat.shiled += sv;
+                        EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
                 if (leftob!=null)
                 {
                     if (leftob.TryGetComponent(out CardState cstat))
                     {
                         
-                        EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
+                        EffectManager.inst.EffectCreate("ItemBuff_Effect",cstat.transform.position,Quaternion.identity,1.5f);
                             cstat.shiled += sv;
                         
                     }
@@ -1387,7 +1389,7 @@ namespace GameS
                 {
                     if (rightob.TryGetComponent(out CardState cstat2))
                     {
-                        EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
+                        EffectManager.inst.EffectCreate("ItemBuff_Effect",cstat2.transform.position,Quaternion.identity,1.5f);
                             cstat2.shiled += sv;
                         
                     }
@@ -1398,13 +1400,14 @@ namespace GameS
             {
                 if(leftob==null) leftob=BattleTileLeft();
                 if(rightob==null) rightob=BattleTileRight();
+                        EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
                 stat.MagicPlus(0,0,50*have35,true);
                 if (leftob!=null)
                 {
                     if (leftob.TryGetComponent(out CardState cstat))
                     {
                         
-                        EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
+                        EffectManager.inst.EffectCreate("ItemBuff_Effect",cstat.transform.position,Quaternion.identity,1.5f);
                             cstat.MagicPlus(0,0,50*have35,true);
                         
                     }
@@ -1413,7 +1416,7 @@ namespace GameS
                 {
                     if (rightob.TryGetComponent(out CardState cstat2))
                     {
-                        EffectManager.inst.EffectCreate("ItemBuff_Effect",transform.position,Quaternion.identity,1.5f);
+                        EffectManager.inst.EffectCreate("ItemBuff_Effect",cstat2.transform.position,Quaternion.identity,1.5f);
                             cstat2.MagicPlus(0,0,50*have35,true);
                         
                     }

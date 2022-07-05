@@ -7,7 +7,6 @@ namespace GameS
 {
     public class Card_fight_State_Attack : Card_FSM_FightState
     {
-        private float coolTime = 0f;
 
         public Card_fight_State_Attack(Card_FSM_Fight _cardFsmFight): base(_cardFsmFight, eCardFight_STATE.Attack)
         {
@@ -18,7 +17,6 @@ namespace GameS
         public override void Enter(FSMMsg _msg)
         {
             //Debug.Log("어택");
-            coolTime = 0;
             Fight.state = eCardFight_STATE.Attack;
             Fight.FindEnemy(); // 체크
 

@@ -46,7 +46,6 @@ namespace GameS
 
         public GameObject TileOb;
         public GameObject ClickItem;
-        private bool DragStart = false;
 
         private bool EnemyClick = false;
 

@@ -168,19 +168,14 @@ public class MasterInfo : MonoBehaviourPunCallbacks
         {
             case 1:
                 return Cnt_Card1;
-                break;
             case 2:
                 return Cnt_Card2;
-                break;
             case 3:
                 return Cnt_Card3;
-                break;
             case 4:
                 return Cnt_Card4;
-                break;
             case 5:
                 return Cnt_Card5;
-                break;
             default:
                 break;
         }

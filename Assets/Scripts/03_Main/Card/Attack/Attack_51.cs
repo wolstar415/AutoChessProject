@@ -33,12 +33,9 @@ namespace GameS
             if (skill)
             {
                 SkillBasic();
-                float da = SkillValue(1);
-                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Skill_51", CreatePos.position, Quaternion.identity);
-                if (bullet.TryGetComponent(out Buulet_Move2 move))
-                {
-                    move.StartFUnc(gameObject,Target.transform.position,da,info.EnemyTeamIdx,false,false);
-                }
+                
+
+                StartCoroutine(SkillFunc());
 
             }
             else
@@ -49,6 +46,23 @@ namespace GameS
                 {
                     move.StartFUnc(gameObject,Target,da);
                 }
+            }
+        }
+
+        IEnumerator SkillFunc()
+        {
+            float da = SkillValue(1)*0.1f;
+            int cnt = 10;
+            while (cnt > 0)
+            {
+                cnt--;
+                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Skill_51", CreatePos.position, Quaternion.identity);
+
+                if (bullet.TryGetComponent(out Buulet_Skill51_Move move))
+                {
+                    move.StartFUnc(gameObject,Target,da);
+                }
+                yield return YieldInstructionCache.WaitForSeconds(0.1f);
             }
         }
 

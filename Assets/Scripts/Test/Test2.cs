@@ -16,7 +16,6 @@ public class Test2 : MonoBehaviourPunCallbacks
 {
     public Test2 test;
     public List<int> asd;
-    int zxc = 0;
     public int[] asd2;
 
 

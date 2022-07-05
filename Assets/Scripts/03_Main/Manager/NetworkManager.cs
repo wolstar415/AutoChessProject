@@ -450,7 +450,7 @@ public class playerinfo
                         {
                             GameObject ob = ti.tileGameob;
                             ti.RemoveTile();
-                            int CreatePosidx=-1;
+                            //int CreatePosidx=-1;
                             GameObject tile = null;
                             for (int k = 0; k < PlayerInfo.Inst.FiledTile.Count; k++)
                             {
