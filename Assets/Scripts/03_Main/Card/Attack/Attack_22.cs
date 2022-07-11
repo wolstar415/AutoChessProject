@@ -52,25 +52,38 @@ namespace GameS
                 SkillBasic();
                 float da = stat.Atk_Damage() * 1.7f;
                 float da2 = SkillValue(1);
-                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Skill_22", CreatePos.position, Quaternion.identity);
-                if (bullet.TryGetComponent(out Buulet_Skill22_Move move))
-                {
-                    move.StartFUnc(gameObject,Target,da+da2);
-                }
+                info.pv.RPC(nameof(CreateBullet2),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Skill_22",Target.GetComponent<PhotonView>().ViewID,CreatePos.position,Quaternion.identity,da+da2);
+
             }
             else
             {
                 float da = stat.Atk_Damage();
-                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Bullet", CreatePos.position, Quaternion.identity);
-                if (bullet.TryGetComponent(out Buulet_Move1 move))
-                {
-                    move.StartFUnc(gameObject,Target,da);
-                }
+                info.pv.RPC(nameof(CreateBullet),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Bullet",Target.GetComponent<PhotonView>().ViewID,CreatePos.position,Quaternion.identity,da);
+
             }
 
         }
+        [PunRPC]
+        void CreateBullet(int pidx,string name,int id,Vector3 pos,Quaternion qu,float da)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
+            
+            if (bullet.TryGetComponent(out Buulet_Move1 move))
+            {
+                move.StartFUnc(pidx,gameObject,PhotonView.Find(id).gameObject,da);
+            }
+        }
 
-
+        [PunRPC]
+        void CreateBullet2(int pidx,string name,int id,Vector3 pos,Quaternion qu,float da)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
+            
+            if (bullet.TryGetComponent(out Buulet_Skill22_Move move))
+            {
+                move.StartFUnc(pidx,gameObject,PhotonView.Find(id).gameObject,da);
+            }
+        }
         
     }
 }

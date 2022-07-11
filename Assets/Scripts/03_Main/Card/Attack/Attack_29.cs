@@ -38,37 +38,53 @@ namespace GameS
             {
                 SkillBasic();
                 float da = SkillValue(1);
-                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Skill_29", CreatePos.position, Quaternion.identity);
-                if (bullet.TryGetComponent(out Buulet_Move2 move))
-                {
-                    move.StartFUnc(gameObject,Target.transform.position,da,info.EnemyTeamIdx,true,false);
-                }
-                GameObject bullet1 = PhotonNetwork.Instantiate("Bullet_Skill_29", CreatePos.position, Quaternion.identity);
-                if (bullet1.TryGetComponent(out Buulet_Move2 move1))
-                {
-                    move1.StartFUnc(gameObject,Target.transform.position,da,info.EnemyTeamIdx,true,false);
-                    move1.transform.Rotate(0,-30,0);
-                }
-                GameObject bullet2 = PhotonNetwork.Instantiate("Bullet_Skill_29", CreatePos.position, Quaternion.identity);
-                if (bullet2.TryGetComponent(out Buulet_Move2 move2))
-                {
-                    move2.StartFUnc(gameObject,Target.transform.position,da,info.EnemyTeamIdx,true,false);
-                    move2.transform.Rotate(0,30,0);
-                }
-                
+                info.pv.RPC(nameof(CreateBullet2),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Skill_29",CreatePos.position,Quaternion.identity,da,info.EnemyTeamIdx);
+
             }
             else
             {
                 float da = stat.Atk_Damage();
-                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Arrow", CreatePos.position, Quaternion.identity);
-                if (bullet.TryGetComponent(out Buulet_Move1 move))
-                {
-                    move.StartFUnc(gameObject,Target,da);
-                }
+                info.pv.RPC(nameof(CreateBullet),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Arrow",Target.GetComponent<PhotonView>().ViewID,CreatePos.position,Quaternion.identity,da);
+
+            }
+        }
+        [PunRPC]
+        void CreateBullet(int pidx,string name,int id,Vector3 pos,Quaternion qu,float da)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
+            
+            if (bullet.TryGetComponent(out Buulet_Move1 move))
+            {
+                move.StartFUnc(pidx,gameObject,PhotonView.Find(id).gameObject,da);
             }
         }
 
-
+        [PunRPC]
+        void CreateBullet2(int pidx,string name,Vector3 pos,Quaternion qu,float da,int eidx)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
+            
+            if (bullet.TryGetComponent(out Buulet_Skill29_Move move))
+            {
+                move.StartFUnc(pidx,gameObject,da,eidx);
+            }
+            
+            GameObject bullet2 = ObjectPooler.SpawnFromPool(name, pos, qu);
+            bullet2.transform.Rotate(0,-30,0);
+            if (bullet2.TryGetComponent(out Buulet_Skill29_Move move2))
+            {
+                move2.StartFUnc(pidx,gameObject,da,eidx);
+            }
+            
+            GameObject bullet3 = ObjectPooler.SpawnFromPool(name, pos, qu);
+            bullet3.transform.Rotate(0,30,0);
+            if (bullet3.TryGetComponent(out Buulet_Skill29_Move move3))
+            {
+                move3.StartFUnc(pidx,gameObject,da,eidx);
+            }
+            
+            
+        }
 
         
     }

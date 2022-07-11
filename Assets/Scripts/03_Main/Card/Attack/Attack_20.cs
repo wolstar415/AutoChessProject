@@ -35,12 +35,9 @@ namespace GameS
             if (skill)
             {
                 
-                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Skill_20", CreatePos.position, Quaternion.identity);
-                if (bullet.TryGetComponent(out Buulet_Move2 move))
-                {
                     float da = SkillValue(1);
-                    move.StartFUnc(gameObject,Target.transform.position,da,info.EnemyTeamIdx,false,false);
-                }
+                    info.pv.RPC(nameof(CreateBullet2),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Skill_20",CreatePos.position,Quaternion.identity,da,Target.transform.position,info.EnemyTeamIdx,false);
+
             }
             else
             {
@@ -49,6 +46,17 @@ namespace GameS
                 
             }
             
+        }
+        
+        [PunRPC]
+        void CreateBullet2(int pidx,string name,Vector3 pos,Quaternion qu,float da,Vector3 pos2,int enidx,bool a)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
+            
+            if (bullet.TryGetComponent(out Buulet_Move2 move))
+            {
+                move.StartFUnc(pidx,gameObject,pos2,da,enidx,a);
+            }
         }
         
 

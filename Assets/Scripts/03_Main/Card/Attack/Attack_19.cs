@@ -35,13 +35,19 @@ namespace GameS
         {
             //총알생성
             float da = stat.Atk_Damage();
-            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Soul", CreatePos.position, Quaternion.identity);
+            info.pv.RPC(nameof(CreateBullet),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Soul",Target.GetComponent<PhotonView>().ViewID,CreatePos.position,Quaternion.identity,da);
+
+        }
+        [PunRPC]
+        void CreateBullet(int pidx,string name,int id,Vector3 pos,Quaternion qu,float da)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
+            
             if (bullet.TryGetComponent(out Buulet_Move1 move))
             {
-                move.StartFUnc(gameObject,Target,da);
+                move.StartFUnc(pidx,gameObject,PhotonView.Find(id).gameObject,da);
             }
         }
-
         public override void SkillFunc()
         {
             StartCoroutine(ISkillFunc());
@@ -78,10 +84,18 @@ namespace GameS
             if (stat.IsDead) yield break;
             fsm.CoolStart(true);
             float da = SkillValue(1);
-            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Skill_19", CreatePos.position, Quaternion.identity);
-            if (bullet.TryGetComponent(out Buulet_Move2 move))
+            info.pv.RPC(nameof(CreateBullet2),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Skill_19",CreatePos.position,Quaternion.identity,da,ob.transform.position,info.EnemyTeamIdx,false);
+
+        }
+        
+        [PunRPC]
+        void CreateBullet2(int pidx,string name,Vector3 pos,Quaternion qu,float da,Vector3 pos2,int enidx,bool a)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
+            
+            if (bullet.TryGetComponent(out Buulet_Move2_destory move))
             {
-                move.StartFUnc(gameObject,ob.transform.position,da,info.EnemyTeamIdx,true,false);
+                move.StartFUnc(pidx,gameObject,pos2,da,enidx,a);
             }
         }
 

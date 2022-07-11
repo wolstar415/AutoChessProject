@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: abc
+  m_EditorClassIdentifier: 
+  m_GroupName: abc
+  m_Data:
+    m_SerializedData: []
+  m_GUID: ba3a1602e3089d747915142314461ef7
+  m_SerializeEntries:
+  - m_GUID: 509b4572d8b71d444b2009d51405f3ac
+    m_Address: Assets/Addressfabs/develop_check.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - abc
+  - m_GUID: e4bdf683b0428154b87fbb523c51ecc9
+    m_Address: Assets/Resources_moved/music2.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - abc
+  - m_GUID: 59c425e1d6c6e134ea0f1fc4550b6d92
+    m_Address: logo
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - abc
+  - m_GUID: e422b73dc04cea64a9297e0eb2a21d19
+    m_Address: Assets/Addressfabs/bensound-hey.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - abc
+  - m_GUID: 9a548d9d7766ad5478b55cfeba2e306e
+    m_Address: music
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - abc
+  - m_GUID: 196939f1700b19d4997418c63de15524
+    m_Address: Assets/Addressfabs/bensound-dreams.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - abc
+  - m_GUID: 84c412cf8bf87a1459dea23cdfd3a552
+    m_Address: Assets/Addressfabs/bensound-creativeminds.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - abc
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 6b598b6f603744b4f90cc92beb6bde09, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e66c5b31c946dee46a1be297e52d6ba3, type: 2}
+    - {fileID: 11400000, guid: 85466df96e977f7429ab3d67e2f1b27d, type: 2}

@@ -683,11 +683,11 @@ namespace GameS
         public void Item34Func(int targetnum)
         {
             float da = 125 * info.IsItemHave(34);
-            pv.RPC(nameof(targetnum),RpcTarget.All,da,info.TeamIdx);
+            pv.RPC(nameof(RPC_Item34Func),RpcTarget.All,da,info.TeamIdx);
         }
 
         [PunRPC]
-        protected void Item34Func(int targetnum,float d,int pidx)
+        protected void RPC_Item34Func(int targetnum,float d,int pidx)
         {
             if (PlayerInfo.Inst.PlayerIdx != pidx) return;
             GameObject ob = PhotonView.Find(targetnum).gameObject;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using Firebase.Auth;
 using UnityEngine.UI;
@@ -14,7 +15,6 @@ using System.Threading.Tasks;
 using RobinBird.FirebaseTools.Storage.Addressables;
 using UnityEngine.EventSystems;
 using UnityEngine.ResourceManagement.AsyncOperations;
-
 public class LoginManager : MonoBehaviour
 {
     [SerializeField] TMP_InputField IdField;
@@ -49,6 +49,7 @@ public class LoginManager : MonoBehaviour
     [SerializeField] private GameObject waitob;
     private Coroutine corcheck1;
     public AssetReferenceT<GameObject> developOb;
+    public AssetReferenceT<AudioClip> aszzd;
     public LobyUiManager loby;
 
     EventSystem system;
@@ -59,7 +60,6 @@ public class LoginManager : MonoBehaviour
     public Button submitButton2;
     
     [Header("구글 로그인")]
-    public Text infoText;
     public string webClientId = "867301402469-m9r5l5a57muanogh0h76d54bce5ge80m.apps.googleusercontent.com";
  
     private FirebaseAuth auth;
@@ -92,7 +92,7 @@ public class LoginManager : MonoBehaviour
         Addressables.InternalIdTransformFunc += FirebaseAddressablesCache.IdTransformFunc;
         
         configuration = new GoogleSignInConfiguration { WebClientId = webClientId, RequestEmail = true, RequestIdToken = true };
-        
+        FirebaseAddressablesManager.IsFirebaseSetupFinished = true;
     }
 
     public void LoginBtn()
@@ -222,40 +222,35 @@ public class LoginManager : MonoBehaviour
 
     public void PathBtn()
     {
-        FirebaseAddressablesManager.IsFirebaseSetupFinished = true;
+        
+        //StartCoroutine(check1());
+        //return;
 
-
-        Addressables.GetDownloadSizeAsync("GoGo").Completed +=
+          Addressables.GetDownloadSizeAsync("abc").Completed +=
             (AsyncOperationHandle<long> SizeHandle) =>
             {
                 
-                if (SizeHandle.Result>0)
+                
+                if (SizeHandle.Result>=0)
                 {
-                    waitob.SetActive(true);
-                    corcheck1=StartCoroutine(IPathText());
-                    //PathOb.SetActive(true);
-                    handle = Addressables.DownloadDependenciesAsync("GoGo", true);
-                    handle.Completed += (AsyncOperationHandle Obj) => {
-                        //PathOb.SetActive(false);
-                        
-                        StopCoroutine(corcheck1);
-                        handle = Obj;
+                        waitob.SetActive(true);
+                        PathText.text = SizeHandle.Result.ToString("f2")+"Byte";
+                         Addressables.DownloadDependenciesAsync("abc").Completed+= (AsyncOperationHandle Handle) =>
+                         {
+                        waitob.SetActive(false);
+                             Loaddevelop();
+                         };
 
-                        Loaddevelop();
-
-                        Addressables.Release(Obj);
-                        Addressables.Release(handle);
-
-                    };
+                    
+                    
                 }
                 else
                 {
-
-
+                
+                
                     Loaddevelop();
                 }
-               
-            
+
             };
 
 
@@ -264,6 +259,50 @@ public class LoginManager : MonoBehaviour
 
         
         //StartCoroutine(IPathText());
+    }
+    
+
+    IEnumerator check1()
+    {
+        string key = "abc";
+        //Clear all cached AssetBundles
+        // WARNING: This will cause all asset bundles to be re-downloaded at startup every time and should not be used in a production game
+        // Addressables.ClearDependencyCacheAsync(key);
+
+        //Check the download size
+        AsyncOperationHandle<long> getDownloadSize = Addressables.GetDownloadSizeAsync(key);
+        yield return getDownloadSize;
+        
+        //If the download size is greater than 0, download all the dependencies.
+        if (getDownloadSize.Result >= 0)
+        {
+            
+            waitob.SetActive(true);
+            PathText.text=string.Concat(getDownloadSize.Result, " byte");
+            AsyncOperationHandle downloadDependencies = Addressables.DownloadDependenciesAsync(key);
+            yield return downloadDependencies;
+            waitob.SetActive(false);
+                Loaddevelop();
+
+            
+        }
+        else
+        {
+            Loaddevelop();
+        }
+    }
+
+    private IEnumerator check2()
+    {
+        Addressables.ClearDependencyCacheAsync("abc");
+        Addressables.CleanBundleCache();
+        Addressables.ClearResourceLocators();
+        yield return Addressables.InitializeAsync();
+        AsyncOperationHandle< long > getAddresablesDownloadSize= Addressables.GetDownloadSizeAsync( "abc" );
+        yield return getAddresablesDownloadSize;
+
+        var downloadSize = getAddresablesDownloadSize.Result ;
+        Debug.Log( $"GetDownloadSizeAsync: {downloadSize}." );
     }
 
     void Loaddevelop()
@@ -277,10 +316,10 @@ public class LoginManager : MonoBehaviour
                     
                 Instantiate(ad.Result, canvasParent);
                 loby.RankingSet();
+                developOb.ReleaseAsset();
             }
         };
-            
-        //Addressables.Release(developOb);
+        
     }
     IEnumerator IPathText()
     {

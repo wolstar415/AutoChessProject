@@ -282,18 +282,45 @@ namespace GameS
             }
             else if (Input.GetKeyDown(KeyCode.Q))
             {
-                ItemManager.inst.ItemAdd(17);
-                ItemManager.inst.ItemAdd(25);
-                ItemManager.inst.ItemAdd(29);
-                ItemManager.inst.ItemAdd(32);
+                
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                ItemManager.inst.ItemAdd(44);
+                
             }
             else if (Input.GetKeyDown(KeyCode.W))
             {
-                CreateManager.inst.CreateCharacter(19);
+                CreateManager.inst.CreateCharacter(51);
+                CreateManager.inst.CreateCharacter(55);
+                CreateManager.inst.CreateCharacter(58);
+                CreateManager.inst.CreateCharacter(7);
+                CreateManager.inst.CreateCharacter(9);
             }
             else if (Input.GetKeyDown(KeyCode.E))
             {
-                CreateManager.inst.CreateCharacter(54);
+                PlayerInfo.Inst.foodMax=5;
             }
             else if (Input.GetKeyDown(KeyCode.Keypad4))
             {

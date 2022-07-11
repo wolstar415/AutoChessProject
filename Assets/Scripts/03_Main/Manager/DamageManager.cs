@@ -470,10 +470,19 @@ namespace GameS
 
 
             if (Target == null) return;
-            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Item20", CreatePos, Quaternion.identity);
+
+            stat.pv.RPC(nameof(CreateBullet),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Item20",Target.GetComponent<PhotonView>().ViewID,CreatePos,Quaternion.identity,stat.Atk_Damage()*0.7f);
+
+        }
+        
+        [PunRPC]
+        void CreateBullet(int pidx,string name,int id,Vector3 pos,Quaternion qu,float da)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
+            
             if (bullet.TryGetComponent(out Buulet_Move1 move))
             {
-                move.StartFUnc(card,Target,stat.Atk_Damage()*0.7f,false);
+                move.StartFUnc(pidx,gameObject,PhotonView.Find(id).gameObject,da,false);
             }
         }
 

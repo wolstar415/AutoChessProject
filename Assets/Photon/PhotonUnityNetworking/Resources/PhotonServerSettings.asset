@@ -162,6 +162,10 @@ MonoBehaviour:
   - RPC_Active
   - RPC_Job29Func
   - RPC_Job4Func
+  - RPC_DestoryFunc
+  - RPC_Item34Func
+  - CreateBullet2
+  - skillcheck1
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

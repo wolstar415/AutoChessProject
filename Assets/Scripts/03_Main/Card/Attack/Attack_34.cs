@@ -44,11 +44,18 @@ namespace GameS
             
             if(ob==null) yield break;
             float v=SkillValue(1);
+
+            info.pv.RPC(nameof(CreateBullet),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Skill_34",Target.GetComponent<PhotonView>().ViewID,CreatePos.position,Quaternion.identity,v);
+
+        }
+        [PunRPC]
+        void CreateBullet(int pidx,string name,int id,Vector3 pos,Quaternion qu,float da)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
             
-            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Skill_34", CreatePos.position, Quaternion.identity);
             if (bullet.TryGetComponent(out Buulet_Skill34_Move move))
             {
-                move.StartFUnc(gameObject,ob,v);
+                move.StartFUnc(pidx,gameObject,PhotonView.Find(id).gameObject,da);
             }
         }
 

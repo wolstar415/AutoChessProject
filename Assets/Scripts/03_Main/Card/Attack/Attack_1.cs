@@ -50,13 +50,22 @@ namespace GameS
         {
             //총알생성
             float da = stat.Atk_Damage();
-            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Arrow", CreatePos.position, Quaternion.identity);
-            if (bullet.TryGetComponent(out Buulet_Move1 move))
-            {
-                move.StartFUnc(gameObject,Target,da);
-            }
+            info.pv.RPC(nameof(CreateBullet),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Bullet",Target.GetComponent<PhotonView>().ViewID,CreatePos.position,Quaternion.identity,da);
+
+
+
         }
 
+        [PunRPC]
+        void CreateBullet(int pidx,string name,int id,Vector3 pos,Quaternion qu,float da)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
+            
+            if (bullet.TryGetComponent(out Buulet_Move1 move))
+            {
+                move.StartFUnc(pidx,gameObject,PhotonView.Find(id).gameObject,da);
+            }
+        }
         public override void SkillFunc()
         {
             StartCoroutine(ISkill());
@@ -88,13 +97,21 @@ namespace GameS
             
 
             float da = CsvManager.inst.skillinfo[info.Idx].Realcheck(1,info.Level);
-            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Skill_1", CreatePos.position, Quaternion.identity);
-            if (bullet.TryGetComponent(out Buulet_Move2 move))
-            {
-                move.StartFUnc(gameObject,pos,da,info.EnemyTeamIdx,false,false);
-            }
+            info.pv.RPC(nameof(CreateBullet2),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Skill_1",CreatePos.position,Quaternion.identity,da,pos,info.EnemyTeamIdx,false);
             
 
         }
+        
+        [PunRPC]
+        void CreateBullet2(int pidx,string name,Vector3 pos,Quaternion qu,float da,Vector3 pos2,int enidx,bool a)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
+            
+            if (bullet.TryGetComponent(out Buulet_Move2 move))
+            {
+                move.StartFUnc(pidx,gameObject,pos2,da,enidx,a);
+            }
+        }
+        
     }
 }

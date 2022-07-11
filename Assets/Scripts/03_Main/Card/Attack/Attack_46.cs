@@ -45,11 +45,8 @@ namespace GameS
                     }
                     if (Target == null) break;
                     float da = CsvManager.inst.skillinfo[info.Idx].Realcheck(1, info.Level);
-                    GameObject bullet = PhotonNetwork.Instantiate("Bullet_Laser2", CreatePos.position, Quaternion.identity);
-                    if (bullet.TryGetComponent(out Buulet_Move1 move))
-                    {
-                        move.StartFUnc(gameObject,Target,da,false,1);
-                    }
+                    info.pv.RPC(nameof(CreateBullet2),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Laser2",Target.GetComponent<PhotonView>().ViewID,CreatePos.position,Quaternion.identity,da);
+
 
                 
                 
@@ -61,13 +58,31 @@ namespace GameS
             else
             {
                 float da = stat.Atk_Damage();
-                GameObject bullet = PhotonNetwork.Instantiate("Bullet_Laser1", CreatePos.position, Quaternion.identity);
-                if (bullet.TryGetComponent(out Buulet_Move1 move))
-                {
-                    move.StartFUnc(gameObject,Target,da);
-                }
+                info.pv.RPC(nameof(CreateBullet),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Laser1",Target.GetComponent<PhotonView>().ViewID,CreatePos.position,Quaternion.identity,da);
+
             }
             
+        }
+        
+        [PunRPC]
+        void CreateBullet(int pidx,string name,int id,Vector3 pos,Quaternion qu,float da)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
+            
+            if (bullet.TryGetComponent(out Buulet_Move1 move))
+            {
+                move.StartFUnc(pidx,gameObject,PhotonView.Find(id).gameObject,da);
+            }
+        }
+        [PunRPC]
+        void CreateBullet2(int pidx,string name,int id,Vector3 pos,Quaternion qu,float da)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
+            
+            if (bullet.TryGetComponent(out Buulet_Move1 move))
+            {
+                move.StartFUnc(pidx,gameObject,PhotonView.Find(id).gameObject,da,false,1);
+            }
         }
 
 

@@ -9,7 +9,6 @@ namespace GameS
 {
     public class Buulet_Skill51_Move : MonoBehaviour
     {
-        public PhotonView pv;
         public GameObject target;
         public GameObject me;
         public float damage;
@@ -17,20 +16,22 @@ namespace GameS
         private Vector3[] pos = new Vector3[4];
         private float curTime=0;
         private float coolTime;
-        [Header("표시")]
+        public int playeridx;
+        [Header("표시")] 
+        public bool IsStart = false;
         
         [SerializeField] private float Speed = 2f;
         // Start is called before the first frame update
 
 
         // Update is called once per frame
-        public void StartFUnc(GameObject _me, GameObject _target, float _damage)
+        public void StartFUnc(int _playeridx,GameObject _me, GameObject _target, float _damage)
         {
             coolTime = Random.Range(0.8f, 1.0f);
             
             me = _me;
             target = _target;
-            
+            playeridx = _playeridx;
             pos[0] = me.transform.position;
             pos[3] = target.transform.position;
             pos[1] = pos[0] +
@@ -43,12 +44,12 @@ namespace GameS
                      (3 * Random.Range(-1.0f, 1.0f) * target.transform.up) + 
                      (3 * Random.Range(0.8f, 1.0f) * target.transform.forward); 
             
-            
+            IsStart = true;
             damage = _damage;
         }
         void Update()
         {
-            if (!pv.IsMine) return;
+            if (!IsStart) return;
             if (target == null||curTime>=coolTime)
             {
                 DestoryFunc();
@@ -78,14 +79,17 @@ namespace GameS
 
         void DestoryFunc()
         {
-            PhotonNetwork.Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         private void OnTriggerEnter(Collider other)
         {
-            if (!pv.IsMine) return;
             if (other.gameObject==target)
             {
+                if (playeridx == PlayerInfo.Inst.PlayerIdx)
+                {
+                    
                 DamageManager.inst.DamageFunc1(me,target,damage,eDamageType.Speel_Magic);
+                }
                 DestoryFunc();
             }
         }
@@ -103,6 +107,17 @@ namespace GameS
 
             return Mathf.Lerp(abbc, bccd, t);
         }
-
+        private void OnDisable()
+        {
+            playeridx = 0;
+            me = null;
+            target = null;
+            IsStart = false;
+            pos[0]=Vector3.zero;
+            pos[1]=Vector3.zero;
+            pos[2]=Vector3.zero;
+            pos[3]=Vector3.zero;
+            curTime = 0;
+        }
     }
 }

@@ -58,13 +58,20 @@ namespace GameS
         {
             //총알생성
             float da = stat.Atk_Damage();
-            GameObject bullet = PhotonNetwork.Instantiate("Bullet_Fire", CreatePos.position, Quaternion.identity);
-            if (bullet.TryGetComponent(out Buulet_Move1 move))
-            {
-                move.StartFUnc(gameObject,Target,da);
-            }
+
+            info.pv.RPC(nameof(CreateBullet),RpcTarget.All,PlayerInfo.Inst.PlayerIdx,"Bullet_Fire",Target.GetComponent<PhotonView>().ViewID,CreatePos.position,Quaternion.identity,da);
+
         }
 
-
+        [PunRPC]
+        void CreateBullet(int pidx,string name,int id,Vector3 pos,Quaternion qu,float da)
+        {
+            GameObject bullet = ObjectPooler.SpawnFromPool(name, pos, qu);
+            
+            if (bullet.TryGetComponent(out Buulet_Move1 move))
+            {
+                move.StartFUnc(pidx,gameObject,PhotonView.Find(id).gameObject,da);
+            }
+        }
     }
 }

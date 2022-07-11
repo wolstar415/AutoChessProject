@@ -1716,7 +1716,7 @@ GameObject:
   - component: {fileID: 157300730}
   - component: {fileID: 157300732}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: downtext
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5374,7 +5374,7 @@ MonoBehaviour:
   Cre_passField: {fileID: 1816739776}
   Cre_passField2: {fileID: 1519972422}
   Cre_Text: {fileID: 1344518587}
-  PathText: {fileID: 157300730}
+  PathText: {fileID: 90739339}
   audios: {fileID: 0}
   LobyOb: {fileID: 778669578}
   CreateOb: {fileID: 1679931143}
@@ -5384,13 +5384,18 @@ MonoBehaviour:
   CreateButton: {fileID: 273808717}
   canvasParent: {fileID: 1381561543}
   arf:
-    m_AssetGUID: e4bdf683b0428154b87fbb523c51ecc9
+    m_AssetGUID: 84c412cf8bf87a1459dea23cdfd3a552
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   waitob: {fileID: 1305124355}
   developOb:
-    m_AssetGUID: 26e9f955a36cecf48bfc0fee4e3d0d69
+    m_AssetGUID: 509b4572d8b71d444b2009d51405f3ac
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  aszzd:
+    m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
@@ -5400,7 +5405,6 @@ MonoBehaviour:
   firstInput3: {fileID: 932907746}
   submitButton: {fileID: 1565254343}
   submitButton2: {fileID: 1982855940}
-  infoText: {fileID: 0}
   webClientId: 867301402469-m9r5l5a57muanogh0h76d54bce5ge80m.apps.googleusercontent.com
 --- !u!1 &729025877
 GameObject:
