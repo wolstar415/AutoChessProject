@@ -7,6 +7,9 @@ TagManager:
   - Cards
   - Enemy
   - Item
+  - FxTemporaire
+  - Bullet
+  - HpBar
   layers:
   - Default
   - TransparentFX
