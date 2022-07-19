@@ -45,7 +45,7 @@ namespace GameS
                     if (info.TeamIdx==EnemyIdx&&info.IsFiled)
                     {
                         
-                        DamageManager.inst.DamageFunc1(me,other.gameObject,damage,eDamageType.Speel_Magic);
+                        DamageManager.inst.DamageFunc1(me,other.gameObject,damage,eDamageType.Spell_Magic);
 
                         gameObject.SetActive(false);
 

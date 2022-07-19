@@ -83,7 +83,7 @@ namespace GameS
                     if (Vector3.Dot(direction,transform.forward)>dotValue)
                     {
                     
-                        DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],d,eDamageType.Speel_Magic);
+                        DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],d,eDamageType.Spell_Magic);
 
                     }
                 }

@@ -19,7 +19,7 @@ namespace GameS
 
         public void IconSet(int idx)
         {
-            Icon.sprite = GameManager.inst.charIcons[idx];
+            Icon.sprite = GameManager.Inst.charIcons[idx];
         }
     }
 }

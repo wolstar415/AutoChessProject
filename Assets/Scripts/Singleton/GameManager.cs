@@ -6,10 +6,6 @@ using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    public static GameManager inst;
-
-    private void Awake() => inst = this;
-
     public string GameLanguage;
     public string OriNickName;
     public int CharIdx = 0;

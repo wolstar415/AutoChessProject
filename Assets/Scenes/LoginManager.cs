@@ -123,9 +123,9 @@ public class LoginManager : MonoBehaviour
     {
         yield return new WaitUntil(() => LoginSu == true);
         PhotonNetwork.LocalPlayer.NickName = IdField.text;
-        GameManager.inst.OriNickName = IdField.text;
-        string[] s = GameManager.inst.OriNickName.Split('@');
-        GameManager.inst.NickName = s[0];
+        GameManager.Inst.OriNickName = IdField.text;
+        string[] s = GameManager.Inst.OriNickName.Split('@');
+        GameManager.Inst.NickName = s[0];
         LobyOb.SetActive(false);
         DataManager.inst.StartFunc();
         yield return YieldInstructionCache.WaitForSeconds(1);
@@ -229,8 +229,6 @@ public class LoginManager : MonoBehaviour
           Addressables.GetDownloadSizeAsync("abc").Completed +=
             (AsyncOperationHandle<long> SizeHandle) =>
             {
-                
-                
                 if (SizeHandle.Result>=0)
                 {
                         waitob.SetActive(true);
@@ -240,69 +238,14 @@ public class LoginManager : MonoBehaviour
                         waitob.SetActive(false);
                              Loaddevelop();
                          };
-
-                    
-                    
                 }
                 else
                 {
-                
-                
                     Loaddevelop();
                 }
 
             };
-
-
-
-        
-
-        
-        //StartCoroutine(IPathText());
-    }
-    
-
-    IEnumerator check1()
-    {
-        string key = "abc";
-        //Clear all cached AssetBundles
-        // WARNING: This will cause all asset bundles to be re-downloaded at startup every time and should not be used in a production game
-        // Addressables.ClearDependencyCacheAsync(key);
-
-        //Check the download size
-        AsyncOperationHandle<long> getDownloadSize = Addressables.GetDownloadSizeAsync(key);
-        yield return getDownloadSize;
-        
-        //If the download size is greater than 0, download all the dependencies.
-        if (getDownloadSize.Result >= 0)
-        {
-            
-            waitob.SetActive(true);
-            PathText.text=string.Concat(getDownloadSize.Result, " byte");
-            AsyncOperationHandle downloadDependencies = Addressables.DownloadDependenciesAsync(key);
-            yield return downloadDependencies;
-            waitob.SetActive(false);
-                Loaddevelop();
-
-            
-        }
-        else
-        {
-            Loaddevelop();
-        }
-    }
-
-    private IEnumerator check2()
-    {
-        Addressables.ClearDependencyCacheAsync("abc");
-        Addressables.CleanBundleCache();
-        Addressables.ClearResourceLocators();
-        yield return Addressables.InitializeAsync();
-        AsyncOperationHandle< long > getAddresablesDownloadSize= Addressables.GetDownloadSizeAsync( "abc" );
-        yield return getAddresablesDownloadSize;
-
-        var downloadSize = getAddresablesDownloadSize.Result ;
-        Debug.Log( $"GetDownloadSizeAsync: {downloadSize}." );
+          
     }
 
     void Loaddevelop()
@@ -319,8 +262,9 @@ public class LoginManager : MonoBehaviour
                 developOb.ReleaseAsset();
             }
         };
-        
     }
+    
+    
     IEnumerator IPathText()
     {
         //yield return new WaitUntil(() => handle.Status == AsyncOperationStatus.Succeeded);
@@ -396,7 +340,7 @@ public class LoginManager : MonoBehaviour
             // Debug.Log("Google ID Token = " + task.Result.IdToken);
             // Debug.Log("Email = " + task.Result.Email);
             PhotonNetwork.LocalPlayer.NickName = task.Result.Email;
-            GameManager.inst.OriNickName = task.Result.Email;
+            GameManager.Inst.OriNickName = task.Result.Email;
             SignInWithGoogleOnFirebase(task.Result.IdToken);
         }
     }
@@ -418,8 +362,8 @@ public class LoginManager : MonoBehaviour
                 //Debug.Log("Sign In Successful.");
                 
 
-                string[] s = GameManager.inst.OriNickName.Split('@');
-                GameManager.inst.NickName = s[0];
+                string[] s = GameManager.Inst.OriNickName.Split('@');
+                GameManager.Inst.NickName = s[0];
                 LobyOb.SetActive(false);
                 DataManager.inst.StartFunc();
                 Invoke("PathBtn",1.0f);

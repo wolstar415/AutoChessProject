@@ -77,7 +77,7 @@ namespace GameS
             if(ob==null) yield break;
             float v=SkillValue(1);
             
-            DamageManager.inst.DamageFunc1(gameObject,ob,v,eDamageType.Speel_Magic);
+            DamageManager.inst.DamageFunc1(gameObject,ob,v,eDamageType.Spell_Magic);
             EffectManager.inst.EffectCreate("Skill41_Effect",ob.transform.position,Quaternion.Euler(-90,0,0),1);
 
         }

@@ -42,7 +42,7 @@ namespace GameS
             {
                 EffectManager.inst.EffectCreate("Skill31_Effect",Target.transform.position,Quaternion.identity,2f);
                 float da = SkillValue(1);
-                DamageManager.inst.DamageFunc1(gameObject, Target, da, eDamageType.Speel_Magic);
+                DamageManager.inst.DamageFunc1(gameObject, Target, da, eDamageType.Spell_Magic);
                 
                 
             }

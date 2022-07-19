@@ -59,7 +59,7 @@ namespace GameS
             {
                 
             float da2 = CsvManager.inst.skillinfo[info.Idx].Realcheck(1,info.Level);
-            DamageManager.inst.DamageFunc1(gameObject,Target,da2,eDamageType.Speel_Magic);
+            DamageManager.inst.DamageFunc1(gameObject,Target,da2,eDamageType.Spell_Magic);
             }
 
             attack = null;

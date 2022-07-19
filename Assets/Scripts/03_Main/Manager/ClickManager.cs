@@ -31,11 +31,10 @@ namespace GameS
     }
 
 
-
-
     public class ClickManager : MonoBehaviourPunCallbacks
     {
-        const float CharaterHe = 1.6f;
+        private Camera _camera;
+        readonly float CHARACTERY = 1.6f;
         public static ClickManager inst;
         public LayerMask laymaskTile;
         public LayerMask laymaskCard;
@@ -53,36 +52,21 @@ namespace GameS
         public GameObject ItemDropCard;
         public bool SellCheck = false;
         List<RaycastResult> results = new List<RaycastResult>();
+
         private void Awake()
         {
             inst = this;
+            _camera = Camera.main;
         }
 
         private void Start()
         {
-
             clickstate = PlayerClickState.None;
             clickstate2 = PlayerClickState2.None;
 
             this.UpdateAsObservable()
                 .Where(_ => Input.GetMouseButtonDown(0))
-                // .Select(_ =>
-                // {
-                //     Vector3 mpos = Input.mousePosition;
-                //     Ray cast = Camera.main.ScreenPointToRay(mpos);
-                //     RaycastHit hit;
-                //     if (Physics.Raycast(cast, out hit, 100, laymaskCard))
-                //     {
-                //         
-                //     }
-                //     return hit;
-                // })
-                // .Where(hit=>hit.collider!=null)
-                .Subscribe(hit =>
-                {
-                    ClickFunc();
-                    //ClickCardFunc(hit.collider.gameObject);
-                });
+                .Subscribe(hit => { ClickFunc(); });
             this.UpdateAsObservable()
                 .Where(_ => ClickCard != null && !EnemyClick && Input.GetMouseButton(0) &&
                             clickstate == PlayerClickState.Card)
@@ -90,7 +74,6 @@ namespace GameS
             this.UpdateAsObservable()
                 .Where(_ => ClickCard != null && Input.GetMouseButtonUp(0))
                 .Subscribe(_ => { UpCardFunc(); });
-
         }
 
         private bool IsPointerOverUIObject()
@@ -105,9 +88,8 @@ namespace GameS
         void ClickFunc()
         {
             if (PlayerInfo.Inst.Dead) return;
-            
-                
-            
+
+
             if (!GameSystem_AllInfo.inst.IsStart)
             {
                 return;
@@ -115,17 +97,15 @@ namespace GameS
 
             if (IsPointerOverUIObject())
             {
-
                 return;
             }
 
 
             Vector3 mpos = Input.mousePosition;
-            Ray cast = Camera.main.ScreenPointToRay(mpos);
-            RaycastHit hit;
+            Ray cast = _camera.ScreenPointToRay(mpos);
             if (!PlayerInfo.Inst.PickRound)
             {
-                if (Physics.Raycast(cast, out hit, 100, laymaskCard))
+                if (Physics.Raycast(cast, out RaycastHit hit, 100, laymaskCard))
                 {
                     ClickCardFunc(hit.collider.gameObject);
                     return;
@@ -136,35 +116,30 @@ namespace GameS
             //플레이어 이동
             if (PlayerInfo.Inst.PlayerOb.TryGetComponent(out PlayerMoving moving))
             {
-                //Vector3 objPosition = Camera.main.ScreenToWorldPoint(mpos);
-                //moving.movePos(objPosition);
-                moving.check1();
+                moving.move();
                 if (PlayerInfo.Inst.PickRound == false)
                 {
-
                     UIManager.inst.CardUIClose();
                     UIManager.inst.CardBuyUiClose();
                 }
-                //Debug.Log("이동중");
             }
-
-
         }
 
         void ClickCardFunc(GameObject ob)
         {
-            
             if (ob.GetComponent<CardState>().IsUnit)
             {
                 ClickCard = null;
                 return;
             }
+
             ClickCard = ob;
-            if (PlayerInfo.Inst.IsBattle&&ob.GetComponent<Card_Info>().IsFiled)
+            if (PlayerInfo.Inst.IsBattle && ob.GetComponent<Card_Info>().IsFiled)
             {
                 ShowCharacterInfo(ClickCard);
                 return;
             }
+
             MousePos = ob.transform.position;
             clickstate = PlayerClickState.Card;
             SellCheck = false;
@@ -172,20 +147,17 @@ namespace GameS
             {
                 EnemyClick = true;
             }
-
         }
 
         void DragCardFunc()
         {
-
-            Vector3 scrSpace = Camera.main.WorldToScreenPoint(ClickCard.transform.position);
-
+            Vector3 scrSpace = _camera.WorldToScreenPoint(ClickCard.transform.position);
 
 
             Vector3 MousePos = new Vector3(Input.mousePosition.x,
                 Input.mousePosition.y, scrSpace.z);
-            Vector3 objPosition = Camera.main.ScreenToWorldPoint(MousePos);
-            objPosition.y = CharaterHe;
+            Vector3 objPosition = _camera.ScreenToWorldPoint(MousePos);
+            objPosition.y = CHARACTERY;
             if (clickstate2 != PlayerClickState2.cardDraging)
             {
                 if (Vector3.Distance(ClickCard.transform.position, objPosition) >= 1)
@@ -199,19 +171,18 @@ namespace GameS
                     PlayerInfo.Inst.PlayerTileOb.SetActive(true);
                     if (!PlayerInfo.Inst.IsBattle)
                     {
-                    PlayerInfo.Inst.FiledTileOb.SetActive(true);
-                        
+                        PlayerInfo.Inst.FiledTileOb.SetActive(true);
                     }
+
                     UIManager.inst.SellSet(ClickCard.GetComponent<Card_Info>().costCheck());
                 }
             }
             else
             {
-
                 ClickCard.transform.position = objPosition;
-                
+
                 Vector3 mpos = Input.mousePosition;
-                Ray cast = Camera.main.ScreenPointToRay(mpos);
+                Ray cast = _camera.ScreenPointToRay(mpos);
                 RaycastHit hit;
 
                 bool b = false;
@@ -220,10 +191,13 @@ namespace GameS
                     if (TileOb!=null)
                     {
                         if (TileOb.TryGetComponent(out TileInfo tileinfo))
-                        {
+                        { 
                             tileinfo.SetColor(true);
                         }
+                        
                     }
+                    
+
                     TileOb = hit.collider.gameObject;
                     if (TileOb.TryGetComponent(out TileInfo tileinfo2))
                     {
@@ -234,9 +208,9 @@ namespace GameS
                     //return;
                 }
 
-                if (b==false)
+                if (b == false)
                 {
-                    if (TileOb!=null)
+                    if (TileOb != null)
                     {
                         if (TileOb.TryGetComponent(out TileInfo tileinfo))
                         {
@@ -246,16 +220,12 @@ namespace GameS
                         TileOb = null;
                     }
                 }
-                
-                
             }
-
-
         }
 
         void UpCardFunc()
         {
-            if (TileOb!=null)
+            if (TileOb != null)
             {
                 if (TileOb.TryGetComponent(out TileInfo tileinfo))
                 {
@@ -275,19 +245,15 @@ namespace GameS
 
             if (SellCheck)
             {
-
                 if (ClickCard.TryGetComponent(out Card_Info info))
                 {
-
                     int cost = info.costCheck();
                     PlayerInfo.Inst.Gold += cost;
                     info.remove();
                 }
-
             }
             else
             {
-
                 if (ClickCard.TryGetComponent(out CapsuleCollider col))
                 {
                     col.enabled = true;
@@ -302,61 +268,38 @@ namespace GameS
                 clickstate = PlayerClickState.None;
                 clickstate2 = PlayerClickState2.None;
                 Vector3 mpos = Input.mousePosition;
-                Ray cast = Camera.main.ScreenPointToRay(mpos);
+                Ray cast = _camera.ScreenPointToRay(mpos);
                 RaycastHit hit;
 
                 bool b = false;
-                    if (Physics.Raycast(cast, out hit, 100, 1 << LayerMask.NameToLayer("Tile")))
+                if (Physics.Raycast(cast, out hit, 100, 1 << LayerMask.NameToLayer("Tile")))
+                {
+                    //ClickCardFunc(hit.collider.gameObject);
+                    TileOb = hit.collider.gameObject;
+                    if (TileOb.TryGetComponent(out TileInfo info))
                     {
-                        //ClickCardFunc(hit.collider.gameObject);
-                        TileOb = hit.collider.gameObject;
-                             if (TileOb.TryGetComponent(out TileInfo info))
-                             {
-                                 info.SetColor();
-                                 if (info.tileGameob == null)
-                                 {
-                                     CharacterTileMove(ClickCard, TileOb);
-                                 }
-                                 else
-                                 {
-                                     CharacterTileChange(ClickCard, info.tileGameob);
-                                 }
+                        info.SetColor();
+                        if (info.tileGameob == null)
+                        {
+                            CharacterTileMove(ClickCard, TileOb);
+                        }
+                        else
+                        {
+                            CharacterTileChange(ClickCard, info.tileGameob);
+                        }
 
-                                 b = true;
-                             }
-                        //return;
+                        b = true;
                     }
+                    //return;
+                }
 
-                    if (!b) CharacterTileMoveReset(ClickCard);
-
-                
-                // if (TileOb != null)
-                // {
-                //     if (TileOb.TryGetComponent(out TileInfo info))
-                //     {
-                //         info.SetColor();
-                //         if (info.tileGameob == null)
-                //         {
-                //             CharacterTileMove(ClickCard, TileOb);
-                //         }
-                //         else
-                //         {
-                //             CharacterTileChange(ClickCard, info.tileGameob);
-                //         }
-                //     }
-                // }
-                // else
-                // {
-                //     CharacterTileMoveReset(ClickCard);
-                // }
+                if (!b) CharacterTileMoveReset(ClickCard);
 
 
 
             }
 
             resetfunc();
-
-
         }
 
         public void resetfunc()
@@ -371,12 +314,10 @@ namespace GameS
             {
                 col.enabled = true;
             }
+
             SellCheck = false;
             ClickCard = null;
             UIManager.inst.SellClose();
-            
-            
-            
         }
 
         void CharacterTileMove(GameObject ob, GameObject Tile)
@@ -427,7 +368,7 @@ namespace GameS
             int idx = tilecom.Idx;
             tilecom.AddTile(ob);
             Vector3 pos = Tile.transform.position;
-            pos.y = CharaterHe;
+            pos.y = CHARACTERY;
             ob.transform.position = pos;
         }
 
@@ -436,7 +377,6 @@ namespace GameS
             var ClickCardcom = ob.GetComponent<Card_Info>();
 
             ClickCardcom.MoveReset();
-
         }
 
         void CharacterTileChange(GameObject ob1, GameObject ob2)
@@ -460,7 +400,6 @@ namespace GameS
                     obcom1.FiledOut();
                     obcom2.FiledIn();
                 }
-
             }
             else
             {
@@ -478,7 +417,6 @@ namespace GameS
 
                     PlayerInfo.Inst.food = food;
                 }
-
             }
 
 
@@ -486,8 +424,6 @@ namespace GameS
             obcom2.TileOb = Tile1;
             CharacterTileMoveFunc(ob1, Tile2);
             CharacterTileMoveFunc(ob2, Tile1);
-
-
         }
 
         void ShowCharacterInfo(GameObject ob)
@@ -499,42 +435,5 @@ namespace GameS
 
             ClickCard = null;
         }
-        /*void Update()
-        {
-            // if (Input.GetMouseButtonDown(0))
-            // {
-            //     
-            //     Vector3 mpos = Input.mousePosition;
-            //     Ray cast = Camera.main.ScreenPointToRay(mpos);
-            //     RaycastHit hit;
-            //
-            //
-            //     if (Physics.Raycast(cast, out hit, 1000, laymaskCard))
-            //     {
-            //         ClickCardFunc(hit.transform.gameObject);
-            //     }
-            // }
-            // if(Input.GetMouseButton(0)&&clickstate==PlayerClickState.Card&&ClickCard!=null)
-            // {
-            //     DragCardFunc();
-            // }
-            //
-            // if (Input.GetMouseButtonUp(0))
-            // {
-            //     UpCardFunc();
-            // }
-        }
-        */
-
     }
-
-// Vector3 mpos = Input.mousePosition;
-// Ray cast = Camera.main.ScreenPointToRay(mpos);
-// RaycastHit hit;
-//         
-//
-// if (Physics.Raycast(cast,out hit,100,laymask))
-// {
-//     Debug.Log(hit.transform.name);
-// }
 }

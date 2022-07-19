@@ -108,7 +108,7 @@ namespace GameS
                 {
                     EnemyStat.NoAttack(true,v2);
                 }
-                DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],v1,eDamageType.Speel_Magic);
+                DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],v1,eDamageType.Spell_Magic);
             }
             
             

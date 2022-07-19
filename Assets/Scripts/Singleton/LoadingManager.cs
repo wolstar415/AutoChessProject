@@ -19,7 +19,7 @@ namespace GameS
             {
                 if (PhotonNetwork.PlayerList[i]==PhotonNetwork.LocalPlayer)
                 {
-                    pv.RPC(nameof(ChangePlayerinfo),RpcTarget.All,i,GameManager.inst.CharIdx,GameManager.inst.NickName);
+                    pv.RPC(nameof(ChangePlayerinfo),RpcTarget.All,i,GameManager.Inst.CharIdx,GameManager.Inst.NickName);
                     break;
                 }
             }

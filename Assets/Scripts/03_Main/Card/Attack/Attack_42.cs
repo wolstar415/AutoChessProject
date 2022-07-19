@@ -59,7 +59,7 @@ namespace GameS
                     {
                         enemystat.NetStopFunc(true,d2,false);
                         enemystat.Jump(enemystat.transform.position,3,1,1.5f);
-                        DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],d1,eDamageType.Speel_Magic);
+                        DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],d1,eDamageType.Spell_Magic);
                     }
                 
                 }

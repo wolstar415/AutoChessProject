@@ -6,16 +6,14 @@ using UnityEngine.UI;
 
 namespace GameS
 {
-
     [System.Serializable]
     public class BattleInfo
     {
-        public int playeridx;//플레이어번호
-        public int enemyidx;//싸워야할 상대
-        public bool IsBattleMove;//이동해야하는지 체크
-        public bool IsCopy;//내가 복사본을 보내는지 체크
-        public int copyidx;//싸워야할 상대(복사본을 보내는곳)
-        
+        public int playeridx; //플레이어번호
+        public int enemyidx; //싸워야할 상대
+        public bool IsBattleMove; //이동해야하는지 체크
+        public bool IsCopy; //내가 복사본을 보내는지 체크
+        public int copyidx; //싸워야할 상대(복사본을 보내는곳)
     }
 
     [System.Serializable]
@@ -23,6 +21,7 @@ namespace GameS
     {
         public int[] JobAndTrait;
     }
+
     public class GameSystem_AllInfo : MonoBehaviour
     {
         public bool IsStart = false;
@@ -56,11 +55,9 @@ namespace GameS
         public Transform ItemParent;
         public GridLayoutGroup ItemGridLayout;
 
-        [Header("전투 플레이어")]
-        public List<BattleInfo> battleinfos;
+        [Header("전투 플레이어")] public List<BattleInfo> battleinfos;
 
-        [Header("플레이어 특성계열")] 
-        public List<PlayerJobCheck> playerJobcnt;
+        [Header("플레이어 특성계열")] public List<PlayerJobCheck> playerJobcnt;
 
         private void Awake()
         {
@@ -76,8 +73,6 @@ namespace GameS
 
         public GameObject FindNearestObject(Vector3 pos, GameObject[] Obs)
         {
-
-
             // LINQ 메소드를 이용해 가장 가까운 적을 찾습니다.
             var neareastObject = Obs
                 .OrderBy(obj => { return Vector3.Distance(pos, obj.transform.position); })
@@ -88,7 +83,6 @@ namespace GameS
 
         public GameObject FindNearestObject(Vector3 pos, Collider[] Obs)
         {
-
             // LINQ 메소드를 이용해 가장 가까운 적을 찾습니다.
             var neareastObject = Obs
                 .OrderBy(obj => { return Vector3.Distance(pos, obj.transform.position); })
@@ -99,7 +93,6 @@ namespace GameS
 
         public List<GameObject> CardList(int Lv)
         {
-
             switch (Lv)
             {
                 case 1:
@@ -144,45 +137,54 @@ namespace GameS
 
             return result;
         }
-        
-        public GameObject FindFirstObject(Vector3 pos,int Findidx,float dis,bool Nearest)
+
+        public GameObject FindFirstObject(Vector3 pos, int Findidx, float dis, bool Nearest)
         {
-            
+            // Collider[] results = new Collider[20];
+            // var size = Physics.OverlapSphereNonAlloc(pos, dis, results, GameSystem_AllInfo.inst.masks[Findidx]);
+            //
+            // if (size == 0||results.Length==0)
+            // {
+            //     return null;
+            // }
             Collider[] c = Physics.OverlapSphere(pos, dis, GameSystem_AllInfo.inst.masks[Findidx]);
 
+            if (c.Length==0)
+            {
+                return null;
+            }
             if (Nearest)
             {
-                
-            c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false&&ob.GetComponent<Card_Info>().IsFiled&&
-                             ob.GetComponent<UnitState>().IsInvin == 0).OrderBy(ob => Vector3.Distance(pos, ob.transform.position)).ToArray();
+                c = c.Where(ob => ob.GetComponent<UnitState>().IsDead == false &&
+                                              ob.GetComponent<Card_Info>().IsFiled &&
+                                              ob.GetComponent<UnitState>().IsInvin == 0)
+                    .OrderBy(ob => Vector3.Distance(pos, ob.transform.position)).ToArray();
             }
             else
             {
-                c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false &&
-                                 ob.GetComponent<UnitState>().IsInvin == 0&&ob.GetComponent<Card_Info>().IsFiled).OrderByDescending(ob => Vector3.Distance(pos, ob.transform.position)).ToArray();
-
+                c = c.Where(ob => ob.GetComponent<UnitState>().IsDead == false &&
+                                              ob.GetComponent<UnitState>().IsInvin == 0 &&
+                                              ob.GetComponent<Card_Info>().IsFiled)
+                    .OrderByDescending(ob => Vector3.Distance(pos, ob.transform.position)).ToArray();
             }
 
-            
-            if (c.Length >0)
+
+            if (c.Length > 0)
             {
                 return c[0].gameObject;
             }
 
             return null;
         }
-        
-        public GameObject FindRandomObject(Vector3 pos,int Findidx,float f)
+
+        public GameObject FindRandomObject(Vector3 pos, int Findidx, float f)
         {
-            
             Collider[] c = Physics.OverlapSphere(pos, f, GameSystem_AllInfo.inst.masks[Findidx]);
-            c= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false&&ob.GetComponent<Card_Info>().IsFiled&&
-                             ob.GetComponent<UnitState>().IsInvin == 0).ToArray();
-            
+            c = c.Where(ob => ob.GetComponent<UnitState>().IsDead == false && ob.GetComponent<Card_Info>().IsFiled &&
+                              ob.GetComponent<UnitState>().IsInvin == 0).ToArray();
 
 
-            
-            if (c.Length >0)
+            if (c.Length > 0)
             {
                 int ran = Random.Range(0, c.Length);
                 return c[ran].gameObject;
@@ -190,19 +192,16 @@ namespace GameS
 
             return null;
         }
-        public List<GameObject> FindAllObject(Vector3 pos,int Findidx,float f)
-        {
-            
-            Collider[] c = Physics.OverlapSphere(pos, f, GameSystem_AllInfo.inst.masks[Findidx]);
-            List<GameObject> Dummy= c.Where(ob => ob.GetComponent<UnitState>().IsDead == false&&ob.GetComponent<Card_Info>().IsFiled&&
-                                                  ob.GetComponent<UnitState>().IsInvin == 0).Select(x=>x.gameObject).ToList();
 
-            
+        public List<GameObject> FindAllObject(Vector3 pos, int Findidx, float f)
+        {
+            Collider[] c = Physics.OverlapSphere(pos, f, GameSystem_AllInfo.inst.masks[Findidx]);
+            List<GameObject> Dummy = c.Where(ob =>
+                ob.GetComponent<UnitState>().IsDead == false && ob.GetComponent<Card_Info>().IsFiled &&
+                ob.GetComponent<UnitState>().IsInvin == 0).Select(x => x.gameObject).ToList();
+
 
             return Dummy;
         }
-
-
-
     }
 }

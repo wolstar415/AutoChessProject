@@ -10,7 +10,10 @@ namespace GameS
     public class PickRoundManager : MonoBehaviour
     {
         public static PickRoundManager inst;
-
+        List<int> checkplayer = new List<int>();    
+        List<int> result=new List<int>();
+        List<int> result1=new List<int>();
+        List<int> result2=new List<int>();
         private void Awake()
         {
             inst = this;
@@ -45,7 +48,8 @@ namespace GameS
 
         void FirstCardCreate()
         {
-            List<int> result = GameSystem_AllInfo.inst.CardPickCnt(2, 9);
+            result.Clear();
+            result = GameSystem_AllInfo.inst.CardPickCnt(2, 9);
             List<int> resultitem = ItemRandom(0);
 
             for (int i = 0; i < 9; i++)
@@ -68,8 +72,11 @@ namespace GameS
 
         List<int> ItemRandom(int cnt)
         {
-            List<int> result = new List<int>();
-            List<int> result2 = new List<int>();
+            result1.Clear();
+            result2.Clear();
+            
+            result1 = new List<int>();
+            result2 = new List<int>();
 
             for (int i = 0; i < 9; i++)
             {
@@ -91,7 +98,8 @@ namespace GameS
 
         void CardCreate()
         {
-            List<int> result=new List<int>();
+            result.Clear();
+            
             List<int> resultitem=null;
             
             List<int> resultcheck1=null;
@@ -208,8 +216,9 @@ namespace GameS
             //3초뒤에 다 염
             
             yield return YieldInstructionCache.WaitForSeconds(3);
-            //열기
+            
             NetworkManager.inst.PickAllOpen();
+            //열기
             while (true)
             {
                 if (TimeWait==0)
@@ -263,7 +272,7 @@ namespace GameS
             yield return YieldInstructionCache.WaitForSeconds(3);
 
             MasterInfo.inst.LifeOrder();
-            List<int> checkplayer = new List<int>();
+            checkplayer.Clear();
             for (int i = 0; i < MasterInfo.inst.lifeRank.Count; i++)
             {
                 int idx = MasterInfo.inst.lifeRank[i].PlayerIdx;

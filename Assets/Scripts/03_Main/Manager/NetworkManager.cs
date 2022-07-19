@@ -94,7 +94,7 @@ public class playerinfo
                 if (PhotonNetwork.PlayerList[i]==PhotonNetwork.LocalPlayer)
                 {
                     PlayerInfo.Inst.PlayerIdx = i;
-                    pv.RPC(nameof(RPC_iconSet), RpcTarget.All, i, GameManager.inst.CharIdx);
+                    pv.RPC(nameof(RPC_iconSet), RpcTarget.All, i, GameManager.Inst.CharIdx);
                     PlayerTexts[i].color=Color.yellow;
                 }
 
@@ -109,7 +109,7 @@ public class playerinfo
         [PunRPC]
         void RPC_iconSet(int idx,int icon)
         {
-            Playericons[idx].sprite = GameManager.inst.charIcons[icon];
+            Playericons[idx].sprite = GameManager.Inst.charIcons[icon];
         }
 
         [PunRPC]
@@ -208,13 +208,13 @@ public class playerinfo
 
             int idx = PlayerInfo.Inst.PlayerIdx;
             Vector3 pos =PositionManager.inst.PickPos[idx].position;
-            GameObject ob = PhotonNetwork.Instantiate("Player"+GameManager.inst.CharIdx, pos, Quaternion.identity);
+            GameObject ob = PhotonNetwork.Instantiate("Player"+GameManager.Inst.CharIdx, pos, Quaternion.identity);
             PlayerInfo.Inst.PlayerOb = ob;
             PlayerInfo.Inst.PickRound = true;
             PosSetting();
             if (ob.TryGetComponent(out PlayerMoving player))
             {
-                player.NickNameSetting(GameManager.inst.NickName);
+                player.NickNameSetting(GameManager.Inst.NickName);
             }
         }
 

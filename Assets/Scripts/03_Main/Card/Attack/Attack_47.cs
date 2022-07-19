@@ -57,7 +57,7 @@ namespace GameS
                 dummy_Enemy = GameSystem_AllInfo.inst.FindAllObject(Target.transform.position, info.EnemyTeamIdx, 3.3f);
                 for (int i = 0; i < dummy_Enemy.Count; i++)
                 {
-                    DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],v,eDamageType.Speel_Magic);
+                    DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],v,eDamageType.Spell_Magic);
                     
                 }
                     

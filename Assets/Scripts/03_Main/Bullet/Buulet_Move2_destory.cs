@@ -53,7 +53,7 @@ namespace GameS
                         }
                         else
                         {
-                            DamageManager.inst.DamageFunc1(me,other.gameObject,damage,eDamageType.Speel_Magic);
+                            DamageManager.inst.DamageFunc1(me,other.gameObject,damage,eDamageType.Spell_Magic);
                     
                         }
 

@@ -396,36 +396,36 @@ public class CsvManager : MonoBehaviour
 
     public string GameText(int i)
     {
-        if (GameManager.inst.GameLanguage=="Korean")
+        if (GameManager.Inst.GameLanguage=="Korean")
         {
             return Text_Korea[i];
         }
-        else if (GameManager.inst.GameLanguage=="English")
+        else if (GameManager.Inst.GameLanguage=="English")
         {
             
             return Text_English[i];
         }
-        else if (GameManager.inst.GameLanguage=="Japan")
+        else if (GameManager.Inst.GameLanguage=="Japan")
         {
             return Text_Japan[i];
         }
-        else if (GameManager.inst.GameLanguage=="China")
+        else if (GameManager.Inst.GameLanguage=="China")
         {
             return Text_China[i];
         }
-        else if (GameManager.inst.GameLanguage=="fra")
+        else if (GameManager.Inst.GameLanguage=="fra")
         {
             return Text_China[i];
         }
-        else if (GameManager.inst.GameLanguage=="Germany")
+        else if (GameManager.Inst.GameLanguage=="Germany")
         {
             return Text_China[i];
         }
-        else if (GameManager.inst.GameLanguage=="tur")
+        else if (GameManager.Inst.GameLanguage=="tur")
         {
             return Text_China[i];
         }
-        else if (GameManager.inst.GameLanguage=="rus")
+        else if (GameManager.Inst.GameLanguage=="rus")
         {
             return Text_China[i];
         }

@@ -80,14 +80,10 @@ namespace GameS
             {
                 return;
             }
-
-            
             float f1 = DmgAll / Max;
             float f2=0;
             float f3=0;
             float f4=0;
-
-            
             if (DmgPhy>0)
             {
                 f2 = DmgPhy / DmgAll;

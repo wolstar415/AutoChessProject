@@ -43,7 +43,7 @@ namespace GameS
 
             for (int i = 0; i < dummy_Enemy.Count; i++)
             {
-            DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],v,eDamageType.Speel_Magic);
+            DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],v,eDamageType.Spell_Magic);
                 
             }
             EffectManager.inst.EffectCreate("Skill13_Effect",Target.transform.position,Quaternion.Euler(-90,0,0),2);

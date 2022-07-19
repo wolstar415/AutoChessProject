@@ -99,7 +99,7 @@ public class ObjectPooler : MonoBehaviour
 		{
 			Pool pool = Array.Find(pools, x => x.tag == tag);
 			var obj = CreateNewObject(pool.tag, pool.prefab);
-			ArrangePool(obj);
+			//ArrangePool(obj);
 		}
 
 		// 큐에서 꺼내서 사용
@@ -122,7 +122,7 @@ public class ObjectPooler : MonoBehaviour
 			for (int i = 0; i < pool.size; i++)
 			{
 				var obj = CreateNewObject(pool.tag, pool.prefab);
-				ArrangePool(obj);
+				//ArrangePool(obj);
 			}
 
 			// OnDisable에 ReturnToPool 구현여부와 중복구현 검사

@@ -34,7 +34,7 @@ public class PlayerMoving : MonoBehaviourPunCallbacks
         nav.enabled = true;
     }
 
-    public void check1()
+    public void move()
     {
         
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

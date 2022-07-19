@@ -57,7 +57,7 @@ namespace GameS
 
                 if (playeridx == PlayerInfo.Inst.PlayerIdx)
                 {
-                DamageManager.inst.DamageFunc1(me,target,damage,eDamageType.Speel_Magic,1);
+                DamageManager.inst.DamageFunc1(me,target,damage,eDamageType.Spell_Magic,1);
                     
                 }
                 gameObject.SetActive(false);

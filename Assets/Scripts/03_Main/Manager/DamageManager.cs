@@ -12,7 +12,7 @@ namespace GameS
         Basic_phy,
         Basic_Magic,
         Spell_phy,
-        Speel_Magic,
+        Spell_Magic,
         True,
     }
     public class DamageManager : MonoBehaviour
@@ -213,7 +213,7 @@ namespace GameS
                     if (item22>0&&card_stat.AttackCnt%3==0)
                     {
                         //스태틱 이펙트
-                        DamageFunc1(card, target, 60 * item22, eDamageType.Speel_Magic);
+                        DamageFunc1(card, target, 60 * item22, eDamageType.Spell_Magic);
                         EffectManager.inst.EffectCreate("Item22_Effect",target.transform.position,Quaternion.Euler(-90,0,0),2f);
 
                         card_stat.ItemFuncAdd(22,true,5,false);
@@ -235,7 +235,7 @@ namespace GameS
 
 
      
-                if (Type==eDamageType.Speel_Magic||Type==eDamageType.Basic_Magic)
+                if (Type==eDamageType.Spell_Magic||Type==eDamageType.Basic_Magic)
                 {
                     IsMagic = true;
                     int item41=card_stat.info.IsItemHave(30);
@@ -310,7 +310,7 @@ namespace GameS
                     float d = 75;
                     if (target_stat.info.Level == 2) d = 100;
                     else if (target_stat.info.Level == 3) d = 150;
-                    DamageFunc1(target,card,d,eDamageType.Speel_Magic);
+                    DamageFunc1(target,card,d,eDamageType.Spell_Magic);
                     //덤불조끼 반사!
                     target_stat.ItemFuncAdd(26, true, 2.5f,false);
                 }

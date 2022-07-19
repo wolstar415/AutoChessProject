@@ -28,7 +28,7 @@ namespace GameS
 
         public void StartFunc()
         {
-            FirebaseDatabase.DefaultInstance.GetReference("users").Child(GameManager.inst.NickName)
+            FirebaseDatabase.DefaultInstance.GetReference("users").Child(GameManager.Inst.NickName)
                 .GetValueAsync().ContinueWithOnMainThread(task =>
                 {
                     if (task.IsFaulted)
@@ -41,39 +41,39 @@ namespace GameS
                         DataSnapshot snapshot = task.Result;
                         if (snapshot.HasChildren==false)
                         {
-                            databaseReference.Child("users").Child(GameManager.inst.NickName).Child("Victory1").SetValueAsync(0);
-                            databaseReference.Child("users").Child(GameManager.inst.NickName).Child("Victory2").SetValueAsync(0);
-                            databaseReference.Child("users").Child(GameManager.inst.NickName).Child("Victory3").SetValueAsync(0);
-                            databaseReference.Child("users").Child(GameManager.inst.NickName).Child("Victory4").SetValueAsync(0);
-                            databaseReference.Child("users").Child(GameManager.inst.NickName).Child("Victory5").SetValueAsync(0);
-                            databaseReference.Child("users").Child(GameManager.inst.NickName).Child("Victory6").SetValueAsync(0);
-                            databaseReference.Child("users").Child(GameManager.inst.NickName).Child("Victory7").SetValueAsync(0);
-                            databaseReference.Child("users").Child(GameManager.inst.NickName).Child("Victory8").SetValueAsync(0);
-                            databaseReference.Child("users").Child(GameManager.inst.NickName).Child("Score").SetValueAsync(1000);
-                            databaseReference.Child("users").Child(GameManager.inst.NickName).Child("CharIdx").SetValueAsync(0);
+                            databaseReference.Child("users").Child(GameManager.Inst.NickName).Child("Victory1").SetValueAsync(0);
+                            databaseReference.Child("users").Child(GameManager.Inst.NickName).Child("Victory2").SetValueAsync(0);
+                            databaseReference.Child("users").Child(GameManager.Inst.NickName).Child("Victory3").SetValueAsync(0);
+                            databaseReference.Child("users").Child(GameManager.Inst.NickName).Child("Victory4").SetValueAsync(0);
+                            databaseReference.Child("users").Child(GameManager.Inst.NickName).Child("Victory5").SetValueAsync(0);
+                            databaseReference.Child("users").Child(GameManager.Inst.NickName).Child("Victory6").SetValueAsync(0);
+                            databaseReference.Child("users").Child(GameManager.Inst.NickName).Child("Victory7").SetValueAsync(0);
+                            databaseReference.Child("users").Child(GameManager.Inst.NickName).Child("Victory8").SetValueAsync(0);
+                            databaseReference.Child("users").Child(GameManager.Inst.NickName).Child("Score").SetValueAsync(1000);
+                            databaseReference.Child("users").Child(GameManager.Inst.NickName).Child("CharIdx").SetValueAsync(0);
                         }
                         else
                         {
 
-                            GameManager.inst.Score = int.Parse(snapshot
+                            GameManager.Inst.Score = int.Parse(snapshot
                                 .Child("Score").Value.ToString());
-                            GameManager.inst.Victory1 = int.Parse(snapshot
+                            GameManager.Inst.Victory1 = int.Parse(snapshot
                                 .Child("Victory1").Value.ToString());
-                            GameManager.inst.Victory2 = int.Parse(snapshot
+                            GameManager.Inst.Victory2 = int.Parse(snapshot
                                 .Child("Victory2").Value.ToString());
-                            GameManager.inst.Victory3 = int.Parse(snapshot
+                            GameManager.Inst.Victory3 = int.Parse(snapshot
                                 .Child("Victory3").Value.ToString());
-                            GameManager.inst.Victory4 = int.Parse(snapshot
+                            GameManager.Inst.Victory4 = int.Parse(snapshot
                                 .Child("Victory4").Value.ToString());
-                            GameManager.inst.Victory5 = int.Parse(snapshot
+                            GameManager.Inst.Victory5 = int.Parse(snapshot
                                 .Child("Victory5").Value.ToString());
-                            GameManager.inst.Victory6 = int.Parse(snapshot
+                            GameManager.Inst.Victory6 = int.Parse(snapshot
                                 .Child("Victory6").Value.ToString());
-                            GameManager.inst.Victory7 = int.Parse(snapshot
+                            GameManager.Inst.Victory7 = int.Parse(snapshot
                                 .Child("Victory7").Value.ToString());
-                            GameManager.inst.Victory8 = int.Parse(snapshot
+                            GameManager.Inst.Victory8 = int.Parse(snapshot
                                 .Child("Victory8").Value.ToString());
-                            GameManager.inst.CharIdx = int.Parse(snapshot
+                            GameManager.Inst.CharIdx = int.Parse(snapshot
                                 .Child("CharIdx").Value.ToString());
                             
                             
@@ -89,7 +89,7 @@ namespace GameS
 
         public void Ranking()
         {
-            int so = GameManager.inst.Score;
+            int so = GameManager.Inst.Score;
             Rankingint.Clear();
             FirebaseDatabase.DefaultInstance.GetReference("users")
                 .GetValueAsync().ContinueWithOnMainThread(task =>
@@ -115,8 +115,6 @@ namespace GameS
                         Rankingint.Reverse();
 
                         LobyUiManager.inst.playerdata[10].text =(Rankingint.IndexOf(so)+1).ToString() + " / " + Rankingint.Count;
-                        //LobyUiManager.inst.playerdata[10].text =0 + " / " + snapshot.Children.Count();
-
 
                     }
                    
@@ -129,10 +127,7 @@ namespace GameS
 
         public void SaveData(string name, int value)
         {
-            databaseReference.Child("users").Child(GameManager.inst.NickName).Child(name).SetValueAsync(value);
-            
+            databaseReference.Child("users").Child(GameManager.Inst.NickName).Child(name).SetValueAsync(value);
         }
-
-
     }
 }

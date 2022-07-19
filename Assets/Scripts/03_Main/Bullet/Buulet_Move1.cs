@@ -70,7 +70,7 @@ namespace GameS
                     }
                     else
                     {
-                    DamageManager.inst.DamageFunc1(me,target,damage,eDamageType.Speel_Magic);
+                    DamageManager.inst.DamageFunc1(me,target,damage,eDamageType.Spell_Magic);
                     if (buIdx==1)
                     {
                         Vector3 dir=target.transform.position-transform.position;

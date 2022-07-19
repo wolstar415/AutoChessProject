@@ -524,53 +524,53 @@ public class MasterInfo : MonoBehaviourPunCallbacks
          switch (i)
          {
              case 1:
-                 GameManager.inst.Victory1++;
-                 GameManager.inst.Score += 20;
-                 DataManager.inst.SaveData("Victory1",GameManager.inst.Victory1);
-                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 GameManager.Inst.Victory1++;
+                 GameManager.Inst.Score += 20;
+                 DataManager.inst.SaveData("Victory1",GameManager.Inst.Victory1);
+                 DataManager.inst.SaveData("Score",GameManager.Inst.Score);
                  GoLoby();
                  break;
              case 2:
-                 GameManager.inst.Victory2++;
-                 GameManager.inst.Score += 10;
-                 DataManager.inst.SaveData("Victory2",GameManager.inst.Victory2);
-                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 GameManager.Inst.Victory2++;
+                 GameManager.Inst.Score += 10;
+                 DataManager.inst.SaveData("Victory2",GameManager.Inst.Victory2);
+                 DataManager.inst.SaveData("Score",GameManager.Inst.Score);
                  break;
              case 3:
-                 GameManager.inst.Victory3++;
-                 GameManager.inst.Score += 8;
-                 DataManager.inst.SaveData("Victory3",GameManager.inst.Victory3);
-                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 GameManager.Inst.Victory3++;
+                 GameManager.Inst.Score += 8;
+                 DataManager.inst.SaveData("Victory3",GameManager.Inst.Victory3);
+                 DataManager.inst.SaveData("Score",GameManager.Inst.Score);
                  break;
              case 4:
-                 GameManager.inst.Victory4++;
-                 GameManager.inst.Score += 6;
-                 DataManager.inst.SaveData("Victory4",GameManager.inst.Victory4);
-                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 GameManager.Inst.Victory4++;
+                 GameManager.Inst.Score += 6;
+                 DataManager.inst.SaveData("Victory4",GameManager.Inst.Victory4);
+                 DataManager.inst.SaveData("Score",GameManager.Inst.Score);
                  break;
              case 5:
-                 GameManager.inst.Victory5++;
-                 GameManager.inst.Score += 4;
-                 DataManager.inst.SaveData("Victory5",GameManager.inst.Victory5);
-                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 GameManager.Inst.Victory5++;
+                 GameManager.Inst.Score += 4;
+                 DataManager.inst.SaveData("Victory5",GameManager.Inst.Victory5);
+                 DataManager.inst.SaveData("Score",GameManager.Inst.Score);
                  break;
              case 6:
-                 GameManager.inst.Victory6++;
-                 GameManager.inst.Score += 3;
-                 DataManager.inst.SaveData("Victory6",GameManager.inst.Victory6);
-                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 GameManager.Inst.Victory6++;
+                 GameManager.Inst.Score += 3;
+                 DataManager.inst.SaveData("Victory6",GameManager.Inst.Victory6);
+                 DataManager.inst.SaveData("Score",GameManager.Inst.Score);
                  break;
              case 7:
-                 GameManager.inst.Victory7++;
-                 GameManager.inst.Score += 2;
-                 DataManager.inst.SaveData("Victory7",GameManager.inst.Victory7);
-                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 GameManager.Inst.Victory7++;
+                 GameManager.Inst.Score += 2;
+                 DataManager.inst.SaveData("Victory7",GameManager.Inst.Victory7);
+                 DataManager.inst.SaveData("Score",GameManager.Inst.Score);
                  break;
              case 8:
-                 GameManager.inst.Victory8++;
-                 GameManager.inst.Score += 1;
-                 DataManager.inst.SaveData("Victory8",GameManager.inst.Victory8);
-                 DataManager.inst.SaveData("Score",GameManager.inst.Score);
+                 GameManager.Inst.Victory8++;
+                 GameManager.Inst.Score += 1;
+                 DataManager.inst.SaveData("Victory8",GameManager.Inst.Victory8);
+                 DataManager.inst.SaveData("Score",GameManager.Inst.Score);
                  break;
              default:
                  break;

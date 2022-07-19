@@ -59,7 +59,7 @@ namespace GameS
             {
                 if (playeridx == PlayerInfo.Inst.PlayerIdx)
                 {
-                DamageManager.inst.DamageFunc1(me,target,damage,eDamageType.Speel_Magic);
+                DamageManager.inst.DamageFunc1(me,target,damage,eDamageType.Spell_Magic);
                 me.GetComponent<Attack_34>().DamageFunc();
                 }
                 DestoryFunc();

@@ -39,7 +39,7 @@ namespace GameS
             {
                 enemystat.NetStopFunc(true,v2,true);
             }
-            DamageManager.inst.DamageFunc1(gameObject,ob,v,eDamageType.Speel_Magic);
+            DamageManager.inst.DamageFunc1(gameObject,ob,v,eDamageType.Spell_Magic);
             EffectManager.inst.EffectCreate("Skill7_Effect",ob.transform.position,Quaternion.identity,2);
 
         }

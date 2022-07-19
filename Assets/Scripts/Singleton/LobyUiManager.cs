@@ -84,7 +84,7 @@ namespace GameS
 
         public void MusicSlider()
         {
-            GameManager.inst.audioSource.volume = musicSldier.value;
+            GameManager.Inst.audioSource.volume = musicSldier.value;
             float f=musicSldier.value*100;
             musicText.text = f.ToString("F0");
         }
@@ -94,28 +94,28 @@ namespace GameS
             switch (idx)
             {
                 case 0:
-                    GameManager.inst.GameLanguage = "Korean";
+                    GameManager.Inst.GameLanguage = "Korean";
                     break;
                 case 1:
-                    GameManager.inst.GameLanguage = "Japan";
+                    GameManager.Inst.GameLanguage = "Japan";
                     break;
                 case 2:
-                    GameManager.inst.GameLanguage = "China";
+                    GameManager.Inst.GameLanguage = "China";
                     break;
                 case 3:
-                    GameManager.inst.GameLanguage = "English";
+                    GameManager.Inst.GameLanguage = "English";
                     break;
                 case 4:
-                    GameManager.inst.GameLanguage = "fra";
+                    GameManager.Inst.GameLanguage = "fra";
                     break;
                 case 5:
-                    GameManager.inst.GameLanguage = "Germany";
+                    GameManager.Inst.GameLanguage = "Germany";
                     break;
                 case 6:
-                    GameManager.inst.GameLanguage = "tur";
+                    GameManager.Inst.GameLanguage = "tur";
                     break;
                 case 7:
-                    GameManager.inst.GameLanguage = "rus";
+                    GameManager.Inst.GameLanguage = "rus";
                     break;
                 default:
                     break;
@@ -129,13 +129,13 @@ namespace GameS
         public void LobyPlayBtn()
         {
             playText.text = CsvManager.inst.GameText(523);
-            CharImage.sprite= GameManager.inst.charIcons[GameManager.inst.CharIdx];
+            CharImage.sprite= GameManager.Inst.charIcons[GameManager.Inst.CharIdx];
         }
 
         public void CharChange(int idx)
         {
-            GameManager.inst.CharIdx = idx;
-            CharImage.sprite = GameManager.inst.charIcons[idx];
+            GameManager.Inst.CharIdx = idx;
+            CharImage.sprite = GameManager.Inst.charIcons[idx];
             DataManager.inst.SaveData("CharIdx", idx);
         }
 
@@ -275,16 +275,16 @@ namespace GameS
         public void RankingSet()
         {
 
-            playerdata[0].text = GameManager.inst.NickName;
-            playerdata[1].text = GameManager.inst.Victory1.ToString();
-            playerdata[2].text = GameManager.inst.Victory2.ToString();
-            playerdata[3].text = GameManager.inst.Victory3.ToString();
-            playerdata[4].text = GameManager.inst.Victory4.ToString();
-            playerdata[5].text = GameManager.inst.Victory5.ToString();
-            playerdata[6].text = GameManager.inst.Victory6.ToString();
-            playerdata[7].text = GameManager.inst.Victory7.ToString();
-            playerdata[8].text = GameManager.inst.Victory8.ToString();
-            playerdata[9].text = GameManager.inst.Score.ToString();
+            playerdata[0].text = GameManager.Inst.NickName;
+            playerdata[1].text = GameManager.Inst.Victory1.ToString();
+            playerdata[2].text = GameManager.Inst.Victory2.ToString();
+            playerdata[3].text = GameManager.Inst.Victory3.ToString();
+            playerdata[4].text = GameManager.Inst.Victory4.ToString();
+            playerdata[5].text = GameManager.Inst.Victory5.ToString();
+            playerdata[6].text = GameManager.Inst.Victory6.ToString();
+            playerdata[7].text = GameManager.Inst.Victory7.ToString();
+            playerdata[8].text = GameManager.Inst.Victory8.ToString();
+            playerdata[9].text = GameManager.Inst.Score.ToString();
             DataManager.inst.Ranking();
 
 

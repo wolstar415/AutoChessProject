@@ -56,7 +56,7 @@ namespace GameS
                 {
                     for (int i = 0; i < dummy_Enemy.Count; i++)
                     {
-                        DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],da2,eDamageType.Speel_Magic);
+                        DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],da2,eDamageType.Spell_Magic);
                         heal += v;
                     }
 

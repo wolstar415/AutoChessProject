@@ -31,21 +31,6 @@ namespace GameS
         public Card_Info info;
         private FSMMsg noconmsg = new FSMMsg(0);
 
-     
-        // Start is called before the first frame update
-        // void Start()
-        // {
-        //     fsm.AddFsm(new Card_fight_State_None(this));
-        //     fsm.AddFsm(new Card_fight_State_Idle(this));
-        //     fsm.AddFsm(new Card_fight_State_Moving(this));
-        //     fsm.AddFsm(new Card_fight_State_Attack(this));
-        //     fsm.AddFsm(new Card_fight_State_Dead(this));
-        //     fsm.AddFsm(new Card_fight_State_NoCon(this));
-        //
-        //     fsm.SetState(eCardFight_STATE.None,false,new FSMMsg(1));
-        //     
-        // }
-
         private void Awake()
         {
             fsm.AddFsm(new Card_fight_State_None(this));

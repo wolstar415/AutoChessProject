@@ -36,7 +36,7 @@ public class IntroManager : MonoBehaviourPunCallbacks
     {
         string name = "Hey" + UnityEngine.Random.Range(0, 1000000);
         PhotonNetwork.LocalPlayer.NickName = name;
-        GameManager.inst.NickName = name;
+        GameManager.Inst.NickName = name;
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers =8;
         PhotonNetwork.JoinOrCreateRoom("asd", roomOptions,null);

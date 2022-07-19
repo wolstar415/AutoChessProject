@@ -90,7 +90,7 @@ namespace GameS
                         if (!enemystat.IsDead&&enemystat.info.IsFiled&&enemystat.IsInvin==0)
                         {
                             
-                        DamageManager.inst.DamageFunc1(gameObject,hits[i].transform.gameObject,d,eDamageType.Speel_Magic);
+                        DamageManager.inst.DamageFunc1(gameObject,hits[i].transform.gameObject,d,eDamageType.Spell_Magic);
                         }
                     }
                     

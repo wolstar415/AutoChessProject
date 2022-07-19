@@ -61,7 +61,7 @@ namespace GameS
             float v2=SkillValue(2);
             
             ob.GetComponent<CardState>().NetStopFunc(true,v2,false);
-            DamageManager.inst.DamageFunc1(gameObject,ob,v,eDamageType.Speel_Magic);
+            DamageManager.inst.DamageFunc1(gameObject,ob,v,eDamageType.Spell_Magic);
             EffectManager.inst.EffectCreate("Skill58_Effect",ob.transform.position,Quaternion.identity,4);
 
         }

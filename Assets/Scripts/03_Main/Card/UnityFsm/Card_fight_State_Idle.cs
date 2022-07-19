@@ -17,20 +17,7 @@ namespace GameS
         {
             Fight.state = eCardFight_STATE.Idle;
             CurTime = 0f;
-            //base.Enter(_msg);
-
             NextFind();
-
-
-            // if (Fight.info.IsAni)
-            // {
-            //     Fight.info.stat.gani.Play("Idle");
-            // }
-            // else
-            // {
-            //     Fight.info.stat.ani.Play("Idle");
-            // }
-
         }
 
         void NextFind()

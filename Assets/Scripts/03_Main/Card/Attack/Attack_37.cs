@@ -59,7 +59,7 @@ namespace GameS
                 
                 for (var i = 0; i < dummy_Enemy.Count; i++)
                 {
-                    DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],d,eDamageType.Speel_Magic);
+                    DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],d,eDamageType.Spell_Magic);
                 }
                 yield return YieldInstructionCache.WaitForSeconds(0.2f);
             }

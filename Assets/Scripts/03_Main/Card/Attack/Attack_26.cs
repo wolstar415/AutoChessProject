@@ -37,6 +37,7 @@ namespace GameS
 
         IEnumerator ISkillFunc()
         {
+            float speed = 30f;
             GameObject ob = GameSystem_AllInfo.inst.FindFirstObject(transform.position, info.EnemyTeamIdx, 26f, false);
             if (ob==null)  yield break;
             fsm.noCon++;
@@ -56,7 +57,7 @@ namespace GameS
                 Vector3 dir = ob.transform.position - transform.position;
                 dir.Normalize();
                 dir.y = 0;
-                transform.position = transform.position + (dir * Time.deltaTime * 30);
+                transform.position = transform.position + (dir * Time.deltaTime * speed);
 
                 if (Vector3.Distance(transform.position,ob.transform.position)<=1)
                 {
@@ -78,7 +79,7 @@ namespace GameS
                 {
                     enemystat.NetStopFunc(true,d2,false);
                     enemystat.Jump(enemystat.transform.position,3,1,1.5f);
-                    DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],d1,eDamageType.Speel_Magic);
+                    DamageManager.inst.DamageFunc1(gameObject,dummy_Enemy[i],d1,eDamageType.Spell_Magic);
                 }
                 
             }
